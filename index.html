@@ -494,6 +494,10 @@
       font-size: 0.6875rem;
       color: var(--c-text-3);
       font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
 
     .suggestion-item .sugg-price {
@@ -501,6 +505,8 @@
       color: var(--c-ink);
       font-size: 0.75rem;
       flex-shrink: 0;
+      white-space: nowrap;
+      margin-left: auto;
     }
 
     .suggestion-item .sugg-arrow {
@@ -515,6 +521,43 @@
     .suggestion-item:hover .sugg-arrow {
       opacity: 1;
       color: var(--c-ink);
+    }
+
+    /* Mobile search dropdown polish — no wrap / no overlap, comfortable rows */
+    @media(max-width:640px) {
+      .search-suggestions {
+        border-radius: var(--r-lg);
+        max-height: 55vh;
+      }
+
+      .suggestion-item {
+        padding: 10px 12px;
+        gap: 8px;
+      }
+
+      .suggestion-item .sugg-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+
+      .suggestion-item .sugg-meta {
+        font-size: 0.625rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+
+      .suggestion-item .sugg-price {
+        font-size: 0.6875rem;
+        margin-left: auto;
+      }
+
+      .suggestion-item .sugg-arrow {
+        display: none;
+      }
     }
 
     .trending-chip {
