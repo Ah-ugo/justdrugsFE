@@ -4256,6 +4256,7 @@
     <div class="cm-icon"><i data-feather="file-text"></i></div>
     <h2>Upload Your Prescription</h2>
     <p>Our licensed pharmacists will review it and prepare your order within 30 minutes.</p>
+    <div class="form-group"><label for="rx-phone">Phone Number (optional, for guest orders)</label><input type="tel" id="rx-phone" class="form-control" placeholder="08012345678"></div>
     <div class="upload-zone" id="rx-upload-zone">
       <i data-feather="upload-cloud"></i>
       <p><strong>Click to upload</strong> or drag &amp; drop</p>
@@ -4412,6 +4413,8 @@
       let totalProducts = 0;
       let totalPages = 1;
       let cartItems = [];
+      let cartRequiresPrescription = false;
+      let uploadedPrescriptionId = null;
       let wishlist = new Set(JSON.parse(localStorage.getItem('jd_wishlist') || '[]'));
       let currentView = 'grid';
       let qtyPending = {};
@@ -4659,6 +4662,7 @@
           const res = await apiFetch('/api/v1/cart');
           if (res.success && res.data) {
             cartItems = res.data.items || [];
+            cartRequiresPrescription = res.data.requires_prescription || false;
             return cartItems;
           }
         } catch (e) { console.warn('Cart fetch failed:', e); }
@@ -6190,7 +6194,7 @@
           },
           delivery_zone_id: undefined,
           coupon_code: document.getElementById('co-coupon').value.trim() || undefined,
-          prescription_id: undefined,
+          prescription_id: (cartRequiresPrescription && uploadedPrescriptionId) ? uploadedPrescriptionId : undefined,
           notes: undefined,
         };
 
@@ -6271,17 +6275,26 @@
           }
           const formData = new FormData();
           formData.append('files', fileInput.files[0]);
+          const phoneInput = document.getElementById('rx-phone');
+          if (phoneInput && phoneInput.value.trim()) {
+            formData.append('guest_phone', phoneInput.value.trim());
+          }
           try {
             const res = await fetch(`${API_BASE}/api/v1/prescriptions/upload`, {
               method: 'POST',
               headers: guestToken ? { 'x-guest-token': guestToken } : {},
               body: formData,
             });
-            if (res.ok) {
+            const data = await res.json().catch(() => ({}));
+            if (res.ok && data.success) {
+              if (data.data && data.data._id) {
+                uploadedPrescriptionId = data.data._id;
+              }
               showToast('Prescription submitted! A pharmacist will contact you shortly.', 'success', 5000);
               closeModal('rx-modal', 'rx-overlay');
+              if (phoneInput) phoneInput.value = '';
             } else {
-              showToast('Upload failed. Please try again.', 'error');
+              showToast((data && data.detail) || 'Upload failed. Please try again.', 'error');
             }
           } catch (e) {
             showToast('Upload failed. Please try again.', 'error');
