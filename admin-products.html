@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just Drugs — Products</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <header class="admin-header">
+    <div class="admin-header-title">Just Drugs Admin</div>
+    <div style="display:flex;gap:8px;">
+      <a class="btn btn-secondary" href="admin-dashboard.html">Back</a>
+      <button class="btn btn-secondary" id="admin-logout-btn">Sign Out</button>
+    </div>
+  </header>
+  <main class="admin-main">
+    <div class="admin-toolbar">
+      <h1 class="admin-page-title">Products</h1>
+      <button class="btn btn-primary" id="admin-create-product-btn">+ New Product</button>
+    </div>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Name</th><th>Brand</th><th>Price</th><th>Stock</th><th>Category</th><th>Actions</th></tr></thead>
+        <tbody id="admin-prod-list-tbody"></tbody>
+      </table>
+    </div>
+  </main>
+  <div class="admin-overlay" id="admin-product-overlay" hidden>
+    <form class="admin-form" id="admin-prod-form">
+      <h2 id="admin-product-form-title">Edit Product</h2>
+      <input type="hidden" id="admin-prod-id">
+      <div class="form-group">
+        <label for="admin-prod-name">Product Name</label>
+        <input type="text" id="admin-prod-name" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="admin-prod-price">Selling Price (₦)</label>
+          <input type="number" id="admin-prod-price" min="0" step="1" required>
+        </div>
+        <div class="form-group">
+          <label for="admin-prod-stock">Stock Quantity</label>
+          <input type="number" id="admin-prod-stock" min="0" step="1" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="admin-prod-brand">Brand</label>
+        <input type="text" id="admin-prod-brand">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" id="admin-product-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="admin-prod-form-btn">Save</button>
+      </div>
+    </form>
+  </div>
+  <script src="js/admin-shared.js"></script>
+  <script src="js/admin-products.js"></script>
+</body>
+</html>

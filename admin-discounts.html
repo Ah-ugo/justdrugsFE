@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just Drugs — Discounts</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <header class="admin-header">
+    <div class="admin-header-title">Just Drugs Admin</div>
+    <div style="display:flex;gap:8px;">
+      <a class="btn btn-secondary" href="admin-dashboard.html">Back</a>
+      <button class="btn btn-secondary" id="admin-logout-btn">Sign Out</button>
+    </div>
+  </header>
+  <main class="admin-main">
+    <div class="admin-toolbar">
+      <h1 class="admin-page-title">Discounts & Coupons</h1>
+      <button class="btn btn-primary" id="admin-create-discount-btn">+ New Discount</button>
+    </div>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="admin-discount-list-tbody"></tbody>
+      </table>
+    </div>
+  </main>
+  <div class="admin-overlay" id="admin-discount-overlay" hidden>
+    <form class="admin-form" id="admin-discount-form">
+      <h2 id="admin-discount-form-title">Edit Discount</h2>
+      <input type="hidden" id="admin-discount-id">
+      <div class="form-group">
+        <label for="admin-discount-code">Code</label>
+        <input type="text" id="admin-discount-code" required>
+      </div>
+      <div class="form-group">
+        <label for="admin-discount-type">Type</label>
+        <select id="admin-discount-type" required>
+          <option value="percentage">Percentage</option>
+          <option value="fixed_amount">Fixed Amount</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="admin-discount-value">Value</label>
+        <input type="number" id="admin-discount-value" min="0" step="1" required>
+      </div>
+      <div class="form-group">
+        <label><input type="checkbox" id="admin-discount-active" checked> Active</label>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" id="admin-discount-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="admin-discount-form-btn">Save</button>
+      </div>
+    </form>
+  </div>
+  <script src="js/admin-shared.js"></script>
+  <script src="js/admin-discounts.js"></script>
+</body>
+</html>

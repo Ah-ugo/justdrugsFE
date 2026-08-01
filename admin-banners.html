@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just Drugs — Banners</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <header class="admin-header">
+    <div class="admin-header-title">Just Drugs Admin</div>
+    <div style="display:flex;gap:8px;">
+      <a class="btn btn-secondary" href="admin-dashboard.html">Back</a>
+      <button class="btn btn-secondary" id="admin-logout-btn">Sign Out</button>
+    </div>
+  </header>
+  <main class="admin-main">
+    <div class="admin-toolbar">
+      <h1 class="admin-page-title">Banners</h1>
+      <button class="btn btn-primary" id="admin-create-banner-btn">+ New Banner</button>
+    </div>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Title</th><th>Subtitle</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="admin-banner-list-tbody"></tbody>
+      </table>
+    </div>
+  </main>
+  <div class="admin-overlay" id="admin-banner-overlay" hidden>
+    <form class="admin-form" id="admin-banner-form">
+      <h2 id="admin-banner-form-title">Edit Banner</h2>
+      <input type="hidden" id="admin-banner-id">
+      <div class="form-group">
+        <label for="admin-banner-title">Title</label>
+        <input type="text" id="admin-banner-title" required>
+      </div>
+      <div class="form-group">
+        <label for="admin-banner-subtitle">Subtitle</label>
+        <input type="text" id="admin-banner-subtitle">
+      </div>
+      <div class="form-group">
+        <label><input type="checkbox" id="admin-banner-active" checked> Active</label>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" id="admin-banner-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="admin-banner-form-btn">Save</button>
+      </div>
+    </form>
+  </div>
+  <script src="js/admin-shared.js"></script>
+  <script src="js/admin-banners.js"></script>
+</body>
+</html>

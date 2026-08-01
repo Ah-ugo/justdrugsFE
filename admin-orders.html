@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just Drugs — Orders</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <header class="admin-header">
+    <div class="admin-header-title">Just Drugs Admin</div>
+    <div style="display:flex;gap:8px;">
+      <a class="btn btn-secondary" href="admin-dashboard.html">Back</a>
+      <button class="btn btn-secondary" id="admin-logout-btn">Sign Out</button>
+    </div>
+  </header>
+  <main class="admin-main">
+    <h1 class="admin-page-title">Orders</h1>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Order #</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="admin-orders-list-tbody"></tbody>
+      </table>
+    </div>
+  </main>
+  <script src="js/admin-shared.js"></script>
+  <script src="js/admin-orders.js"></script>
+</body>
+</html>

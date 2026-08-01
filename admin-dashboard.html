@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just Drugs — Admin Dashboard</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <header class="admin-header">
+    <div class="admin-header-title">Just Drugs Admin</div>
+    <button class="btn btn-secondary" id="admin-logout-btn">Sign Out</button>
+  </header>
+  <main class="admin-main">
+    <h1 class="admin-page-title">Dashboard</h1>
+    <div class="admin-cards">
+      <a class="admin-card" href="admin-admins.html"><div class="admin-card-title">Admins</div><div class="admin-card-desc">Manage admin accounts and roles</div></a>
+      <a class="admin-card" href="admin-products.html"><div class="admin-card-title">Products</div><div class="admin-card-desc">Create and manage products</div></a>
+      <a class="admin-card" href="admin-orders.html"><div class="admin-card-title">Orders</div><div class="admin-card-desc">View and update order status</div></a>
+      <a class="admin-card" href="admin-banners.html"><div class="admin-card-title">Banners</div><div class="admin-card-desc">Manage homepage banners</div></a>
+      <a class="admin-card" href="admin-discounts.html"><div class="admin-card-title">Discounts</div><div class="admin-card-desc">Manage coupons and discounts</div></a>
+      <a class="admin-card" href="admin-settings.html"><div class="admin-card-title">Settings</div><div class="admin-card-desc">Platform configuration</div></a>
+    </div>
+  </main>
+  <script src="js/admin-shared.js"></script>
+  <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
