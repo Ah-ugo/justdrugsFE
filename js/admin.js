@@ -735,3 +735,8 @@ const Admin = (() => {
     hideAllScreens,
   };
 })();
+
+// ─── Boot ─────────────────────────────────────────────────────
+// Initialize the admin UI on page load. The script is loaded at the
+// end of <body>, so the DOM is fully parsed and safe to query.
+Admin.init();
