@@ -11,7 +11,7 @@ const Admin = (() => {
 
   const $ = id => document.getElementById(id);
 
-  // ─── State ──────────────────────────────────────────────────────────
+  // ─── State ──────────────────────────────────────────────────
   let _currentScreen = null;
   let _adminProducts = [];
   let _adminOrders = [];
@@ -20,7 +20,7 @@ const Admin = (() => {
   let _adminDiscounts = [];
   let _adminSettings = {};
 
-  // ─── API client ────────────────────────────────────────────────────
+  // ─── API client ────────────────────────────────────────────
   async function apiFetch(path, options = {}) {
     const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
     if (_adminToken) headers['Authorization'] = `Bearer ${_adminToken}`;
@@ -116,7 +116,7 @@ const Admin = (() => {
     },
   };
 
-  // ─── Session ────────────────────────────────────────────────────────
+  // ─── Session ────────────────────────────────────────────────
   function loadAdminSession() {
     _adminToken = localStorage.getItem('jd_admin_token');
     if (_adminToken) {
@@ -138,7 +138,7 @@ const Admin = (() => {
     localStorage.removeItem('jd_admin');
   }
 
-  // ─── UI helpers ──────────────────────────────────────────────────────
+  // ─── UI helpers ──────────────────────────────────────────────
   function showScreen(screenId) {
     document.querySelectorAll('.admin-screen').forEach(s => s.classList.remove('active'));
     const screen = $(screenId);
@@ -146,8 +146,19 @@ const Admin = (() => {
       screen.classList.add('active');
       _currentScreen = screenId;
     }
-    const adminNav = $('admin-nav');
-    if (adminNav) adminNav.classList.toggle('open', !!screenId);
+    const navMap = {
+      'admin-dashboard-screen': 'admin-dashboard-nav-dashboard',
+      'admin-admins-screen': 'admin-dashboard-nav-admins',
+      'admin-products-screen': 'admin-dashboard-nav-products',
+      'admin-orders-screen': 'admin-dashboard-nav-orders',
+      'admin-banners-screen': 'admin-dashboard-nav-banners',
+      'admin-discounts-screen': 'admin-dashboard-nav-discounts',
+      'admin-settings-screen': 'admin-dashboard-nav-settings',
+    };
+    Object.entries(navMap).forEach(([screen, navBtnId]) => {
+      const btn = $(navBtnId);
+      if (btn) btn.classList.toggle('active', screen === screenId);
+    });
   }
 
   function hideAllScreens() {
@@ -175,7 +186,7 @@ const Admin = (() => {
       .replace(/"/g, '&quot;');
   }
 
-  // ─── Toast ──────────────────────────────────────────────────────────
+  // ─── Toast ──────────────────────────────────────────────────
   function showToast(message, type = 'info', duration = 3500) {
     const container = document.getElementById('toast-container');
     if (!container) return;
@@ -199,7 +210,7 @@ const Admin = (() => {
     toast.addEventListener('click', () => { clearTimeout(timer); remove(); });
   }
 
-  // ─── Admin Login Screen ─────────────────────────────────────────────
+  // ─── Admin Login Screen ─────────────────────────────────────
   function openLogin() {
     hideAllScreens();
     const screen = $('admin-login-screen');
@@ -241,7 +252,7 @@ const Admin = (() => {
     showToast('You have been signed out', 'info');
   }
 
-  // ─── Dashboard ──────────────────────────────────────────────────────
+  // ─── Dashboard ──────────────────────────────────────────────
   async function loadDashboard() {
     const screen = $('admin-dashboard-screen');
     if (!screen) return;
@@ -306,7 +317,7 @@ const Admin = (() => {
       </tr>`).join('');
   }
 
-  // ─── Admin Management ───────────────────────────────────────────────
+  // ─── Admin Management ───────────────────────────────────────
   async function loadAdmins() {
     try {
       const data = await AdminAPI.listAdmins(null, 1, 100);
@@ -407,7 +418,7 @@ const Admin = (() => {
     }
   }
 
-  // ─── Product Management ─────────────────────────────────────────────
+  // ─── Product Management ─────────────────────────────────────
   async function loadAdminProducts() {
     try {
       const data = await AdminAPI.getProducts({ limit: 100 });
@@ -499,7 +510,7 @@ const Admin = (() => {
     }
   }
 
-  // ─── Order Management ───────────────────────────────────────────────
+  // ─── Order Management ───────────────────────────────────────
   async function loadAdminOrders() {
     try {
       const data = await AdminAPI.getOrders({ limit: 100 });
@@ -550,7 +561,7 @@ const Admin = (() => {
     });
   }
 
-  // ─── Banner Management ──────────────────────────────────────────────
+  // ─── Banner Management ──────────────────────────────────────
   async function loadBanners() {
     try {
       const data = await AdminAPI.getBanners();
@@ -580,7 +591,7 @@ const Admin = (() => {
       </tr>`).join('');
   }
 
-  // ─── Discount Management ────────────────────────────────────────────
+  // ─── Discount Management ────────────────────────────────────
   async function loadDiscounts() {
     try {
       const data = await AdminAPI.getDiscounts();
@@ -611,7 +622,7 @@ const Admin = (() => {
       </tr>`).join('');
   }
 
-  // ─── Settings ───────────────────────────────────────────────────────
+  // ─── Settings ───────────────────────────────────────────────
   async function loadSettings() {
     try {
       const data = await AdminAPI.getSettings();
@@ -637,38 +648,8 @@ const Admin = (() => {
     });
   }
 
-  // ─── Navigation ─────────────────────────────────────────────────────
+  // ─── Navigation ─────────────────────────────────────────────
   function initNav() {
-    $('admin-nav-dashboard')?.addEventListener('click', () => {
-      showScreen('admin-dashboard-screen');
-      loadDashboard();
-    });
-    $('admin-nav-admins')?.addEventListener('click', () => {
-      showScreen('admin-admins-screen');
-      loadAdmins();
-    });
-    $('admin-nav-products')?.addEventListener('click', () => {
-      showScreen('admin-products-screen');
-      loadAdminProducts();
-    });
-    $('admin-nav-orders')?.addEventListener('click', () => {
-      showScreen('admin-orders-screen');
-      loadAdminOrders();
-    });
-    $('admin-nav-banners')?.addEventListener('click', () => {
-      showScreen('admin-banners-screen');
-      loadBanners();
-    });
-    $('admin-nav-discounts')?.addEventListener('click', () => {
-      showScreen('admin-discounts-screen');
-      loadDiscounts();
-    });
-    $('admin-nav-settings')?.addEventListener('click', () => {
-      showScreen('admin-settings-screen');
-      loadSettings();
-    });
-    $('admin-nav-logout')?.addEventListener('click', handleLogout);
-
     $('admin-login-btn')?.addEventListener('click', handleLogin);
     $('admin-login-form')?.addEventListener('submit', handleLogin);
 
@@ -691,6 +672,37 @@ const Admin = (() => {
     $('admin-discounts-back')?.addEventListener('click', () => hideAllScreens());
     $('admin-settings-back')?.addEventListener('click', () => hideAllScreens());
 
+    // Admin screen internal nav (dashboard header nav)
+    $('admin-dashboard-nav-dashboard')?.addEventListener('click', () => {
+      showScreen('admin-dashboard-screen');
+      loadDashboard();
+    });
+    $('admin-dashboard-nav-admins')?.addEventListener('click', () => {
+      showScreen('admin-admins-screen');
+      loadAdmins();
+    });
+    $('admin-dashboard-nav-products')?.addEventListener('click', () => {
+      showScreen('admin-products-screen');
+      loadAdminProducts();
+    });
+    $('admin-dashboard-nav-orders')?.addEventListener('click', () => {
+      showScreen('admin-orders-screen');
+      loadAdminOrders();
+    });
+    $('admin-dashboard-nav-banners')?.addEventListener('click', () => {
+      showScreen('admin-banners-screen');
+      loadBanners();
+    });
+    $('admin-dashboard-nav-discounts')?.addEventListener('click', () => {
+      showScreen('admin-discounts-screen');
+      loadDiscounts();
+    });
+    $('admin-dashboard-nav-settings')?.addEventListener('click', () => {
+      showScreen('admin-settings-screen');
+      loadSettings();
+    });
+    $('admin-dashboard-nav-logout')?.addEventListener('click', handleLogout);
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && _currentScreen) {
         hideAllScreens();
@@ -698,7 +710,7 @@ const Admin = (() => {
     });
   }
 
-  // ─── Init ──────────────────────────────────────────────────────────
+  // ─── Init ──────────────────────────────────────────────────
   function init() {
     loadAdminSession();
     initNav();
@@ -706,6 +718,8 @@ const Admin = (() => {
     if (_adminToken && _admin) {
       showScreen('admin-dashboard-screen');
       loadDashboard();
+    } else {
+      openLogin();
     }
   }
 

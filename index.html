@@ -6830,26 +6830,37 @@
 
   <!-- Admin Login Screen -->
   <div class="admin-login-screen" id="admin-login-screen">
-    <div class="admin-login-title">Just Drugs Admin</div>
-    <div class="admin-login-subtitle">Sign in to manage your store</div>
-    <form class="admin-login-form" id="admin-login-form">
-      <div class="form-group">
-        <label for="admin-login-email">Email</label>
-        <input type="email" id="admin-login-email" placeholder="admin@justdrugs.com" required>
-      </div>
-      <div class="form-group">
-        <label for="admin-login-password">Password</label>
-        <input type="password" id="admin-login-password" placeholder="Enter password" required>
-      </div>
-      <button type="submit" class="btn btn-primary admin-login-btn" id="admin-login-btn">Sign In</button>
-    </form>
+    <div class="admin-login-card">
+      <div class="admin-login-title">Just Drugs Admin</div>
+      <div class="admin-login-subtitle">Sign in to manage your store</div>
+      <form class="admin-login-form" id="admin-login-form">
+        <div class="form-group">
+          <label for="admin-login-email">Email</label>
+          <input type="email" id="admin-login-email" placeholder="admin@justdrugs.com" required>
+        </div>
+        <div class="form-group">
+          <label for="admin-login-password">Password</label>
+          <input type="password" id="admin-login-password" placeholder="Enter password" required>
+        </div>
+        <button type="submit" class="btn btn-primary admin-login-btn" id="admin-login-btn">Sign In</button>
+      </form>
+    </div>
   </div>
 
   <!-- Admin Dashboard Screen -->
   <div class="admin-screen" id="admin-dashboard-screen">
     <div class="admin-screen-header">
-      <div class="admin-screen-title"><i data-feather="layout-dashboard"></i> Dashboard</div>
-      <button class="admin-back-btn" id="admin-dashboard-back"><i data-feather="arrow-left"></i> Shop</button>
+      <div class="admin-screen-title"><i data-feather="layout-dashboard"></i> Admin</div>
+      <div class="admin-nav" id="admin-dashboard-nav">
+        <button class="admin-nav-btn active" id="admin-dashboard-nav-dashboard">Dashboard</button>
+        <button class="admin-nav-btn" id="admin-dashboard-nav-admins">Admins</button>
+        <button class="admin-nav-btn" id="admin-dashboard-nav-products">Products</button>
+        <button class="admin-nav-btn" id="admin-dashboard-nav-orders">Orders</button>
+        <button class="admin-nav-btn" id="admin-dashboard-nav-banners">Banners</button>
+        <button class="admin-nav-btn" id="admin-dashboard-nav-discounts">Discounts</button>
+        <button class="admin-nav-btn" id="admin-dashboard-nav-settings">Settings</button>
+        <button class="admin-nav-btn" id="admin-dashboard-nav-logout" style="color:#ef4444;">Sign Out</button>
+      </div>
     </div>
     <div class="admin-stats">
       <div class="admin-stat-card">
@@ -7033,19 +7044,6 @@
       <button type="submit" class="btn btn-primary">Save Settings</button>
     </form>
   </div>
-
-  <!-- Admin Nav (floating) -->
-  <nav id="admin-nav" style="position:fixed;top:50%;left:16px;transform:translateY(-50%);flex-direction:column;gap:4px;z-index:9999;background:#fff;border:1px solid var(--c-border);border-radius:var(--r-lg);padding:8px;box-shadow:var(--shadow-xl);">
-    <button class="admin-nav-btn" id="admin-nav-dashboard" data-feather="layout-dashboard">Dashboard</button>
-    <button class="admin-nav-btn" id="admin-nav-admins" data-feather="users">Admins</button>
-    <button class="admin-nav-btn" id="admin-nav-products" data-feather="package">Products</button>
-    <button class="admin-nav-btn" id="admin-nav-orders" data-feather="shopping-bag">Orders</button>
-    <button class="admin-nav-btn" id="admin-nav-banners" data-feather="image">Banners</button>
-    <button class="admin-nav-btn" id="admin-nav-discounts" data-feather="tag">Discounts</button>
-    <button class="admin-nav-btn" id="admin-nav-settings" data-feather="settings">Settings</button>
-    <hr style="border:none;border-top:1px solid var(--c-border);margin:4px 0;">
-    <button class="admin-nav-btn" id="admin-nav-logout" data-feather="log-out" style="color:#ef4444;">Sign Out</button>
-  </nav>
 
   <script src="js/admin.js"></script>
 </body>

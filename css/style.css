@@ -1963,27 +1963,39 @@ textarea.form-control { resize: vertical; min-height: 80px; }
 /* Admin Login Screen */
 .admin-login-screen {
   display: none;
-  max-width: 420px;
-  margin: 80px auto;
-  padding: 32px;
-  background: #fff;
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-xl);
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(15,23,42,.6);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
 }
 
 .admin-login-screen.active {
-  display: block;
+  display: flex;
 }
 
-.admin-login-title {
+.admin-login-card {
+  max-width: 420px;
+  width: 100%;
+  background: #fff;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-xl);
+  padding: 32px;
+}
+
+.admin-login-card .admin-login-title {
   font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 800;
   text-align: center;
   margin-bottom: 4px;
+  color: var(--c-text);
 }
 
-.admin-login-subtitle {
+.admin-login-card .admin-login-subtitle {
   text-align: center;
   color: var(--c-text-3);
   font-size: 0.875rem;
@@ -2227,13 +2239,4 @@ textarea.form-control { resize: vertical; min-height: 80px; }
   font-size: 0.8125rem;
   outline: none;
   cursor: pointer;
-}
-
-/* Admin nav (sidebar) */
-#admin-nav {
-  display: none;
-}
-
-#admin-nav.open {
-  display: flex;
 }
