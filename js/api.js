@@ -157,3 +157,170 @@ const OrdersAPI = {
     return apiFetch(`/orders/track?query=${encodeURIComponent(query)}`);
   },
 };
+
+// ─── Admin ──────────────────────────────────────────────────────────────
+const AdminAPI = {
+  async login(email, password) {
+    const data = await apiFetch('/admin/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+    if (data.access_token) {
+      localStorage.setItem('jd_admin_token', data.access_token);
+      localStorage.setItem('jd_admin_refresh', data.refresh_token);
+    }
+    return data;
+  },
+
+  async refresh() {
+    const refreshToken = localStorage.getItem('jd_admin_refresh');
+    if (!refreshToken) return null;
+    const data = await apiFetch('/admin/auth/refresh', {
+      method: 'POST',
+      body: JSON.stringify({ refresh_token: refreshToken }),
+    });
+    if (data.access_token) {
+      localStorage.setItem('jd_admin_token', data.access_token);
+      localStorage.setItem('jd_admin_refresh', data.refresh_token);
+    }
+    return data;
+  },
+
+  logout() {
+    localStorage.removeItem('jd_admin_token');
+    localStorage.removeItem('jd_admin_refresh');
+  },
+
+  isLoggedIn() {
+    return !!localStorage.getItem('jd_admin_token');
+  },
+
+  async getProfile() {
+    return apiFetch('/admin/auth/me');
+  },
+
+  async createAdmin(payload) {
+    return apiFetch('/admin/admins', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async listAdmins(role, page, limit) {
+    const qs = new URLSearchParams();
+    if (role) qs.set('role', role);
+    qs.set('page', String(page));
+    qs.set('limit', String(limit));
+    return apiFetch(`/admin/admins?${qs}`);
+  },
+
+  async updateAdmin(adminId, payload) {
+    return apiFetch(`/admin/admins/${adminId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async deleteAdmin(adminId) {
+    return apiFetch(`/admin/admins/${adminId}`, {
+      method: 'DELETE',
+    });
+  },
+
+  async getProducts(params = {}) {
+    const qs = new URLSearchParams();
+    Object.entries(params).forEach(([k, v]) => {
+      if (v !== undefined && v !== null && v !== '') qs.set(k, v);
+    });
+    const query = qs.toString() ? `?${qs}` : '';
+    return apiFetch(`/admin/products${query}`);
+  },
+
+  async updateProduct(productId, payload) {
+    return apiFetch(`/admin/products/${productId}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async deleteProduct(productId) {
+    return apiFetch(`/admin/products/${productId}`, {
+      method: 'DELETE',
+    });
+  },
+
+  async getOrders(params = {}) {
+    const qs = new URLSearchParams();
+    Object.entries(params).forEach(([k, v]) => {
+      if (v !== undefined && v !== null && v !== '') qs.set(k, v);
+    });
+    const query = qs.toString() ? `?${qs}` : '';
+    return apiFetch(`/admin/orders${query}`);
+  },
+
+  async updateOrderStatus(orderNumber, status) {
+    return apiFetch(`/admin/orders/${orderNumber}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status }),
+    });
+  },
+
+  async getBanners() {
+    return apiFetch('/admin/banners');
+  },
+
+  async createBanner(payload) {
+    return apiFetch('/admin/banners', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async updateBanner(bannerId, payload) {
+    return apiFetch(`/admin/banners/${bannerId}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async deleteBanner(bannerId) {
+    return apiFetch(`/admin/banners/${bannerId}`, {
+      method: 'DELETE',
+    });
+  },
+
+  async getDiscounts() {
+    return apiFetch('/admin/discounts');
+  },
+
+  async createDiscount(payload) {
+    return apiFetch('/admin/discounts', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async updateDiscount(discountId, payload) {
+    return apiFetch(`/admin/discounts/${discountId}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  },
+
+  async deleteDiscount(discountId) {
+    return apiFetch(`/admin/discounts/${discountId}`, {
+      method: 'DELETE',
+    });
+  },
+
+  async getSettings() {
+    return apiFetch('/admin/settings');
+  },
+
+  async updateSettings(payload) {
+    return apiFetch('/admin/settings', {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    });
+  },
+};
