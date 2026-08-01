@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just Drugs — Inventory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <div id="app-shell"></div>
+  <div class="admin-overlay" id="admin-inventory-adjust-overlay" hidden>
+    <div class="admin-modal" style="max-width:480px">
+      <div class="admin-modal-header">
+        <h2 class="admin-modal-title">Adjust Stock</h2>
+        <button class="admin-modal-close" id="admin-inv-adj-close">${Icons.close}</button>
+      </div>
+      <form class="admin-form-panel" id="admin-inv-adj-form" style="border:none;padding:0;margin:0;max-width:none">
+        <input type="hidden" id="admin-inv-adj-id">
+        <div class="form-group">
+          <label for="admin-inv-adj-qty">Quantity Adjustment</label>
+          <input type="number" id="admin-inv-adj-qty" required placeholder="e.g. +50 or -10">
+        </div>
+        <div class="form-group">
+          <label for="admin-inv-adj-reason">Reason</label>
+          <select id="admin-inv-adj-reason">
+            <option value="restock">Restock</option>
+            <option value="damaged">Damaged</option>
+            <option value="returned">Customer Return</option>
+            <option value="adjustment">Manual Adjustment</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="admin-inv-adj-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Stock</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/admin-shared.js"></script>
+  <script src="js/admin-inventory.js"></script>
+</body>
+</html>

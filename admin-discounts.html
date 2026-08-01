@@ -4,57 +4,60 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Just Drugs — Discounts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
-  <header class="admin-header">
-    <div class="admin-header-title">Just Drugs Admin</div>
-    <div style="display:flex;gap:8px;">
-      <a class="btn btn-secondary" href="admin-dashboard.html">Back</a>
-      <button class="btn btn-secondary" id="admin-logout-btn">Sign Out</button>
-    </div>
-  </header>
-  <main class="admin-main">
-    <div class="admin-toolbar">
-      <h1 class="admin-page-title">Discounts & Coupons</h1>
-      <button class="btn btn-primary" id="admin-create-discount-btn">+ New Discount</button>
-    </div>
-    <div class="admin-table-wrap">
-      <table class="admin-table">
-        <thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Status</th><th>Actions</th></tr></thead>
-        <tbody id="admin-discount-list-tbody"></tbody>
-      </table>
-    </div>
-  </main>
+  <div id="app-shell"></div>
   <div class="admin-overlay" id="admin-discount-overlay" hidden>
-    <form class="admin-form" id="admin-discount-form">
-      <h2 id="admin-discount-form-title">Edit Discount</h2>
-      <input type="hidden" id="admin-discount-id">
-      <div class="form-group">
-        <label for="admin-discount-code">Code</label>
-        <input type="text" id="admin-discount-code" required>
+    <div class="admin-modal" style="max-width:600px">
+      <div class="admin-modal-header">
+        <h2 class="admin-modal-title" id="admin-discount-form-title">Edit Discount</h2>
+        <button class="admin-modal-close" id="admin-discount-modal-close">${Icons.close}</button>
       </div>
-      <div class="form-group">
-        <label for="admin-discount-type">Type</label>
-        <select id="admin-discount-type" required>
-          <option value="percentage">Percentage</option>
-          <option value="fixed_amount">Fixed Amount</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="admin-discount-value">Value</label>
-        <input type="number" id="admin-discount-value" min="0" step="1" required>
-      </div>
-      <div class="form-group">
-        <label><input type="checkbox" id="admin-discount-active" checked> Active</label>
-      </div>
-      <div class="form-actions">
-        <button type="button" class="btn btn-secondary" id="admin-discount-cancel">Cancel</button>
-        <button type="submit" class="btn btn-primary" id="admin-discount-form-btn">Save</button>
-      </div>
-    </form>
+      <form class="admin-form-panel" id="admin-disc-form" style="border:none;padding:0;margin:0;max-width:none">
+        <input type="hidden" id="admin-disc-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="admin-disc-name">Discount Name *</label>
+            <input type="text" id="admin-disc-name" required placeholder="e.g. Summer Sale">
+          </div>
+          <div class="form-group">
+            <label for="admin-disc-type">Type</label>
+            <select id="admin-disc-type"><option value="percentage">Percentage</option><option value="fixed">Fixed Amount</option></select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="admin-disc-value">Value *</label>
+            <input type="number" id="admin-disc-value" min="0" step="1" required placeholder="e.g. 25">
+          </div>
+          <div class="form-group">
+            <label for="admin-disc-code">Coupon Code</label>
+            <input type="text" id="admin-disc-code" placeholder="e.g. SUMMER25">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="admin-disc-min">Minimum Purchase (₦)</label>
+            <input type="number" id="admin-disc-min" min="0" step="1" value="0">
+          </div>
+          <div class="form-group">
+            <label for="admin-disc-max">Max Discount (₦)</label>
+            <input type="number" id="admin-disc-max" min="0" step="1" value="0">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="admin-discount-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Discount</button>
+        </div>
+      </form>
+    </div>
   </div>
+
   <script src="js/admin-shared.js"></script>
   <script src="js/admin-discounts.js"></script>
 </body>

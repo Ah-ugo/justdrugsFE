@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just Drugs — Brands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <div id="app-shell"></div>
+  <div class="admin-overlay" id="admin-brand-overlay" hidden>
+    <div class="admin-modal" style="max-width:520px">
+      <div class="admin-modal-header">
+        <h2 class="admin-modal-title" id="admin-brand-form-title">Edit Brand</h2>
+        <button class="admin-modal-close" id="admin-brand-modal-close">${Icons.close}</button>
+      </div>
+      <form class="admin-form-panel" id="admin-brand-form" style="border:none;padding:0;margin:0;max-width:none">
+        <input type="hidden" id="admin-brand-id">
+        <div class="form-group">
+          <label for="admin-brand-name">Brand Name *</label>
+          <input type="text" id="admin-brand-name" required placeholder="e.g. HealthPlus">
+        </div>
+        <div class="form-group">
+          <label for="admin-brand-desc">Description</label>
+          <textarea id="admin-brand-desc" rows="2" placeholder="Brief description..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="admin-brand-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Brand</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/admin-shared.js"></script>
+  <script src="js/admin-brands.js"></script>
+</body>
+</html>

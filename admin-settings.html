@@ -4,53 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Just Drugs — Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
-  <header class="admin-header">
-    <div class="admin-header-title">Just Drugs Admin</div>
-    <div style="display:flex;gap:8px;">
-      <a class="btn btn-secondary" href="admin-dashboard.html">Back</a>
-      <button class="btn btn-secondary" id="admin-logout-btn">Sign Out</button>
-    </div>
-  </header>
-  <main class="admin-main">
-    <h1 class="admin-page-title">Settings</h1>
-    <form class="admin-form" id="admin-settings-form">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="setting-currency-symbol">Currency Symbol</label>
-          <input type="text" id="setting-currency-symbol">
-        </div>
-        <div class="form-group">
-          <label for="setting-currency-code">Currency Code</label>
-          <input type="text" id="setting-currency-code">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="setting-tax-rate">Tax Rate (%)</label>
-          <input type="number" id="setting-tax-rate" min="0" step="0.1">
-        </div>
-        <div class="form-group">
-          <label for="setting-delivery-fee">Default Delivery Fee</label>
-          <input type="number" id="setting-delivery-fee" min="0" step="1">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="setting-free-delivery-threshold">Free Delivery Threshold</label>
-        <input type="number" id="setting-free-delivery-threshold" min="0" step="1">
-      </div>
-      <div class="form-group">
-        <label><input type="checkbox" id="setting-maintenance-mode"> Maintenance Mode</label>
-      </div>
-      <div class="form-group">
-        <label><input type="checkbox" id="setting-enable-prescriptions" checked> Enable Prescriptions</label>
-      </div>
-      <button type="submit" class="btn btn-primary">Save Settings</button>
-    </form>
-  </main>
+  <div id="app-shell"></div>
   <script src="js/admin-shared.js"></script>
   <script src="js/admin-settings.js"></script>
 </body>
