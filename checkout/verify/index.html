@@ -518,14 +518,14 @@
   </main>
 
   <footer class="site-footer">
-    <p>Secured by <strong>Paystack</strong> · <a href="http://localhost:3000">← Back to Just Drugs</a></p>
+    <p>Secured by <strong>Paystack</strong> · <a href="/">← Back to Just Drugs</a></p>
   </footer>
 
   <script>
     (function () {
       'use strict';
 
-      const API_BASE = 'http://127.0.0.1:8000/api/v1';
+      const API_BASE = 'https://justdrugsbe.onrender.com/api/v1';
       const card = document.getElementById('verify-card');
 
       function esc(s) {
@@ -565,7 +565,7 @@
           <p class="sub">${esc(message || 'We could not confirm this transaction. If you were charged, please contact support with your reference.')}</p>
           ${reference ? `<div class="ref-pill"><i data-feather="hash"></i><span>${esc(reference)}</span></div>` : ''}
           <div class="actions">
-            <a class="btn btn-primary" href="http://localhost:3000"><i data-feather="arrow-left"></i> Continue Shopping</a>
+            <a class="btn btn-primary" href="/"><i data-feather="arrow-left"></i> Continue Shopping</a>
             <button class="btn btn-outline" id="retry-btn"><i data-feather="refresh-cw"></i> Retry</button>
           </div>`;
         if (window.feather) feather.replace();
@@ -579,7 +579,7 @@
           <p class="sub">${esc(message || 'The transaction did not go through. You have not been charged. Please try again.')}</p>
           ${reference ? `<div class="ref-pill"><i data-feather="hash"></i><span>${esc(reference)}</span></div>` : ''}
           <div class="actions">
-            <a class="btn btn-primary" href="http://localhost:3000"><i data-feather="arrow-left"></i> Continue Shopping</a>
+            <a class="btn btn-primary" href="/"><i data-feather="arrow-left"></i> Continue Shopping</a>
           </div>`;
         if (window.feather) feather.replace();
       }
@@ -645,22 +645,22 @@
           <div class="actions">
             <button class="btn btn-primary" id="track-order-btn"><i data-feather="map-pin"></i> Track Order</button>
             <a class="btn btn-outline" id="receipt-btn" target="_blank" rel="noopener"><i data-feather="file-text"></i> Download Receipt</a>
-            <a class="btn btn-outline" href="http://localhost:3000"><i data-feather="arrow-left"></i> Continue Shopping</a>
+            <a class="btn btn-outline" href="/"><i data-feather="arrow-left"></i> Continue Shopping</a>
           </div>`;
 
         if (window.feather) feather.replace();
 
         document.getElementById('track-order-btn').addEventListener('click', () => {
           if (order.order_number) {
-            window.location.href = `http://localhost:3000/?track=${encodeURIComponent(order.order_number)}`;
+            window.location.href = `/?track=${encodeURIComponent(order.order_number)}`;
           } else {
-            window.location.href = 'http://localhost:3000';
+            window.location.href = '/';
           }
         });
 
         const receiptBtn = document.getElementById('receipt-btn');
         if (receiptBtn && order.order_number) {
-          receiptBtn.href = `http://127.0.0.1:8000/api/v1/orders/${encodeURIComponent(order.order_number)}/invoice.pdf`;
+          receiptBtn.href = `${API_BASE}/orders/${encodeURIComponent(order.order_number)}/invoice.pdf`;
         }
       }
 
