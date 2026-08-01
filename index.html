@@ -4418,9 +4418,9 @@
     <button class="modal-close" id="rx-close" aria-label="Close"><i data-feather="x"></i></button>
     <div class="cm-icon"><i data-feather="file-text"></i></div>
     <h2>Upload Your Prescription</h2>
-    <p>Our licensed pharmacists will review it and prepare your order within 30 minutes.</p>
-    <div class="form-group"><label for="rx-phone">Phone Number <small>(for guest orders)</small></label><input type="tel" id="rx-phone" class="form-control" placeholder="08012345678"></div>
-    <div class="form-group"><label for="rx-notes">Notes for the pharmacist <small>(optional)</small></label><textarea id="rx-notes" class="form-control" rows="2" placeholder="e.g. dosage, special instructions..."></textarea></div>
+     <p>We'll automatically find matching medicines from your prescription and add them to your cart.</p>
+     <div class="form-group"><label for="rx-phone">Phone Number <small>(for guest orders)</small></label><input type="tel" id="rx-phone" class="form-control" placeholder="08012345678"></div>
+     <div class="form-group"><label for="rx-notes">Notes <small>(optional)</small></label><textarea id="rx-notes" class="form-control" rows="2" placeholder="e.g. dosage, special instructions..."></textarea></div>
     <div class="upload-zone" id="rx-upload-zone" tabindex="0">
       <i data-feather="upload-cloud"></i>
       <p><strong>Click to upload</strong> or drag &amp; drop</p>
@@ -6592,13 +6592,14 @@
               if (data.data && data.data._id) {
                 uploadedPrescriptionId = data.data._id;
               }
-              let msg = 'Prescription submitted! Our pharmacist will review it shortly.';
               const matched = data.data && data.data.matched_products;
               if (matched && matched.length) {
-                showToast('Prescription submitted! Matched ' + matched.length + ' product(s): ' + matched.join(', ') + '. A pharmacist will review shortly.', 'success', 7000);
+                showToast('Prescription submitted! ' + matched.length + ' matching product(s) added to your cart: ' + matched.join(', ') + '.', 'success', 7000);
               } else {
-                showToast(msg, 'success', 6000);
+                showToast('Prescription submitted successfully! No matching products found in your prescription.', 'success', 6000);
               }
+              await fetchCart();
+              renderCart();
               resetRxModal();
               closeModal('rx-modal', 'rx-overlay');
             } else {

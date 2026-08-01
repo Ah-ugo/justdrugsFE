@@ -839,7 +839,7 @@ function initModals() {
 
   document.getElementById('rx-form')?.addEventListener('submit', (e) => {
     e.preventDefault();
-    showToast('Prescription submitted! Our pharmacist will contact you within 30 minutes.', 'success', 6000);
+    showToast('Prescription submitted! Matching products have been added to your cart.', 'success', 6000);
     closePrescriptionModal();
   });
 
