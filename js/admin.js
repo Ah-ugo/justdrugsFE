@@ -65,13 +65,13 @@ const Admin = (() => {
         if (v !== undefined && v !== null && v !== '') qs.set(k, v);
       });
       const query = qs.toString() ? `?${qs}` : '';
-      return apiFetch(`/admin/products${query}`);
+      return apiFetch(`/products${query}`);
     },
     async updateProduct(productId, payload) {
-      return apiFetch(`/admin/products/${productId}`, { method: 'PUT', body: JSON.stringify(payload) });
+      return apiFetch(`/products/${productId}`, { method: 'PUT', body: JSON.stringify(payload) });
     },
     async deleteProduct(productId) {
-      return apiFetch(`/admin/products/${productId}`, { method: 'DELETE' });
+      return apiFetch(`/products/${productId}`, { method: 'DELETE' });
     },
     async getOrders(params = {}) {
       const qs = new URLSearchParams();
@@ -79,40 +79,40 @@ const Admin = (() => {
         if (v !== undefined && v !== null && v !== '') qs.set(k, v);
       });
       const query = qs.toString() ? `?${qs}` : '';
-      return apiFetch(`/admin/orders${query}`);
+      return apiFetch(`/orders${query}`);
     },
     async updateOrderStatus(orderNumber, status) {
-      return apiFetch(`/admin/orders/${orderNumber}/status`, { method: 'PUT', body: JSON.stringify({ status }) });
+      return apiFetch(`/orders/${orderNumber}/status`, { method: 'PUT', body: JSON.stringify({ status }) });
     },
     async getBanners() {
-      return apiFetch('/admin/banners');
+      return apiFetch('/banners');
     },
     async createBanner(payload) {
-      return apiFetch('/admin/banners', { method: 'POST', body: JSON.stringify(payload) });
+      return apiFetch('/banners', { method: 'POST', body: JSON.stringify(payload) });
     },
     async updateBanner(bannerId, payload) {
-      return apiFetch(`/admin/banners/${bannerId}`, { method: 'PUT', body: JSON.stringify(payload) });
+      return apiFetch(`/banners/${bannerId}`, { method: 'PUT', body: JSON.stringify(payload) });
     },
     async deleteBanner(bannerId) {
-      return apiFetch(`/admin/banners/${bannerId}`, { method: 'DELETE' });
+      return apiFetch(`/banners/${bannerId}`, { method: 'DELETE' });
     },
     async getDiscounts() {
-      return apiFetch('/admin/discounts');
+      return apiFetch('/discounts');
     },
     async createDiscount(payload) {
-      return apiFetch('/admin/discounts', { method: 'POST', body: JSON.stringify(payload) });
+      return apiFetch('/discounts', { method: 'POST', body: JSON.stringify(payload) });
     },
     async updateDiscount(discountId, payload) {
-      return apiFetch(`/admin/discounts/${discountId}`, { method: 'PUT', body: JSON.stringify(payload) });
+      return apiFetch(`/discounts/${discountId}`, { method: 'PUT', body: JSON.stringify(payload) });
     },
     async deleteDiscount(discountId) {
-      return apiFetch(`/admin/discounts/${discountId}`, { method: 'DELETE' });
+      return apiFetch(`/discounts/${discountId}`, { method: 'DELETE' });
     },
     async getSettings() {
-      return apiFetch('/admin/settings');
+      return apiFetch('/settings');
     },
     async updateSettings(payload) {
-      return apiFetch('/admin/settings', { method: 'PUT', body: JSON.stringify(payload) });
+      return apiFetch('/settings', { method: 'PUT', body: JSON.stringify(payload) });
     },
   };
 
@@ -233,14 +233,15 @@ const Admin = (() => {
     }
     setLoading('admin-login-btn', true);
     try {
-        const loginRes = await AdminAPI.login(email, password);
-        const accessToken = loginRes.data.access_token;
-        saveAdminSession(null, accessToken);
-        const profile = await AdminAPI.getProfile();
-        saveAdminSession(profile.data, accessToken);
-        showToast('Welcome, ' + (profile.data.full_name || 'Admin'), 'success');
-        showScreen('admin-dashboard-screen');
-        loadDashboard();
+      const loginRes = await AdminAPI.login(email, password);
+      const accessToken = loginRes.data.access_token;
+      saveAdminSession(null, accessToken);
+      const profile = await AdminAPI.getProfile();
+      saveAdminSession(profile.data, accessToken);
+      showToast('Welcome, ' + (profile.data.full_name || 'Admin'), 'success');
+      closeLogin();
+      showScreen('admin-dashboard-screen');
+      loadDashboard();
     } catch (err) {
       showToast(err.message || 'Login failed', 'error');
     } finally {
