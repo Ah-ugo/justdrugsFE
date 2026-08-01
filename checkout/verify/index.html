@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Verification — Just Drugs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@600;700;800&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <style>
+    :root {
+      --c-ink: #0E1512;
+      --c-ink-2: #17211C;
+      --c-lime: #C6F135;
+      --c-lime-dark: #a8d61e;
+      --c-coral: #FF5A36;
+      --c-bg: #F6F4EC;
+      --c-bg-alt: #EFEDE3;
+      --c-surface: #ffffff;
+      --c-border: #E7E3D4;
+      --c-border-strong: #dbd6c2;
+      --c-text: #14201A;
+      --c-text-2: #4A554C;
+      --c-text-3: #7C8579;
+      --c-text-4: #A7AE9F;
+      --c-danger: #E8483A;
+      --c-warning: #C9820B;
+      --c-success: #1E9E5A;
+      --font-display: 'Sora', 'Manrope', sans-serif;
+      --font: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      --r-sm: 10px;
+      --r-md: 14px;
+      --r-lg: 20px;
+      --r-xl: 28px;
+      --r-full: 9999px;
+      --shadow-md: 0 6px 16px -4px rgba(14, 21, 18, .12), 0 2px 6px -2px rgba(14, 21, 18, .06);
+      --shadow-lg: 0 20px 40px -10px rgba(14, 21, 18, .18), 0 6px 14px -6px rgba(14, 21, 18, .08);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--c-text);
+      background: var(--c-bg);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      background: none;
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 2.5px solid var(--c-lime-dark);
+      outline-offset: 2px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px 20px;
+      border-radius: var(--r-full);
+      font-size: .8125rem;
+      font-weight: 800;
+      transition: all .18s cubic-bezier(.4, 0, .2, 1);
+      border: 1.5px solid transparent;
+      white-space: nowrap;
+      letter-spacing: -.01em;
+    }
+
+    .btn svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    .btn-primary {
+      background: var(--c-ink);
+      color: var(--c-lime);
+    }
+
+    .btn-primary:hover {
+      background: #000;
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--c-ink);
+      border-color: var(--c-ink);
+    }
+
+    .btn-outline:hover {
+      background: var(--c-bg-alt);
+    }
+
+    .btn-ghost {
+      color: var(--c-text-2);
+      border-radius: var(--c-md);
+    }
+
+    .btn-ghost:hover {
+      background: var(--c-bg-alt);
+      color: var(--c-text);
+    }
+
+    .site-header {
+      background: var(--c-ink);
+      color: #fff;
+    }
+
+    .header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 16px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-icon svg {
+      display: block;
+      border-radius: 10px;
+    }
+
+    .logo-name {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: #fff;
+    }
+
+    .logo-accent {
+      color: var(--c-lime);
+    }
+
+    .logo-tagline {
+      font-size: .625rem;
+      color: rgba(255, 255, 255, .55);
+      font-weight: 700;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 16px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 540px;
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 32px;
+      text-align: center;
+    }
+
+    .status-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .status-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .status-icon.success {
+      background: rgba(30, 158, 90, .12);
+      color: var(--c-success);
+    }
+
+    .status-icon.failed {
+      background: rgba(232, 72, 58, .12);
+      color: var(--c-danger);
+    }
+
+    .status-icon.pending {
+      background: rgba(201, 130, 11, .12);
+      color: var(--c-warning);
+    }
+
+    .status-icon.loading {
+      background: var(--c-bg-alt);
+      color: var(--c-text-3);
+    }
+
+    .card h1 {
+      font-family: var(--font-display);
+      font-size: 1.375rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 6px;
+    }
+
+    .card .sub {
+      font-size: .8125rem;
+      color: var(--c-text-3);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    .card .sub strong {
+      color: var(--c-text);
+    }
+
+    .ref-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--c-bg);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-full);
+      padding: 6px 14px;
+      font-size: .6875rem;
+      font-weight: 700;
+      color: var(--c-text-2);
+      margin-bottom: 20px;
+      max-width: 100%;
+    }
+
+    .ref-pill svg {
+      width: 12px;
+      height: 12px;
+      color: var(--c-text-4);
+      flex-shrink: 0;
+    }
+
+    .ref-pill span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .order-box {
+      text-align: left;
+      background: var(--c-bg);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-lg);
+      padding: 18px;
+      margin-bottom: 22px;
+    }
+
+    .order-box .ob-label {
+      font-size: .625rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--c-text-4);
+      margin-bottom: 10px;
+    }
+
+    .order-number-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .order-number {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--c-ink);
+    }
+
+    .status-badge {
+      font-size: .625rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      padding: 4px 10px;
+      border-radius: var(--r-full);
+      background: rgba(30, 158, 90, .12);
+      color: var(--c-success);
+    }
+
+    .status-badge.failed {
+      background: rgba(232, 72, 58, .12);
+      color: var(--c-danger);
+    }
+
+    .status-badge.pending {
+      background: rgba(201, 130, 11, .12);
+      color: var(--c-warning);
+    }
+
+    .order-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .order-meta .om-item {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      padding: 10px 12px;
+    }
+
+    .order-meta .om-label {
+      font-size: .5625rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--c-text-4);
+      margin-bottom: 2px;
+    }
+
+    .order-meta .om-value {
+      font-size: .8125rem;
+      font-weight: 800;
+      color: var(--c-text);
+    }
+
+    .items-list {
+      margin-top: 14px;
+      border-top: 1px dashed var(--c-border-strong);
+      padding-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+
+    .items-list .item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: .75rem;
+    }
+
+    .items-list .item-name {
+      font-weight: 700;
+      color: var(--c-text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .items-list .item-qty {
+      font-size: .6875rem;
+      color: var(--c-text-4);
+      font-weight: 700;
+      margin-left: 6px;
+    }
+
+    .items-list .item-total {
+      font-weight: 800;
+      color: var(--c-text-2);
+      white-space: nowrap;
+    }
+
+    .total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 2px solid var(--c-ink);
+    }
+
+    .total-row .t-label {
+      font-size: .75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--c-text-3);
+    }
+
+    .total-row .t-value {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--c-ink);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .actions .btn {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 4px solid var(--c-border);
+      border-top-color: var(--c-ink);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .site-footer {
+      text-align: center;
+      padding: 20px 16px;
+      font-size: .6875rem;
+      color: var(--c-text-4);
+      font-weight: 600;
+    }
+
+    .site-footer a {
+      color: var(--c-text-2);
+      font-weight: 800;
+    }
+
+    @media(max-width:480px) {
+      .main {
+        padding: 24px 10px;
+      }
+      .card {
+        padding: 24px 18px;
+      }
+      .order-meta {
+        grid-template-columns: 1fr;
+      }
+      .actions {
+        flex-direction: column;
+      }
+      .actions .btn {
+        min-width: 100%;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      * {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo" aria-label="Just Drugs — Home">
+        <div class="logo-icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="9" fill="#C6F135" />
+            <path d="M8 16h16M16 8v16" stroke="#0E1512" stroke-width="3.5" stroke-linecap="round" />
+          </svg></div>
+        <div>
+          <span class="logo-name">Just<span class="logo-accent">Drugs</span></span>
+          <div class="logo-tagline">Your Health, Delivered</div>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="card" id="verify-card">
+      <div class="status-icon loading"><i data-feather="loader"></i></div>
+      <h1>Verifying payment…</h1>
+      <p class="sub">Please wait while we confirm your transaction with the payment gateway.</p>
+      <div class="spinner" aria-hidden="true"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Secured by <strong>Paystack</strong> · <a href="http://localhost:3000">← Back to Just Drugs</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const API_BASE = 'http://127.0.0.1:8000/api/v1';
+      const card = document.getElementById('verify-card');
+
+      function esc(s) {
+        return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '<').replace(/>/g, '>').replace(/"/g, '"');
+      }
+
+      function fmtN(v) {
+        return '₦' + Number(v || 0).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function fmtMoney(v) {
+        return '₦' + Number(v || 0).toLocaleString('en-NG');
+      }
+
+      function titleCase(s) {
+        return String(s || '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      }
+
+      function getParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+          reference: params.get('reference') || params.get('trxref') || '',
+          trxref: params.get('trxref') || '',
+        };
+      }
+
+      function statusBadge(status) {
+        const cls = status === 'paid' || status === 'success' || status === 'delivered' ? '' :
+          (status === 'failed' || status === 'cancelled' ? 'failed' : 'pending');
+        return `<span class="status-badge ${cls}">${esc(titleCase(status || 'pending'))}</span>`;
+      }
+
+      function renderError(message, reference) {
+        card.innerHTML = `
+          <div class="status-icon failed"><i data-feather="x-circle"></i></div>
+          <h1>Payment could not be verified</h1>
+          <p class="sub">${esc(message || 'We could not confirm this transaction. If you were charged, please contact support with your reference.')}</p>
+          ${reference ? `<div class="ref-pill"><i data-feather="hash"></i><span>${esc(reference)}</span></div>` : ''}
+          <div class="actions">
+            <a class="btn btn-primary" href="http://localhost:3000"><i data-feather="arrow-left"></i> Continue Shopping</a>
+            <button class="btn btn-outline" id="retry-btn"><i data-feather="refresh-cw"></i> Retry</button>
+          </div>`;
+        if (window.feather) feather.replace();
+        document.getElementById('retry-btn').addEventListener('click', () => window.location.reload());
+      }
+
+      function renderFailed(message, reference) {
+        card.innerHTML = `
+          <div class="status-icon failed"><i data-feather="alert-circle"></i></div>
+          <h1>Payment was not completed</h1>
+          <p class="sub">${esc(message || 'The transaction did not go through. You have not been charged. Please try again.')}</p>
+          ${reference ? `<div class="ref-pill"><i data-feather="hash"></i><span>${esc(reference)}</span></div>` : ''}
+          <div class="actions">
+            <a class="btn btn-primary" href="http://localhost:3000"><i data-feather="arrow-left"></i> Continue Shopping</a>
+          </div>`;
+        if (window.feather) feather.replace();
+      }
+
+      function renderSuccess(data) {
+        const payment = data.payment || {};
+        const order = data.order || {};
+        const items = order.items || [];
+        const total = order.total_amount ?? payment.amount ?? 0;
+        const paidAt = payment.paid_at ? new Date(payment.paid_at).toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+
+        const itemsHtml = items.length ? `
+          <div class="items-list">
+            ${items.map(it => `
+              <div class="item-row">
+                <span class="item-name">${esc(it.product_name || 'Item')}<span class="item-qty">× ${it.quantity}</span></span>
+                <span class="item-total">${fmtN(it.total_price || (it.unit_price * it.quantity))}</span>
+              </div>`).join('')}
+          </div>` : '';
+
+        const metaHtml = `
+          <div class="order-meta">
+            ${order.order_number ? `
+              <div class="om-item">
+                <div class="om-label">Order Number</div>
+                <div class="om-value">${esc(order.order_number)}</div>
+              </div>` : ''}
+            ${order.payment_status ? `
+              <div class="om-item">
+                <div class="om-label">Payment</div>
+                <div class="om-value">${statusBadge(order.payment_status)}</div>
+              </div>` : ''}
+            ${order.status ? `
+              <div class="om-item">
+                <div class="om-label">Order Status</div>
+                <div class="om-value">${statusBadge(order.status)}</div>
+              </div>` : ''}
+            ${paidAt ? `
+              <div class="om-item">
+                <div class="om-label">Paid At</div>
+                <div class="om-value" style="font-size:.6875rem;">${esc(paidAt)}</div>
+              </div>` : ''}
+          </div>`;
+
+        card.innerHTML = `
+          <div class="status-icon success"><i data-feather="check-circle"></i></div>
+          <h1>Payment Successful 🎉</h1>
+          <p class="sub">Thank you for shopping with <strong>Just Drugs</strong>. Your order has been received and is being prepared.</p>
+          <div class="ref-pill"><i data-feather="hash"></i><span>${esc(payment.reference || getParams().reference)}</span></div>
+          <div class="order-box">
+            <div class="ob-label">Order Summary</div>
+            <div class="order-number-row">
+              <span class="order-number">${esc(order.order_number || 'Order confirmed')}</span>
+              ${order.payment_status ? statusBadge(order.payment_status) : ''}
+            </div>
+            ${metaHtml}
+            ${itemsHtml}
+            <div class="total-row">
+              <span class="t-label">Total Paid</span>
+              <span class="t-value">${fmtN(total)}</span>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-primary" id="track-order-btn"><i data-feather="map-pin"></i> Track Order</button>
+            <a class="btn btn-outline" id="receipt-btn" target="_blank" rel="noopener"><i data-feather="file-text"></i> Download Receipt</a>
+            <a class="btn btn-outline" href="http://localhost:3000"><i data-feather="arrow-left"></i> Continue Shopping</a>
+          </div>`;
+
+        if (window.feather) feather.replace();
+
+        document.getElementById('track-order-btn').addEventListener('click', () => {
+          if (order.order_number) {
+            window.location.href = `http://localhost:3000/?track=${encodeURIComponent(order.order_number)}`;
+          } else {
+            window.location.href = 'http://localhost:3000';
+          }
+        });
+
+        const receiptBtn = document.getElementById('receipt-btn');
+        if (receiptBtn && order.order_number) {
+          receiptBtn.href = `http://127.0.0.1:8000/api/v1/orders/${encodeURIComponent(order.order_number)}/invoice.pdf`;
+        }
+      }
+
+      async function verify() {
+        const { reference } = getParams();
+
+        if (!reference) {
+          renderError('Missing payment reference. Please return to the checkout page and try again.', '');
+          return;
+        }
+
+        try {
+          const res = await fetch(`${API_BASE}/payments/verify/${encodeURIComponent(reference)}`);
+          const body = await res.json().catch(() => ({}));
+
+          if (!res.ok) {
+            // Payment reference not found → treat as cannot-verify (not necessarily a failure)
+            renderError(body.message || body.detail || 'Verification failed. Please contact support.', reference);
+            return;
+          }
+
+          const data = body.data || {};
+          if (data.status === 'success') {
+            renderSuccess(data);
+          } else if (data.status === 'failed') {
+            renderFailed(data.message || 'The transaction did not go through.', reference);
+          } else {
+            renderError(data.message || 'Payment status is unknown. Please contact support.', reference);
+          }
+        } catch (err) {
+          renderError('Could not reach the payment verification service. Is the server running?', reference);
+          console.error('Verify error:', err);
+        }
+      }
+
+      if (window.feather) feather.replace();
+      verify();
+    })();
+  </script>
+</body>
+
+</html>
+
