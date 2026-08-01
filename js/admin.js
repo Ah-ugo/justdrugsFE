@@ -233,12 +233,14 @@ const Admin = (() => {
     }
     setLoading('admin-login-btn', true);
     try {
-      const data = await AdminAPI.login(email, password);
-      const profile = await AdminAPI.getProfile();
-      saveAdminSession(profile.data, data.access_token);
-      showToast('Welcome, ' + (profile.data.full_name || 'Admin'), 'success');
-      showScreen('admin-dashboard-screen');
-      loadDashboard();
+        const loginRes = await AdminAPI.login(email, password);
+        const accessToken = loginRes.data.access_token;
+        saveAdminSession(null, accessToken);
+        const profile = await AdminAPI.getProfile();
+        saveAdminSession(profile.data, accessToken);
+        showToast('Welcome, ' + (profile.data.full_name || 'Admin'), 'success');
+        showScreen('admin-dashboard-screen');
+        loadDashboard();
     } catch (err) {
       showToast(err.message || 'Login failed', 'error');
     } finally {
