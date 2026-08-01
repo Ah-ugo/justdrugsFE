@@ -672,6 +672,9 @@ const Admin = (() => {
     $('admin-discounts-back')?.addEventListener('click', () => hideAllScreens());
     $('admin-settings-back')?.addEventListener('click', () => hideAllScreens());
 
+    // Admin button in header nav
+    $('nav-admin-btn')?.addEventListener('click', openLogin);
+
     // Admin screen internal nav (dashboard header nav)
     $('admin-dashboard-nav-dashboard')?.addEventListener('click', () => {
       showScreen('admin-dashboard-screen');
