@@ -3,16 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Reports</title>
+  <title>Reports — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="reports">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Reports</h1>
+        <p class="page-subtitle">Generate and export detailed business reports.</p>
+      </div>
+      <div class="page-actions">
+        <div class="segmented" id="report-period">
+          <button class="active" data-period="this_month">This Month</button>
+          <button data-period="last_month">Last Month</button>
+          <button data-period="quarter">Quarter</button>
+          <button data-period="year">Year</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-4 mb-24">
+      <div class="card summary-card"><div class="summary-card-label">Reports Generated</div><div class="summary-card-value">24</div><div class="summary-card-foot">This month</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Scheduled Exports</div><div class="summary-card-value">3</div><div class="summary-card-foot">Weekly digest</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Last Export</div><div class="summary-card-value" style="font-size:20px">2h ago</div><div class="summary-card-foot">Sales report · CSV</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Data Freshness</div><div class="summary-card-value" style="font-size:20px">Live</div><div class="summary-card-foot">Real-time sync</div></div>
+    </div>
+
+    <div class="card mb-16">
+      <div class="card-head">
+        <div>
+          <h3 class="card-title">Report Library</h3>
+          <p class="card-subtitle">Choose a report type and export format</p>
+        </div>
+        <button class="btn btn-xs btn-ghost" id="rep-schedule-btn">Manage schedules</button>
+      </div>
+      <div class="card-body" id="reports-grid">
+        <!-- report cards injected -->
+      </div>
+    </div>
+
+    <div class="grid grid-2 mb-24">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Recent Exports</h3>
+            <p class="card-subtitle">Latest generated reports</p>
+          </div>
+        </div>
+        <div class="card-body" id="recent-exports-list">
+          <!-- recent exports injected -->
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Export Health</h3>
+            <p class="card-subtitle">Delivery status of scheduled reports</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="stat-row">
+            <div style="flex:1"><div class="stat-label" style="font-weight:650">Success rate</div><div class="text-sm text-3">Last 30 days</div></div>
+            <div style="text-align:right"><div class="stat-value" style="color:var(--success-600)">98.2%</div></div>
+          </div>
+          <div class="progress brand" style="margin-top:10px"><div style="width:98.2%"></div></div>
+          <div class="stat-row" style="margin-top:16px">
+            <div style="flex:1"><div class="stat-label" style="font-weight:650">Total exports</div><div class="text-sm text-3">All formats</div></div>
+            <div style="text-align:right"><div class="stat-value">1,342</div></div>
+          </div>
+          <div class="stat-row" style="margin-top:16px">
+            <div style="flex:1"><div class="stat-label" style="font-weight:650">CSV downloads</div><div class="text-sm text-3">Most popular format</div></div>
+            <div style="text-align:right"><div class="stat-value">842</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/admin-shared.js"></script>
   <script src="js/admin-reports.js"></script>
 </body>
 </html>
+

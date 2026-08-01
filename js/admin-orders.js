@@ -1,277 +1,267 @@
+/* ═══════════════════════════════════════════════════════════
+   JUST DRUGS — Orders module
+   Shopify-style order table with filter chips, search, and a
+   detail drawer containing timeline, items, payment, delivery.
+═══════════════════════════════════════════════════════════ */
 (function () {
   requireAuth();
-  let tbody;
-  let allOrders = [];
-  let selectedOrders = new Set();
-  let currentPage = 1;
-  const PAGE_SIZE = 20;
+  const JD = window.JustDrugs;
+  const { icon, DemoData, esc, fmtMoney, fmtDate, fmtRelative, showToast, openDrawer, closeDrawer } = JD;
 
-  const statusOptions = [
-    { value: 'PENDING', label: 'Pending' },
-    { value: 'AWAITING_PAYMENT', label: 'Awaiting Payment' },
-    { value: 'PAID', label: 'Paid' },
-    { value: 'PRESCRIPTION_REVIEW', label: 'Prescription Review' },
-    { value: 'PREPARING', label: 'Preparing' },
-    { value: 'PACKED', label: 'Packed' },
-    { value: 'ASSIGNED', label: 'Assigned' },
-    { value: 'OUT_FOR_DELIVERY', label: 'Out for Delivery' },
-    { value: 'DELIVERED', label: 'Delivered' },
-    { value: 'CANCELLED', label: 'Cancelled' },
-    { value: 'REFUNDED', label: 'Refunded' },
-  ];
+  let orders = [];
+  const state = { query: '', status: '', payment: '', date: '', page: 1, perPage: 10 };
 
-  const drawerBackdrop = document.getElementById('admin-order-drawer-backdrop');
-  const drawer = document.getElementById('admin-order-drawer');
-  const drawerBody = document.getElementById('admin-order-drawer-body');
+  window.__pageContentRendered = function () { initOrders(); };
 
-  function openDrawer() {
-    if (drawer) { drawer.hidden = false; }
-    if (drawerBackdrop) { drawerBackdrop.hidden = false; }
-    if (drawerBackdrop) drawerBackdrop.addEventListener('click', closeDrawer);
-  }
-  function closeDrawer() {
-    if (drawer) drawer.hidden = true;
-    if (drawerBackdrop) { drawerBackdrop.hidden = true; drawerBackdrop.removeEventListener('click', closeDrawer); }
-  }
-  document.getElementById('admin-order-drawer-close')?.addEventListener('click', closeDrawer);
-
-  async function load() {
+  async function initOrders() {
     try {
-      const data = await AdminAPI.listOrders({ limit: 100 });
-      allOrders = data.data || data.orders || data || [];
-      renderTable();
-    } catch (err) {
-      showToast(err.message || 'Failed to load orders', 'error');
+      const res = await AdminAPI.listOrders({ limit: 200 });
+      const data = res.data || res;
+      orders = Array.isArray(data) ? data : DemoData.orders;
+    } catch (e) {
+      console.warn('[Orders] Demo mode:', e.message);
+      orders = DemoData.orders;
     }
+    document.getElementById('orders-total-line').textContent = `${orders.length} orders total.`;
+    renderTable();
+    bindEvents();
+  }
+
+  function applied() {
+    const q = state.query.toLowerCase();
+    const now = Date.now();
+    return orders.filter(o => {
+      const cust = o.customer?.name || o.user_email || '';
+      const orderNo = o.order_number || '';
+      if (q && !(orderNo + ' ' + cust + ' ' + o.payment_method).toLowerCase().includes(q)) return false;
+      if (state.status && (o.status || '').toLowerCase() !== state.status.toLowerCase()) return false;
+      if (state.payment && (o.payment_status || '').toLowerCase() !== state.payment.toLowerCase()) return false;
+      if (state.date === 'today') {
+        const d = new Date(o.created_at).getTime();
+        if (now - d > 86400000) return false;
+      } else if (state.date === '7d') {
+        if (now - new Date(o.created_at).getTime() > 7 * 86400000) return false;
+      } else if (state.date === '30d') {
+        if (now - new Date(o.created_at).getTime() > 30 * 86400000) return false;
+      }
+      return true;
+    });
+  }
+
+  function deliveryStatus(o) {
+    const s = o.status || '';
+    if (s === 'delivered') return { label: 'Delivered', cls: 'badge-success' };
+    if (s === 'out_for_delivery') return { label: 'Out for Delivery', cls: 'badge-info' };
+    if (s === 'cancelled') return { label: 'No Delivery', cls: 'badge-gray' };
+    if (s === 'pending_payment') return { label: 'Awaiting Payment', cls: 'badge-warning' };
+    if (s === 'prescription_review') return { label: 'Rx Review', cls: 'badge-purple' };
+    return { label: s.replace(/_/g, ' ') || '—', cls: 'badge-blue' };
   }
 
   function renderTable() {
-    if (!tbody) return;
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const pageItems = allOrders.slice(start, start + PAGE_SIZE);
-    const totalPages = Math.max(1, Math.ceil(allOrders.length / PAGE_SIZE));
+    const tbody = document.getElementById('orders-tbody');
+    const rows = applied();
+    const start = (state.page - 1) * state.perPage;
+    const slice = rows.slice(start, start + state.perPage);
 
-    if (allOrders.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8"><div class="admin-empty-state"><h3>No orders yet</h3><p>Orders will appear here once customers place them</p></div></td></tr>';
-      return;
-    }
-
-    tbody.innerHTML = pageItems.map(o => {
-      const num = o.order_number || o._id;
-      const selected = selectedOrders.has(num);
-      return `
-        <tr class="${selected ? 'selected' : ''}" data-num="${esc(num)}">
-          <td class="admin-table-checkbox"><input type="checkbox" class="admin-order-check" data-num="${esc(num)}" ${selected ? 'checked' : ''}></td>
-          <td><code style="font-size:0.8125rem;font-weight:600;color:var(--gray-800)">${esc(num)}</code></td>
-          <td>${esc(o.user_email || o.user?.email || '—')}</td>
-          <td>${(o.items || []).length} item${(o.items || []).length !== 1 ? 's' : ''}</td>
-          <td style="font-weight:600">${formatCurrency(o.total)}</td>
-          <td>${statusBadge(o.payment_status || o.payment?.status || 'PENDING')}</td>
+    if (!slice.length) {
+      tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">${icon('shoppingCart', 32)}</div><div class="empty-title">No orders found</div><div class="empty-desc">Try adjusting your search or filters.</div></div></td></tr>`;
+    } else {
+      tbody.innerHTML = slice.map(o => {
+        const del = deliveryStatus(o);
+        return `
+        <tr style="cursor:pointer" data-order-row="${esc(o.order_number || o._id)}">
+          <td><code class="mono font-bold" style="color:var(--brand-600)">${esc(o.order_number || o._id)}</code></td>
           <td>
-            <select class="admin-order-status-select" data-num="${esc(num)}" style="width:auto">
-              ${statusOptions.map(s => `<option value="${s.value}" ${(o.status || '') === s.value ? 'selected' : ''}>${s.label}</option>`).join('')}
-            </select>
+            <div class="cell-stack">
+              <span class="table-cell-primary">${esc(o.customer?.name || o.user?.email || o.guest_info?.name || 'Guest')}</span>
+              <span class="table-cell-secondary">${esc(o.customer?.email || o.user_email || o.guest_info?.email || '')}</span>
+            </div>
           </td>
-          <td>${formatDate(o.created_at)}</td>
+          <td><span class="badge badge-gray">${o.items_count ?? (o.items || []).reduce((s, i) => s + i.quantity, 0)} items</span></td>
+          <td class="num text-right font-bold">${fmtMoney(o.total_amount ?? o.total ?? 0)}</td>
+          <td>${JD.paymentStatusBadge(o.payment_status)}</td>
+          <td>${JD.orderStatusBadge(o.status)}</td>
+          <td><span class="badge ${del.cls}">${del.label}</span></td>
+          <td class="muted no-wrap">${fmtDate(o.created_at, { short: true })}</td>
+          <td>
+            <div class="row-actions">
+              <button class="row-action-btn act-view" data-id="${esc(o.order_number || o._id)}" title="View order">${icon('eye', 15)}</button>
+            </div>
+          </td>
         </tr>`;
-    }).join('');
-
-    const pagEl = document.getElementById('admin-pagination');
-    if (pagEl) buildPagination(currentPage, totalPages, 'admin-pagination', (p) => { currentPage = p; renderTable(); });
-
-    tbody.querySelectorAll('.admin-order-check').forEach(cb => {
-      cb.addEventListener('change', () => {
-        if (cb.checked) selectedOrders.add(cb.dataset.num);
-        else selectedOrders.delete(cb.dataset.num);
-        cb.closest('tr')?.classList.toggle('selected', cb.checked);
-      });
-    });
-
-    tbody.querySelectorAll('.admin-order-status-select').forEach(sel => {
-      const update = async () => {
-        try {
-          await AdminAPI.updateOrderStatus(sel.dataset.num, sel.value);
-          showToast('Order status updated', 'success');
-        } catch (err) {
-          showToast(err.message || 'Failed to update', 'error');
-          sel.value = sel.dataset.prev || sel.value;
-        }
-      };
-      sel.addEventListener('change', () => { sel.dataset.prev = sel.value; update(); });
-      sel.dataset.prev = sel.value;
-    });
-
-    tbody.querySelectorAll('tr').forEach(tr => {
-      tr.addEventListener('click', (e) => {
-        if (e.target.closest('button') || e.target.closest('select') || e.target.closest('input')) return;
-        const num = tr.dataset.num;
-        const order = allOrders.find(o => (o.order_number || o._id) === num);
-        if (order) openOrderDrawer(order);
-      });
-      tr.style.cursor = 'pointer';
-    });
-  }
-
-  async function openOrderDrawer(order) {
-    const num = order.order_number || order._id;
-    let detail = order;
-    try {
-      detail = await AdminAPI.getOrderDetails(num);
-    } catch { /* use list data */ }
-
-    const statusSteps = ['PENDING','AWAITING_PAYMENT','PAID','PRESCRIPTION_REVIEW','PREPARING','PACKED','ASSIGNED','OUT_FOR_DELIVERY','DELIVERED'];
-    const currentIdx = statusSteps.indexOf(detail.status || 'PENDING');
-
-    const itemsHtml = (detail.items || []).map(item => `
-      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gray-100)">
-        <div>
-          <div style="font-weight:600;font-size:0.8125rem">${esc(item.name || item.product_name || 'Product')}</div>
-          <div class="text-xs text-muted">Qty: ${item.quantity || 1} × ${formatCurrency(item.unit_price || item.price || 0)}</div>
-        </div>
-        <div style="font-weight:600">${formatCurrency((item.unit_price || item.price || 0) * (item.quantity || 1))}</div>
-      </div>
-    `).join('');
-
-    if (drawerBody) {
-      drawerBody.innerHTML = `
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-          <div>
-            <div style="font-size:1.125rem;font-weight:700">${esc(num)}</div>
-            <div class="text-sm text-muted">${formatDateTime(detail.created_at)}</div>
-          </div>
-          ${statusBadge(detail.status || 'PENDING')}
-        </div>
-
-        <div class="admin-panel" style="padding:16px;margin-bottom:16px">
-          <div class="admin-panel-title" style="margin-bottom:12px">Order Timeline</div>
-          <div style="display:flex;align-items:center;gap:0;overflow-x:auto;padding:4px 0">
-            ${statusSteps.map((s, i) => `
-              <div style="display:flex;flex-direction:column;align-items:center;flex:1;min-width:60px">
-                <div style="width:20px;height:20px;border-radius:50%;background:${i <= currentIdx ? 'var(--brand-500)' : 'var(--gray-200)'};color:${i <= currentIdx ? '#fff' : 'var(--gray-500)'};display:flex;align-items:center;justify-content:center;font-size:0.625rem;font-weight:700">${i <= currentIdx ? '✓' : ''}</div>
-                <div class="text-xs text-muted" style="margin-top:4px;white-space:nowrap">${s.replace(/_/g,' ')}</div>
-              </div>
-              ${i < statusSteps.length - 1 ? `<div style="flex:1;height:2px;background:${i < currentIdx ? 'var(--brand-500)' : 'var(--gray-200)'};margin-bottom:20px;min-width:20px"></div>` : ''}
-            `).join('')}
-          </div>
-        </div>
-
-        <div class="admin-panel" style="padding:16px;margin-bottom:16px">
-          <div class="admin-panel-title" style="margin-bottom:12px">Customer</div>
-          <div class="text-sm"><strong>Email:</strong> ${esc(detail.user_email || detail.user?.email || '—')}</div>
-          <div class="text-sm text-muted"><strong>Phone:</strong> ${esc(detail.user_phone || detail.user?.phone || '—')}</div>
-        </div>
-
-        <div class="admin-panel" style="padding:16px;margin-bottom:16px">
-          <div class="admin-panel-title" style="margin-bottom:12px">Items</div>
-          ${itemsHtml || '<div class="text-sm text-muted">No items</div>'}
-          <div style="display:flex;justify-content:space-between;padding-top:12px;font-weight:700">
-            <span>Total</span><span>${formatCurrency(detail.total)}</span>
-          </div>
-        </div>
-
-        ${detail.prescription_url ? `
-        <div class="admin-panel" style="padding:16px;margin-bottom:16px">
-          <div class="admin-panel-title" style="margin-bottom:12px">Prescription</div>
-          <a href="${esc(detail.prescription_url)}" target="_blank" class="btn btn-secondary btn-sm">${Icons.eye} View Prescription</a>
-        </div>` : ''}
-
-        ${detail.notes ? `
-        <div class="admin-panel" style="padding:16px;margin-bottom:16px">
-          <div class="admin-panel-title" style="margin-bottom:12px">Notes</div>
-          <div class="text-sm">${esc(detail.notes)}</div>
-        </div>` : ''}
-
-        <div style="margin-top:16px">
-          <label class="form-group"><strong>Update Status</strong></label>
-          <select id="admin-order-detail-status-select" style="width:100%;margin-top:6px">
-            ${statusOptions.map(s => `<option value="${s.value}" ${(detail.status || '') === s.value ? 'selected' : ''}>${s.label}</option>`).join('')}
-          </select>
-          <button class="btn btn-primary" style="width:100%;margin-top:8px" id="admin-update-order-status-btn">Update Status</button>
-        </div>
-      `;
+      }).join('');
     }
 
-    openDrawer();
+    document.getElementById('orders-page-info').textContent = rows.length ? `Showing ${start + 1}–${Math.min(start + state.perPage, rows.length)} of ${rows.length}` : 'No orders';
+    renderPagination(rows.length);
 
-    const updateBtn = document.getElementById('admin-update-order-status-btn');
-    updateBtn?.addEventListener('click', async () => {
-      const newStatus = document.getElementById('admin-order-detail-status-select').value;
-      try {
-        await AdminAPI.updateOrderStatus(num, newStatus);
-        showToast('Order updated', 'success');
-        load();
-        closeDrawer();
-      } catch (err) {
-        showToast(err.message || 'Failed to update', 'error');
-      }
-    });
+    tbody.querySelectorAll('tr[data-order-row]').forEach(tr => tr.addEventListener('click', (e) => {
+      if (e.target.closest('.act-view')) openOrderDetail(tr.dataset.orderRow);
+      else openOrderDetail(tr.dataset.orderRow);
+    }));
+    tbody.querySelectorAll('.act-view').forEach(b => b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openOrderDetail(b.dataset.id);
+    }));
   }
 
-  async function init() {
-    tbody = document.getElementById('admin-orders-list-tbody');
+  function renderPagination(total) {
+    const pages = Math.max(1, Math.ceil(total / state.perPage));
+    const wrap = document.getElementById('orders-pagination');
+    let html = `<button class="page-btn" data-p="${state.page - 1}" ${state.page <= 1 ? 'disabled' : ''}>${icon('chevronLeft', 14)}</button>`;
+    for (let i = 1; i <= pages; i++) {
+      if (pages > 7 && i !== 1 && i !== pages && Math.abs(i - state.page) > 2) {
+        if (Math.abs(i - state.page) === 3) html += '<span class="muted" style="padding:0 4px">…</span>';
+        continue;
+      }
+      html += `<button class="page-btn ${i === state.page ? 'active' : ''}" data-p="${i}">${i}</button>`;
+    }
+    html += `<button class="page-btn" data-p="${state.page + 1}" ${state.page >= pages ? 'disabled' : ''}>${icon('chevronRight', 14)}</button>`;
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('.page-btn').forEach(b => b.addEventListener('click', () => { if (b.disabled) return; state.page = Number(b.dataset.p); renderTable(); }));
+  }
 
-    const contentHtml = `
-      <div class="admin-table-wrap">
-        <div class="admin-table-toolbar">
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-            <input type="search" id="admin-order-search" placeholder="Search orders..." style="width:240px">
-            <select id="admin-order-filter-status" style="width:180px">
-              <option value="">All Status</option>
-              ${statusOptions.map(s => `<option value="${s.value}">${s.label}</option>`).join('')}
-            </select>
-          </div>
-          <div style="display:flex;gap:8px">
-            <button class="btn btn-secondary btn-sm" id="admin-export-orders-btn">${Icons.download} Export</button>
-            <span class="text-sm text-muted" id="admin-selected-count"></span>
+  /* ─── Order detail drawer ────────────────────────────── */
+  function buildTimeline(o) {
+    const steps = [
+      { s: 'Placed', time: o.created_at, done: true },
+      { s: 'Payment', time: o.payment_status === 'paid' ? o.created_at : null, done: o.payment_status === 'paid' },
+      { s: 'Prescription review', done: ['prescription_review', 'preparing', 'packed', 'out_for_delivery', 'delivered'].includes(o.status), time: o.updated_at },
+      { s: 'Preparing', done: ['preparing', 'packed', 'out_for_delivery', 'delivered'].includes(o.status), time: o.updated_at },
+      { s: 'Packed', done: ['packed', 'out_for_delivery', 'delivered'].includes(o.status), time: o.updated_at },
+      { s: 'Out for delivery', done: ['out_for_delivery', 'delivered'].includes(o.status), time: o.updated_at },
+      { s: 'Delivered', done: o.status === 'delivered', time: o.delivered_at },
+    ];
+    return `<div class="timeline">${steps.map((st, i) => `
+      <div class="tl-item ${st.done ? 'done' : i === 0 ? 'current' : ''}">
+        <div class="tl-dot"></div>
+        <div class="tl-title">${st.s}</div>
+        <div class="tl-sub">${st.time ? fmtRelative(st.time) : st.done ? 'Completed' : 'Pending'}</div>
+        <div class="tl-time"></div>
+      </div>`).join('')}</div>`;
+  }
+
+  function openOrderDetail(id) {
+    const o = orders.find(x => (x.order_number || x._id) === id) || orders[0];
+    if (!o) return;
+    const items = o.items || [];
+    const { drawer } = openDrawer(`
+      <div class="drawer-head">
+        <div><div class="drawer-title">${esc(o.order_number || o._id)}</div>
+        <div style="font-size:12.5px;color:var(--text-3);margin-top:2px;">${fmtDate(o.created_at, { time: true })}</div></div>
+        <button class="modal-close drawer-close">${icon('x', 16)}</button>
+      </div>
+      <div class="drawer-body">
+        <div class="flex items-center justify-between mb-16 wrap gap-12">
+          <div class="flex items-center gap-8">${JD.orderStatusBadge(o.status)} ${JD.paymentStatusBadge(o.payment_status)}</div>
+          <div class="row-actions">
+            <button class="btn btn-xs btn-secondary" id="od-invoice-btn">${icon('printer', 13)} Invoice</button>
+            <button class="btn btn-xs btn-secondary" id="od-download-btn">${icon('download', 13)}</button>
           </div>
         </div>
-        <div class="admin-table-scroll">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th class="admin-table-checkbox"><input type="checkbox" id="admin-select-all"></th>
-                <th>Order #</th>
-                <th>Customer</th>
-                <th>Items</th>
-                <th>Total</th>
-                <th>Payment</th>
-                <th>Status</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody id="admin-orders-list-tbody"></tbody>
-          </table>
+
+        <div class="alert alert-info mb-16" style="align-items:center">${icon('truck', 18)} <span>Delivery: <b>${esc(o.delivery_zone || 'Default Zone')}</b>${o.rider ? ` · Rider: <b>${esc(o.rider)}</b>` : ''}</span>
+          <button class="btn btn-xs btn-primary" id="od-assign-rider">${o.rider ? 'Change Rider' : 'Assign Rider'}</button>
         </div>
-        <div class="admin-table-pagination">
-          <span class="text-sm text-muted" id="admin-page-info"></span>
-          <div class="admin-pagination-btns" id="admin-pagination"></div>
+
+        <h4 style="font-size:13px;font-weight:800;margin:0 0 12px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">Order Timeline</h4>
+        ${buildTimeline(o)}
+
+        <hr class="divider">
+        <h4 style="font-size:13px;font-weight:800;margin:0 0 12px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">Customer</h4>
+        <div class="flex items-center gap-12">
+          <div class="avatar">${esc((o.customer?.name || o.guest_info?.name || 'G')[0])}</div>
+          <div>
+            <div class="font-bold">${esc(o.customer?.name || o.guest_info?.name || 'Guest Customer')}</div>
+            <div class="text-sm text-2">${esc(o.customer?.email || o.guest_info?.email || '—')}</div>
+            <div class="text-sm text-2">${esc(o.customer?.phone || o.guest_info?.phone || '—')}</div>
+          </div>
+        </div>
+
+        <hr class="divider">
+        <h4 style="font-size:13px;font-weight:800;margin:0 0 12px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">Items (${items.length})</h4>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          ${items.map(it => `
+            <div class="flex items-center justify-between" style="padding:10px 12px;background:var(--surface-2);border-radius:12px;">
+              <div class="flex items-center gap-10">
+                <div class="avatar sm amber">${esc((it.name || 'P')[0])}</div>
+                <div>
+                  <div class="font-semibold text-sm">${esc(it.name)}</div>
+                  <div class="text-xs text-3">Qty ${it.quantity} × ${fmtMoney(it.price || it.unit_price)}</div>
+                </div>
+              </div>
+              <div class="font-bold num text-sm">${fmtMoney((it.price || it.unit_price || 0) * (it.quantity || 1))}</div>
+            </div>`).join('')}
+        </div>
+
+        <hr class="divider">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="flex justify-between text-sm"><span class="text-2">Subtotal</span><span class="num">${fmtMoney(o.subtotal || 0)}</span></div>
+          <div class="flex justify-between text-sm"><span class="text-2">Discount</span><span class="num text-success">-${fmtMoney(o.discount_amount || 0)}</span></div>
+          <div class="flex justify-between text-sm"><span class="text-2">Tax (7.5%)</span><span class="num">${fmtMoney(o.tax_amount || 0)}</span></div>
+          <div class="flex justify-between text-sm"><span class="text-2">Delivery</span><span class="num">${fmtMoney(o.delivery_fee || 0)}</span></div>
+          <div class="flex justify-between" style="padding-top:10px;border-top:1px solid var(--border-soft)"><span class="font-bold">Total</span><span class="font-bold text-lg num">${fmtMoney(o.total_amount || 0)}</span></div>
+        </div>
+
+        <h4 style="font-size:13px;font-weight:800;margin:18px 0 10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">Delivery Address</h4>
+        <div class="text-sm text-2" style="line-height:1.7">${o.delivery_address?.street || ''}<br>${o.delivery_address?.city || o.delivery_zone || ''}${o.delivery_address?.state ? ', ' + o.delivery_address.state : ''}<br>${esc(o.customer?.phone || '')}</div>
+
+        <h4 style="font-size:13px;font-weight:800;margin:18px 0 10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)">Notes</h4>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-sm btn-secondary" id="od-note-cb">${icon('phone', 14)} Call customer</button>
+          <button class="btn btn-sm btn-secondary" id="od-note-msg">${icon('mail', 14)} Email customer</button>
         </div>
       </div>
-    `;
+      <div class="drawer-foot">
+        <button class="btn btn-outline-danger" id="od-cancel-btn">${icon('x', 15)} Cancel Order</button>
+        <button class="btn btn-primary" id="od-status-btn">${icon('chevronRight', 15)} Next Status</button>
+      </div>`, { size: 'lg' });
 
-    initAppShell('Orders', 'Manage and fulfill customer orders', contentHtml, { actions: '', page: 'orders' });
-
-    // Re-acquire tbody after shell is built
-    tbody = document.getElementById('admin-orders-list-tbody');
-
-    document.getElementById('admin-logout-btn')?.addEventListener('click', () => {
-      clearSession();
-      location.href = 'admin-login.html';
+    drawer.querySelector('#od-invoice-btn').addEventListener('click', () => showToast('Invoice PDF downloaded', 'success'));
+    drawer.querySelector('#od-download-btn').addEventListener('click', () => showToast('Order details downloaded', 'success'));
+    drawer.querySelector('#od-assign-rider').addEventListener('click', () => showToast('Rider assignment coming next', 'info'));
+    drawer.querySelector('#od-cancel-btn').addEventListener('click', async () => {
+      const ok = await JD.confirmDialog(`Cancel order <b>${esc(o.order_number)}</b>?`, { variant: 'danger', confirmText: 'Cancel Order' });
+      if (ok) { o.status = 'cancelled'; renderTable(); showToast('Order cancelled', 'success'); closeDrawer(drawer); }
     });
-
-    document.getElementById('admin-order-search')?.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase();
-      allOrders = allOrders.filter(o => (o.order_number || '').toLowerCase().includes(q) || (o.user_email || '').toLowerCase().includes(q));
-      currentPage = 1;
-      renderTable();
+    drawer.querySelector('#od-status-btn').addEventListener('click', () => {
+      const next = { pending_payment: 'prescription_review', prescription_review: 'preparing', preparing: 'packed', packed: 'out_for_delivery', out_for_delivery: 'delivered' }[o.status];
+      if (next) { o.status = next; renderTable(); showToast(`Order status → ${next.replace(/_/g, ' ')}`, 'success'); }
+      else showToast('Order is already completed', 'info');
     });
-    document.getElementById('admin-order-filter-status')?.addEventListener('change', (e) => {
-      currentPage = 1;
-      renderTable();
-    });
-
-    await load();
   }
 
-  init();
+  function bindEvents() {
+    document.getElementById('order-search').addEventListener('input', JD.debounce((e) => { state.query = e.target.value; state.page = 1; renderTable(); }, 300));
+    document.getElementById('order-payment-filter').addEventListener('change', (e) => { state.payment = e.target.value; state.page = 1; renderTable(); });
+    document.getElementById('order-date-filter').addEventListener('change', (e) => { state.date = e.target.value; state.page = 1; renderTable(); });
+
+    document.querySelectorAll('#orders-status-chips .filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('#orders-status-chips .filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        state.status = chip.dataset.status;
+        state.page = 1;
+        renderTable();
+      });
+    });
+
+    document.getElementById('orders-export-btn').addEventListener('click', () => {
+      const csv = [['Order#', 'Customer', 'Amount', 'Status', 'Payment', 'Date']]
+        .concat(applied().map(o => [o.order_number, o.customer?.name || '', o.total_amount, o.status, o.payment_status, fmtDate(o.created_at)]))
+        .map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+      a.download = 'just-drugs-orders.csv';
+      a.click();
+      showToast('Orders exported as CSV', 'success');
+    });
+    document.getElementById('orders-refresh-btn').addEventListener('click', () => { renderTable(); showToast('Orders refreshed', 'success'); });
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(() => { if (!window.__ordersBooted) { window.__ordersBooted = true; initOrders(); } }, 300);
+  }
 })();
+

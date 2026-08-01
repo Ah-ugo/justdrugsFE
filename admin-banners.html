@@ -1,53 +1,62 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Banners & Ads</title>
+  <title>Banners & Ads — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="banners">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
-  <div class="admin-overlay" id="admin-banner-overlay" hidden>
-    <div class="admin-modal" style="max-width:720px">
-      <div class="admin-modal-header">
-        <h2 class="admin-modal-title" id="admin-banner-form-title">Edit Banner</h2>
-        <button class="admin-modal-close" id="admin-banner-modal-close">${Icons.close}</button>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Banners & Advertisements</h1>
+        <p class="page-subtitle">Design, schedule and publish promotional placements.</p>
       </div>
-      <form class="admin-form-panel" id="admin-banner-form" style="border:none;padding:0;margin:0;max-width:none">
-        <input type="hidden" id="admin-banner-id">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="admin-banner-name">Banner Name *</label>
-            <input type="text" id="admin-banner-name" required placeholder="e.g. Summer Sale Hero">
-          </div>
-          <div class="form-group">
-            <label for="admin-banner-type">Type</label>
-            <select id="admin-banner-type"><option value="hero">Hero</option><option value="shop">Shop</option><option value="sidebar">Sidebar</option><option value="popup">Category Popup</option><option value="announcement">Announcement</option></select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="admin-banner-start">Start Date</label>
-            <input type="date" id="admin-banner-start">
-          </div>
-          <div class="form-group">
-            <label for="admin-banner-end">End Date</label>
-            <input type="date" id="admin-banner-end">
-          </div>
-        </div>
-        <div class="form-group">
-          <label><input type="checkbox" id="admin-banner-active"> Active</label>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" id="admin-banner-cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Banner</button>
-        </div>
-      </form>
+      <div class="page-actions">
+        <button class="btn btn-primary" id="add-banner-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> New Banner</button>
+      </div>
+    </div>
+
+    <!-- Placement summary cards -->
+    <div class="grid grid-5 mb-24">
+      <div class="card summary-card"><div class="summary-card-label">Hero</div><div class="summary-card-value" style="font-size:22px">1</div><div class="summary-card-foot">Top of homepage</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Shop</div><div class="summary-card-value" style="font-size:22px">1</div><div class="summary-card-foot">In catalogue pages</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Sidebar</div><div class="summary-card-value" style="font-size:22px">1</div><div class="summary-card-foot">Sidebar widget</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Category Popup</div><div class="summary-card-value" style="font-size:22px">1</div><div class="summary-card-foot">On category view</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Announcement</div><div class="summary-card-value" style="font-size:22px">1</div><div class="summary-card-foot">Top announcement bar</div></div>
+    </div>
+
+    <div class="flex items-center justify-between mb-16 wrap gap-12">
+      <div class="filter-chips" id="banner-placement-chips">
+        <button class="filter-chip active" data-placement="">All Placements</button>
+        <button class="filter-chip" data-placement="hero">Hero</button>
+        <button class="filter-chip" data-placement="shop">Shop</button>
+        <button class="filter-chip" data-placement="sidebar">Sidebar</button>
+        <button class="filter-chip" data-placement="category_popup">Category Popup</button>
+        <button class="filter-chip" data-placement="announcement">Announcement</button>
+      </div>
+      <div class="flex items-center gap-8">
+        <select class="select" id="banner-status-filter" style="width:150px;">
+          <option value="">All statuses</option>
+          <option value="active">Active</option>
+          <option value="scheduled">Scheduled</option>
+          <option value="draft">Draft</option>
+          <option value="expired">Expired</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Banner cards -->
+    <div class="grid grid-2" id="banners-grid">
+      <!-- banner cards injected -->
     </div>
   </div>
 
@@ -55,3 +64,5 @@
   <script src="js/admin-banners.js"></script>
 </body>
 </html>
+
+</content>

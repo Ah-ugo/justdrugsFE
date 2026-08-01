@@ -1,59 +1,108 @@
+/* ═══════════════════════════════════════════════════════════
+   JUST DRUGS — Audit Logs module
+   Filterable table of every administrative action with
+   status badges, search, date range, module & status filters.
+═══════════════════════════════════════════════════════════ */
 (function () {
   requireAuth();
-  let tbody;
-  let allLogs = [];
-  let currentPage = 1;
-  const PAGE_SIZE = 20;
+  const JD = window.JustDrugs;
+  const { icon, DemoData, esc, fmtDate, showToast } = JD;
 
-  document.getElementById('admin-logout-btn')?.addEventListener('click', () => { clearSession(); location.href = 'admin-login.html'; });
+  let logs = [];
+  const state = { query: '', module: '', status: '', from: '', to: '', page: 1, perPage: 12 };
 
-  async function load() {
-    try {
-      const data = await AdminAPI.listAuditLogs({ limit: 100 });
-      allLogs = data.logs || data.data || data || [];
-      renderTable();
-    } catch (err) { showToast(err.message || 'Failed to load audit logs', 'error'); }
+  window.__pageContentRendered = function () { initAudit(); };
+
+  function initAudit() {
+    logs = DemoData.auditLogs;
+    renderTable();
+    bindEvents();
+  }
+
+  function applied() {
+    const q = state.query.toLowerCase();
+    return logs.filter(l => {
+      if (q && !(l.user + ' ' + l.action + ' ' + l.ip + ' ' + l.module).toLowerCase().includes(q)) return false;
+      if (state.module && l.module !== state.module) return false;
+      if (state.status && l.status !== state.status) return false;
+      if (state.from && new Date(l.date) < new Date(state.from)) return false;
+      if (state.to) {
+        const to = new Date(state.to); to.setHours(23, 59, 59, 999);
+        if (new Date(l.date) > to) return false;
+      }
+      return true;
+    });
+  }
+
+  function statusBadge(s) {
+    return s === 'success'
+      ? '<span class="badge badge-success"><span class="badge-dot"></span>Success</span>'
+      : '<span class="badge badge-danger"><span class="badge-dot"></span>Failed</span>';
   }
 
   function renderTable() {
-    if (!tbody) return;
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const pageItems = allLogs.slice(start, start + PAGE_SIZE);
-    const totalPages = Math.max(1, Math.ceil(allLogs.length / PAGE_SIZE));
-    if (allLogs.length === 0) { tbody.innerHTML = `<tr><td colspan="6"><div class="admin-empty-state"><h3>No audit logs</h3></div></td></tr>`; return; }
-    tbody.innerHTML = pageItems.map(log => `
-      <tr>
-        <td style="font-weight:600">${esc(log.user?.email || log.user_email || log.user || '—')}</td>
-        <td><span class="badge badge-info">${esc(log.role || log.user_role || '—')}</span></td>
-        <td>${esc(log.action)}</td>
-        <td><span class="badge badge-brand">${esc(log.module || '—')}</span></td>
-        <td>${formatDateTime(log.created_at || log.timestamp)}</td>
-        <td>${statusBadge(log.status || 'SUCCESS')}</td>
-      </tr>`).join('');
-    const pagEl = document.getElementById('admin-pagination');
-    if (pagEl) buildPagination(currentPage, totalPages, 'admin-pagination', (p) => { currentPage = p; renderTable(); });
+    const tbody = document.getElementById('audit-tbody');
+    const rows = applied();
+    const start = (state.page - 1) * state.perPage;
+    const slice = rows.slice(start, start + state.perPage);
+
+    if (!slice.length) {
+      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">${icon('activity', 32)}</div><div class="empty-title">No audit logs found</div><div class="empty-desc">Try adjusting your filters.</div></div></td></tr>`;
+    } else {
+      tbody.innerHTML = slice.map(l => `
+        <tr>
+          <td>
+            <div class="product-cell">
+              <div class="avatar ${l.status === 'failed' ? 'danger' : 'emerald'}">${esc((l.user || 'A')[0])}</div>
+              <div class="cell-stack">
+                <span class="table-cell-primary">${esc(l.user)}</span>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge badge-info">${esc(JD.roleLabel(l.role))}</span></td>
+          <td><span class="text-sm" style="max-width:320px">${esc(l.action)}</span></td>
+          <td><span class="badge badge-brand">${esc(l.module)}</span></td>
+          <td class="muted no-wrap">${fmtDate(l.date, { time: true })}</td>
+          <td><code class="mono text-xs">${esc(l.ip)}</code></td>
+          <td>${statusBadge(l.status)}</td>
+        </tr>`).join('');
+    }
+
+    document.getElementById('audit-page-info').textContent = rows.length ? `Showing ${start + 1}–${Math.min(start + state.perPage, rows.length)} of ${rows.length}` : 'No records';
+    renderPagination(rows.length);
   }
 
-  async function init() {
-    tbody = document.getElementById('admin-audit-list-tbody');
-    const contentHtml = `
-      <div class="admin-table-wrap">
-        <div class="admin-table-toolbar">
-          <span class="admin-table-title">Audit Logs</span>
-          <div style="display:flex;gap:8px">
-            <input type="date" id="admin-audit-from" style="width:auto">
-            <input type="date" id="admin-audit-to" style="width:auto">
-            <button class="btn btn-secondary btn-sm">${Icons.filter} Filter</button>
-          </div>
-        </div>
-        <div class="admin-table-scroll"><table class="admin-table"><thead><tr><th>User</th><th>Role</th><th>Action</th><th>Module</th><th>Date</th><th>Status</th></tr></thead><tbody id="admin-audit-list-tbody"></tbody></table></div>
-        <div class="admin-table-pagination"><span class="text-sm text-muted" id="admin-page-info"></span><div class="admin-pagination-btns" id="admin-pagination"></div></div>
-      </div>
-    `;
-    initAppShell('Audit Logs', 'Track all administrative actions', contentHtml, { actions: '', page: 'audit' });
-    tbody = document.getElementById('admin-audit-list-tbody');
-    await load();
+  function renderPagination(total) {
+    const pages = Math.max(1, Math.ceil(total / state.perPage));
+    const wrap = document.getElementById('audit-pagination');
+    let html = `<button class="page-btn" data-p="${state.page - 1}" ${state.page <= 1 ? 'disabled' : ''}>${icon('chevronLeft', 14)}</button>`;
+    for (let i = 1; i <= pages; i++) html += `<button class="page-btn ${i === state.page ? 'active' : ''}" data-p="${i}">${i}</button>`;
+    html += `<button class="page-btn" data-p="${state.page + 1}" ${state.page >= pages ? 'disabled' : ''}>${icon('chevronRight', 14)}</button>`;
+    wrap.innerHTML = html;
+    wrap.querySelectorAll('.page-btn').forEach(b => b.addEventListener('click', () => { if (b.disabled) return; state.page = Number(b.dataset.p); renderTable(); }));
   }
 
-  init();
+  function bindEvents() {
+    document.getElementById('audit-search').addEventListener('input', JD.debounce((e) => { state.query = e.target.value; state.page = 1; renderTable(); }, 300));
+    document.getElementById('audit-module').addEventListener('change', (e) => { state.module = e.target.value; state.page = 1; renderTable(); });
+    document.getElementById('audit-status').addEventListener('change', (e) => { state.status = e.target.value; state.page = 1; renderTable(); });
+    document.getElementById('audit-from').addEventListener('change', (e) => { state.from = e.target.value; state.page = 1; renderTable(); });
+    document.getElementById('audit-to').addEventListener('change', (e) => { state.to = e.target.value; state.page = 1; renderTable(); });
+    document.getElementById('audit-refresh-btn').addEventListener('click', () => { renderTable(); showToast('Audit log refreshed', 'success'); });
+    document.getElementById('audit-export-btn').addEventListener('click', () => {
+      const csv = [['User', 'Role', 'Action', 'Module', 'Date', 'IP', 'Status']]
+        .concat(applied().map(l => [l.user, l.role, l.action, l.module, fmtDate(l.date, { time: true }), l.ip, l.status]))
+        .map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+      a.download = 'just-drugs-audit-logs.csv';
+      a.click();
+      showToast('Audit logs exported as CSV', 'success');
+    });
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(() => { if (!window.__auditBooted) { window.__auditBooted = true; initAudit(); } }, 300);
+  }
 })();
+

@@ -3,16 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Reviews</title>
+  <title>Reviews — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="reviews">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Reviews & Ratings</h1>
+        <p class="page-subtitle">Moderate customer feedback across your catalogue.</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-primary" id="rev-export-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> Export</button>
+      </div>
+    </div>
+
+    <div class="grid grid-4 mb-24">
+      <div class="card summary-card"><div class="summary-card-label">Average Rating</div><div class="summary-card-value">4.6 <span style="font-size:16px">★</span></div><div class="summary-card-foot">Across 1,240 reviews</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Pending Moderation</div><div class="summary-card-value" style="color:var(--warning-600)">3</div><div class="summary-card-foot">Need review</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Approved</div><div class="summary-card-value" style="color:var(--success-600)">2</div><div class="summary-card-foot">This week</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Flagged</div><div class="summary-card-value" style="color:var(--danger-600)">1</div><div class="summary-card-foot">Inappropriate</div></div>
+    </div>
+
+    <div class="flex items-center justify-between mb-16 wrap gap-12">
+      <div class="filter-chips" id="rev-status-chips">
+        <button class="filter-chip active" data-status="">All</button>
+        <button class="filter-chip" data-status="pending">Pending</button>
+        <button class="filter-chip" data-status="approved">Approved</button>
+        <button class="filter-chip" data-status="flagged">Flagged</button>
+      </div>
+      <div class="flex items-center gap-8">
+        <select class="select" id="rev-rating-filter" style="width:150px;">
+          <option value="">All ratings</option>
+          <option value="5">★★★★★ (5)</option>
+          <option value="4">★★★★ (4)</option>
+          <option value="3">★★★ (3)</option>
+          <option value="2">★★ (2)</option>
+          <option value="1">★ (1)</option>
+        </select>
+        <div class="input-wrap">
+          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+          <input type="text" class="input" id="rev-search" placeholder="Search product or customer…" style="width:260px;padding-left:36px;">
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Product</th><th>Customer</th><th>Rating</th><th>Review</th><th>Verified</th>
+              <th>Status</th><th>Date</th><th style="width:110px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reviews-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <script src="js/admin-shared.js"></script>
   <script src="js/admin-reviews.js"></script>
 </body>
 </html>
+
+</content>
+

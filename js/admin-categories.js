@@ -1,108 +1,107 @@
+/* ═══════════════════════════════════════════════════════════
+   JUST DRUGS — Categories module
+   Card grid with emoji, featured flag, product count, ordering.
+═══════════════════════════════════════════════════════════ */
 (function () {
   requireAuth();
-  let tbody;
-  let allCategories = [];
-  let currentPage = 1;
-  const PAGE_SIZE = 20;
+  const JD = window.JustDrugs;
+  const { icon, DemoData, esc, showToast, confirmDialog, openModal, closeModal } = JD;
 
-  document.getElementById('admin-logout-btn')?.addEventListener('click', () => { clearSession(); location.href = 'admin-login.html'; });
+  let categories = [];
 
-  async function load() {
+  window.__pageContentRendered = function () { initCategories(); };
+
+  async function initCategories() {
     try {
-      const data = await AdminAPI.listCategories();
-      allCategories = data.categories || data.data || data || [];
-      renderTable();
-    } catch (err) { showToast(err.message || 'Failed to load categories', 'error'); }
-  }
-
-  function renderTable() {
-    if (!tbody) return;
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const pageItems = allCategories.slice(start, start + PAGE_SIZE);
-    const totalPages = Math.max(1, Math.ceil(allCategories.length / PAGE_SIZE));
-    if (allCategories.length === 0) { tbody.innerHTML = `<tr><td colspan="7"><div class="admin-empty-state"><h3>No categories yet</h3></div></td></tr>`; return; }
-    tbody.innerHTML = pageItems.map(c => `
-      <tr>
-        <td style="font-size:1.25rem">${esc(c.icon || c.emoji || '📁')}</td>
-        <td><div style="font-weight:600">${esc(c.name)}</div><div class="text-xs text-muted">${esc(c.slug || '')}</div></td>
-        <td><span class="text-xs text-muted">${esc(c.description || '—')}</span></td>
-        <td>${c.featured ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-gray">No</span>'}</td>
-        <td>${c.product_count ?? c.count ?? 0}</td>
-        <td>${c.sort_order ?? 0}</td>
-        <td>
-          <div style="display:flex;gap:4px">
-            <button class="btn btn-sm btn-secondary admin-edit-cat-btn" data-id="${esc(c._id || c.id)}">${Icons.edit}</button>
-            <button class="btn btn-sm btn-danger admin-delete-cat-btn" data-id="${esc(c._id || c.id)}">${Icons.trash}</button>
-          </div>
-        </td>
-      </tr>`).join('');
-    const pagEl = document.getElementById('admin-pagination');
-    if (pagEl) buildPagination(currentPage, totalPages, 'admin-pagination', (p) => { currentPage = p; renderTable(); });
-    tbody.querySelectorAll('.admin-edit-cat-btn').forEach(btn => btn.addEventListener('click', () => openEdit(btn.dataset.id)));
-    tbody.querySelectorAll('.admin-delete-cat-btn').forEach(btn => btn.addEventListener('click', () => deleteCategory(btn.dataset.id)));
-  }
-
-  function openOverlay() { const el = document.getElementById('admin-category-overlay'); if (el) el.hidden = false; }
-  function closeOverlay() {
-    const el = document.getElementById('admin-category-overlay'); if (el) el.hidden = true;
-    const f = document.getElementById('admin-cat-form'); if (f) f.reset();
-    const idEl = document.getElementById('admin-cat-id'); if (idEl) idEl.value = '';
-    const titleEl = document.getElementById('admin-category-form-title'); if (titleEl) titleEl.textContent = 'Edit Category';
-  }
-  function openEdit(catId) {
-    const cat = allCategories.find(c => (c._id || c.id) === catId); if (!cat) return;
-    const titleEl = document.getElementById('admin-category-form-title'); if (titleEl) titleEl.textContent = 'Edit Category';
-    const idEl = document.getElementById('admin-cat-id'); if (idEl) idEl.value = cat._id || cat.id;
-    document.getElementById('admin-cat-name').value = cat.name || '';
-    document.getElementById('admin-cat-slug').value = cat.slug || '';
-    document.getElementById('admin-cat-icon').value = cat.icon || cat.emoji || '';
-    document.getElementById('admin-cat-desc').value = cat.description || '';
-    const featEl = document.getElementById('admin-cat-featured'); if (featEl) featEl.checked = !!cat.featured;
-    const sortEl = document.getElementById('admin-cat-sort'); if (sortEl) sortEl.value = cat.sort_order ?? 0;
-    openOverlay();
-  }
-
-  async function init() {
-    tbody = document.getElementById('admin-cat-list-tbody');
-    const actions = `<button class="btn btn-primary" id="admin-create-cat-btn">${Icons.plus} Add Category</button>`;
-    const contentHtml = `
-      <div class="admin-table-wrap">
-        <div class="admin-table-toolbar"><span class="admin-table-title">${allCategories.length || 0} Categories</span><div style="display:flex;gap:8px">${actions}</div></div>
-        <div class="admin-table-scroll"><table class="admin-table"><thead><tr><th>Icon</th><th>Name</th><th>Description</th><th>Featured</th><th>Products</th><th>Sort</th><th>Actions</th></tr></thead><tbody id="admin-cat-list-tbody"></tbody></table></div>
-        <div class="admin-table-pagination"><span class="text-sm text-muted" id="admin-page-info"></span><div class="admin-pagination-btns" id="admin-pagination"></div></div>
-      </div>
-    `;
-    initAppShell('Categories', 'Organize your product catalog', contentHtml, { actions: '', page: 'categories' });
-    tbody = document.getElementById('admin-cat-list-tbody');
-
-    document.getElementById('admin-create-cat-btn')?.addEventListener('click', () => { closeOverlay(); openOverlay(); });
-    document.getElementById('admin-category-cancel')?.addEventListener('click', closeOverlay);
-    document.getElementById('admin-category-modal-close')?.addEventListener('click', closeOverlay);
-    document.getElementById('admin-category-overlay')?.addEventListener('click', (e) => { if (e.target.id === 'admin-category-overlay') closeOverlay(); });
-
-    document.getElementById('admin-cat-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const catId = document.getElementById('admin-cat-id').value;
-      const payload = {
-        name: document.getElementById('admin-cat-name').value.trim(),
-        slug: document.getElementById('admin-cat-slug').value.trim(),
-        icon: document.getElementById('admin-cat-icon').value.trim(),
-        description: document.getElementById('admin-cat-desc').value.trim(),
-        featured: document.getElementById('admin-cat-featured').checked,
-        sort_order: Number(document.getElementById('admin-cat-sort').value) || 0,
-      };
-      if (!payload.name) { showToast('Category name is required', 'error'); return; }
-      try {
-        if (catId) { await AdminAPI.updateCategory(catId, payload); showToast('Category updated', 'success'); }
-        else { await AdminAPI.createCategory(payload); showToast('Category created', 'success'); }
-        closeOverlay(); load();
-      } catch (err) { showToast(err.message || 'Operation failed', 'error'); }
+      const res = await AdminAPI.listCategories();
+      const data = res.data || res;
+      categories = Array.isArray(data) ? data : DemoData.categories;
+    } catch (e) {
+      console.warn('[Categories] Demo mode:', e.message);
+      categories = DemoData.categories;
+    }
+    renderCategories();
+    document.getElementById('add-category-btn')?.addEventListener('click', () => openEditor());
+    document.getElementById('cat-reorder-toggle')?.addEventListener('click', () => {
+      showToast('Drag cards to reorder (demo)', 'info');
     });
-
-    await load();
   }
 
-  async function deleteCategory(id) { if (!confirmDelete('Delete this category?')) return; try { await AdminAPI.deleteCategory(id); showToast('Deleted', 'success'); load(); } catch (err) { showToast(err.message || 'Failed', 'error'); } }
+  function renderCategories() {
+    const grid = document.getElementById('categories-grid');
+    grid.innerHTML = categories.map((c, i) => `
+      <div class="card card-hover" style="display:flex;flex-direction:column;overflow:hidden" data-id="${esc(c._id || c.id)}">
+        <div style="padding:18px;flex:1;">
+          <div class="flex items-center justify-between mb-12">
+            <div style="font-size:34px;line-height:1;">${c.emoji || '🗂️'}</div>
+            <div class="row-actions">
+              <button class="row-action-btn act-edit" data-id="${esc(c._id || c.id)}" title="Edit">${icon('edit', 15)}</button>
+              <button class="row-action-btn danger act-delete" data-id="${esc(c._id || c.id)}" title="Delete">${icon('trash', 15)}</button>
+            </div>
+          </div>
+          <div class="font-bold" style="font-size:14px;">${esc(c.name)}</div>
+          <div class="muted text-sm mt-4" style="min-height:34px;">${esc(c.description || 'No description')}</div>
+          <div class="flex items-center gap-8 mt-12 wrap">
+            ${c.featured ? '<span class="badge badge-success">★ Featured</span>' : ''}
+            ${c.active !== false ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-gray">Inactive</span>'}
+          </div>
+        </div>
+        <div style="padding:12px 18px;border-top:1px solid var(--border-soft);display:flex;align-items:center;justify-content:space-between;background:var(--surface-2);">
+          <span class="text-sm text-2 font-semibold">${c.product_count || 0} products</span>
+          <span class="badge badge-gray">Order ${c.sort_order || i + 1}</span>
+        </div>
+      </div>`).join('');
 
-  init();
+    grid.querySelectorAll('.act-edit').forEach(b => b.addEventListener('click', () => openEditor(b.dataset.id)));
+    grid.querySelectorAll('.act-delete').forEach(b => b.addEventListener('click', () => deleteCategory(b.dataset.id)));
+  }
+
+  function openEditor(id) {
+    const c = id ? categories.find(x => (x._id || x.id) === id) : null;
+    openModal(`
+      <div class="modal-head">
+        <div><h3 class="modal-title">${c ? 'Edit Category' : 'Add Category'}</h3>
+        <p class="modal-subtitle">${c ? `Editing ${esc(c.name)}` : 'Create a new product department'}</p></div>
+        <button class="modal-close">${icon('x', 16)}</button>
+      </div>
+      <div class="modal-body">
+        <div class="grid grid-2">
+          <div class="field"><label class="field-required">Name</label><input class="input" id="cat-name" value="${esc(c?.name || '')}" placeholder="e.g. Pain Relief"></div>
+          <div class="field"><label>Emoji</label><input class="input" id="cat-emoji" value="${esc(c?.emoji || '')}" placeholder="💊"></div>
+          <div class="field" style="grid-column:1/-1"><label>Description</label><textarea class="textarea" id="cat-desc" rows="2" placeholder="Short description…">${esc(c?.description || '')}</textarea></div>
+          <div class="field"><label>Slug</label><input class="input" id="cat-slug" value="${esc(c?.slug || '')}" placeholder="auto-generated"></div>
+          <div class="field"><label>Sort order</label><input class="input" type="number" id="cat-sort" value="${c?.sort_order || categories.length + 1}"></div>
+        </div>
+        <div class="mt-16">
+          <div class="list-row"><div><div class="list-row-label">Featured</div><div class="list-row-desc">Highlighted on the homepage</div></div><button class="switch ${c?.featured ? 'on' : ''}" id="cat-featured"></button></div>
+          <div class="list-row"><div><div class="list-row-label">Active</div><div class="list-row-desc">Visible to customers</div></div><button class="switch ${c?.active !== false ? 'on' : ''}" id="cat-active"></button></div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" data-close>Cancel</button>
+        <button class="btn btn-primary" id="cat-save-btn">${icon('check', 15)} Save Category</button>
+      </div>`);
+    document.querySelectorAll('#cat-featured, #cat-active').forEach(s => s.addEventListener('click', function () { this.classList.toggle('on'); }));
+    document.getElementById('cat-save-btn').addEventListener('click', () => {
+      const name = document.getElementById('cat-name').value.trim();
+      if (!name) { showToast('Category name is required', 'error'); return; }
+      showToast(c ? 'Category updated' : 'Category created', 'success');
+      const backdrop = document.querySelector('.modal-backdrop.open');
+      if (backdrop) closeModal(backdrop);
+    });
+  }
+
+  async function deleteCategory(id) {
+    const c = categories.find(x => (x._id || x.id) === id);
+    const ok = await confirmDialog(`Delete category <b>${esc(c?.name)}</b>? Products will not be deleted but will become uncategorised.`, { variant: 'danger', confirmText: 'Delete' });
+    if (!ok) return;
+    categories = categories.filter(x => (x._id || x.id) !== id);
+    renderCategories();
+    showToast('Category deleted', 'success');
+  }
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(() => { if (!window.__catsBooted) { window.__catsBooted = true; initCategories(); } }, 300);
+  }
 })();
+

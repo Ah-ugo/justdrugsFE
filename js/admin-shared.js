@@ -313,6 +313,36 @@ function stockBadge(status) {
   return `<span class="badge ${m.cls}"><span class="badge-dot"></span>${esc(m.label)}</span>`;
 }
 
+function rxStatusBadge(status) {
+  const map = {
+    pending: { label: 'Pending', cls: 'badge-warning' },
+    approved: { label: 'Approved', cls: 'badge-success' },
+    rejected: { label: 'Rejected', cls: 'badge-danger' },
+    need_better_image: { label: 'Needs Better Image', cls: 'badge-rose' },
+    expired: { label: 'Expired', cls: 'badge-gray' },
+  };
+  const m = map[status] || { label: status || '—', cls: 'badge-gray' };
+  return `<span class="badge ${m.cls}"><span class="badge-dot"></span>${esc(m.label)}</span>`;
+}
+function deliveryStatusBadge(status) {
+  const map = {
+    preparing: { label: 'Preparing', cls: 'badge-blue' },
+    packed: { label: 'Packed', cls: 'badge-teal' },
+    assigned: { label: 'Assigned', cls: 'badge-info' },
+    out_for_delivery: { label: 'Out for Delivery', cls: 'badge-blue' },
+    delivered: { label: 'Delivered', cls: 'badge-success' },
+    cancelled: { label: 'Cancelled', cls: 'badge-danger' },
+    returned: { label: 'Returned', cls: 'badge-danger' },
+  };
+  const m = map[status] || { label: status || '—', cls: 'badge-gray' };
+  return `<span class="badge ${m.cls}"><span class="badge-dot"></span>${esc(m.label)}</span>`;
+}
+function customerStatusBadge(c) {
+  if (c && c.status === 'inactive') return `<span class="badge badge-gray"><span class="badge-dot"></span>Inactive</span>`;
+  if (c && (c.is_vip || c.customer_tier === 'vip' || c.total_spend > 200000)) return `<span class="badge badge-brand"><span class="badge-dot"></span>VIP</span>`;
+  return `<span class="badge badge-success"><span class="badge-dot"></span>Active</span>`;
+}
+
 /* ─── Demo data layer ──────────────────────────────────── */
 const DemoData = (() => {
   const daysAgo = (n, h = 0) => {
@@ -526,6 +556,7 @@ async function apiFetch(path, options = {}) {
 function handleDemoRequest(path, options) {
   const method = (options.method || 'GET').toUpperCase();
   const data = DemoData;
+  const cleanPath = (path || '').split('?')[0];
 
   const map = [
     { re: /^\/admin\/auth\/me$/, fn: () => ({ data: getSession()?.admin || { id: 'a1', email: 'adebayo@justdrugs.com', role: 'super_admin', full_name: 'Adebayo Oluwaseun', permissions: ['*'] } }) },
@@ -550,7 +581,7 @@ function handleDemoRequest(path, options) {
     { re: /^\/users/, fn: () => ({ data: data.customers }) },
   ];
 
-  const hit = map.find(m => m.re.test(path));
+  const hit = map.find(m => m.re.test(cleanPath));
   if (hit && method === 'GET') return hit.fn();
 
   if (method === 'POST' || method === 'PUT' || method === 'PATCH' || method === 'DELETE') {
@@ -960,6 +991,7 @@ window.JustDrugs = {
   API_BASE, AdminAPI, DemoData, icon, showToast, esc, fmtMoney, fmtNum, fmtCompact,
   fmtDate, fmtRelative, pctChange, debounce, confirmDialog, openModal, closeModal,
   openDrawer, closeDrawer, skeletonRows, orderStatusBadge, paymentStatusBadge, stockBadge,
+  rxStatusBadge, deliveryStatusBadge, customerStatusBadge,
   roleLabel, initials, loadData, getSession, saveSession, clearSession, requireAuth,
   initTheme, toggleTheme,
 };

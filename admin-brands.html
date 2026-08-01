@@ -3,36 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Brands</title>
+  <title>Brands — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="brands">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
-  <div class="admin-overlay" id="admin-brand-overlay" hidden>
-    <div class="admin-modal" style="max-width:520px">
-      <div class="admin-modal-header">
-        <h2 class="admin-modal-title" id="admin-brand-form-title">Edit Brand</h2>
-        <button class="admin-modal-close" id="admin-brand-modal-close">${Icons.close}</button>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Brands</h1>
+        <p class="page-subtitle">Manage the pharmaceutical brands in your catalogue.</p>
       </div>
-      <form class="admin-form-panel" id="admin-brand-form" style="border:none;padding:0;margin:0;max-width:none">
-        <input type="hidden" id="admin-brand-id">
-        <div class="form-group">
-          <label for="admin-brand-name">Brand Name *</label>
-          <input type="text" id="admin-brand-name" required placeholder="e.g. HealthPlus">
-        </div>
-        <div class="form-group">
-          <label for="admin-brand-desc">Description</label>
-          <textarea id="admin-brand-desc" rows="2" placeholder="Brief description..."></textarea>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" id="admin-brand-cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Brand</button>
-        </div>
-      </form>
+      <div class="page-actions">
+        <button class="btn btn-primary" id="add-brand-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Add Brand</button>
+      </div>
+    </div>
+
+    <div class="grid grid-4 mb-24">
+      <div class="card summary-card"><div class="summary-card-label">Total Brands</div><div class="summary-card-value">6</div><div class="summary-card-foot">Across the catalogue</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Featured</div><div class="summary-card-value" style="color:var(--brand-600)">3</div><div class="summary-card-foot">Highlighted</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Active</div><div class="summary-card-value" style="color:var(--success-600)">6</div><div class="summary-card-foot">Currently visible</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Products</div><div class="summary-card-value">111</div><div class="summary-card-foot">Linked to brands</div></div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Brand</th><th>Description</th><th>Products</th><th>Featured</th><th>Status</th><th style="width:100px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="brands-tbody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -40,3 +49,4 @@
   <script src="js/admin-brands.js"></script>
 </body>
 </html>
+

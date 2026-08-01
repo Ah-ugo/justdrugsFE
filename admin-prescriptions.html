@@ -3,23 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Prescriptions</title>
+  <title>Prescriptions — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="prescriptions">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
-  <div class="admin-overlay" id="admin-prescription-view-overlay" hidden>
-    <div class="admin-modal" style="max-width:640px">
-      <div class="admin-modal-header">
-        <h2 class="admin-modal-title">Prescription Review</h2>
-        <button class="admin-modal-close" id="admin-rx-close">${Icons.close}</button>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Prescriptions</h1>
+        <p class="page-subtitle">Review, approve and manage uploaded prescriptions.</p>
       </div>
-      <div class="admin-modal-body" id="admin-rx-modal-body"></div>
-      <div class="admin-modal-footer" id="admin-rx-modal-footer"></div>
+      <div class="page-actions">
+        <button class="btn btn-secondary" id="rx-export-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> Export</button>
+      </div>
+    </div>
+
+    <div class="grid grid-5 mb-24">
+      <div class="card summary-card"><div class="summary-card-label">Pending</div><div class="summary-card-value" style="color:var(--warning-600)">2</div><div class="summary-card-foot">Need review</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Approved</div><div class="summary-card-value" style="color:var(--success-600)">2</div><div class="summary-card-foot">This week</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Rejected</div><div class="summary-card-value" style="color:var(--danger-600)">1</div><div class="summary-card-foot">Needs action</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Expired</div><div class="summary-card-value" style="color:var(--text-2)">1</div><div class="summary-card-foot">Auto-closed</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Need Better Image</div><div class="summary-card-value" style="color:var(--rose-600)">1</div><div class="summary-card-foot">Awaiting resubmit</div></div>
+    </div>
+
+    <div class="flex items-center justify-between mb-16 wrap gap-12">
+      <div class="filter-chips" id="rx-status-chips">
+        <button class="filter-chip active" data-status="">All</button>
+        <button class="filter-chip" data-status="pending">Pending</button>
+        <button class="filter-chip" data-status="approved">Approved</button>
+        <button class="filter-chip" data-status="rejected">Rejected</button>
+        <button class="filter-chip" data-status="need_better_image">Need Better Image</button>
+        <button class="filter-chip" data-status="expired">Expired</button>
+      </div>
+      <div class="input-wrap">
+        <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+        <input type="text" class="input" id="rx-search" placeholder="Search patient, Rx #, medicine…" style="width:280px;padding-left:36px;">
+      </div>
+    </div>
+
+    <div class="grid grid-2" id="rx-grid">
+      <!-- Rx cards injected -->
     </div>
   </div>
 
@@ -27,3 +56,6 @@
   <script src="js/admin-prescriptions.js"></script>
 </body>
 </html>
+
+</content>
+

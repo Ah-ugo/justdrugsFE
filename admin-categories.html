@@ -3,51 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Categories</title>
+  <title>Categories — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="categories">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
-  <div class="admin-overlay" id="admin-category-overlay" hidden>
-    <div class="admin-modal" style="max-width:560px">
-      <div class="admin-modal-header">
-        <h2 class="admin-modal-title" id="admin-category-form-title">Edit Category</h2>
-        <button class="admin-modal-close" id="admin-category-modal-close">${Icons.close}</button>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Categories</h1>
+        <p class="page-subtitle">Organise products into browsable departments.</p>
       </div>
-      <form class="admin-form-panel" id="admin-cat-form" style="border:none;padding:0;margin:0;max-width:none">
-        <input type="hidden" id="admin-cat-id">
-        <div class="form-group">
-          <label for="admin-cat-name">Category Name *</label>
-          <input type="text" id="admin-cat-name" required placeholder="e.g. Antibiotics">
-        </div>
-        <div class="form-group">
-          <label for="admin-cat-slug">Slug</label>
-          <input type="text" id="admin-cat-slug" placeholder="e.g. antibiotics">
-        </div>
-        <div class="form-group">
-          <label for="admin-cat-icon">Icon Emoji</label>
-          <input type="text" id="admin-cat-icon" placeholder="💊" maxlength="4">
-        </div>
-        <div class="form-group">
-          <label for="admin-cat-desc">Description</label>
-          <textarea id="admin-cat-desc" rows="2" placeholder="Brief description..."></textarea>
-        </div>
-        <div class="form-group">
-          <label><input type="checkbox" id="admin-cat-featured"> Featured</label>
-        </div>
-        <div class="form-group">
-          <label for="admin-cat-sort">Sort Order</label>
-          <input type="number" id="admin-cat-sort" value="0" min="0">
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" id="admin-category-cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Category</button>
-        </div>
-      </form>
+      <div class="page-actions">
+        <button class="btn btn-secondary" id="cat-reorder-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg> Reorder</button>
+        <button class="btn btn-primary" id="add-category-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Add Category</button>
+      </div>
+    </div>
+
+    <div class="grid grid-4" id="categories-grid">
+      <!-- Category cards injected -->
     </div>
   </div>
 

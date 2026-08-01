@@ -3,58 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Discounts</title>
+  <title>Discounts & Coupons — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="discounts">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
-  <div class="admin-overlay" id="admin-discount-overlay" hidden>
-    <div class="admin-modal" style="max-width:600px">
-      <div class="admin-modal-header">
-        <h2 class="admin-modal-title" id="admin-discount-form-title">Edit Discount</h2>
-        <button class="admin-modal-close" id="admin-discount-modal-close">${Icons.close}</button>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Discounts & Coupons</h1>
+        <p class="page-subtitle">Create promotions, flash sales and coupon campaigns.</p>
       </div>
-      <form class="admin-form-panel" id="admin-disc-form" style="border:none;padding:0;margin:0;max-width:none">
-        <input type="hidden" id="admin-disc-id">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="admin-disc-name">Discount Name *</label>
-            <input type="text" id="admin-disc-name" required placeholder="e.g. Summer Sale">
-          </div>
-          <div class="form-group">
-            <label for="admin-disc-type">Type</label>
-            <select id="admin-disc-type"><option value="percentage">Percentage</option><option value="fixed">Fixed Amount</option></select>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="admin-disc-value">Value *</label>
-            <input type="number" id="admin-disc-value" min="0" step="1" required placeholder="e.g. 25">
-          </div>
-          <div class="form-group">
-            <label for="admin-disc-code">Coupon Code</label>
-            <input type="text" id="admin-disc-code" placeholder="e.g. SUMMER25">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="admin-disc-min">Minimum Purchase (₦)</label>
-            <input type="number" id="admin-disc-min" min="0" step="1" value="0">
-          </div>
-          <div class="form-group">
-            <label for="admin-disc-max">Max Discount (₦)</label>
-            <input type="number" id="admin-disc-max" min="0" step="1" value="0">
-          </div>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" id="admin-discount-cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Discount</button>
-        </div>
-      </form>
+      <div class="page-actions">
+        <button class="btn btn-primary" id="add-discount-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> New Discount</button>
+      </div>
+    </div>
+
+    <div class="grid grid-4 mb-24">
+      <div class="card summary-card"><div class="summary-card-label">Active Promotions</div><div class="summary-card-value">1</div><div class="summary-card-foot">Currently live</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Coupon Redemptions</div><div class="summary-card-value">47</div><div class="summary-card-foot">↑ 12% this week</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Revenue Impact</div><div class="summary-card-value">₦2.4M</div><div class="summary-card-foot">Incremental GMV</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Upcoming</div><div class="summary-card-value" style="color:var(--warning-600)">3</div><div class="summary-card-foot">Scheduled</div></div>
+    </div>
+
+    <div class="flex items-center justify-between mb-16 wrap gap-12">
+      <div class="filter-chips" id="discount-type-chips">
+        <button class="filter-chip active" data-type="">All</button>
+        <button class="filter-chip" data-type="percentage">Percentage</button>
+        <button class="filter-chip" data-type="fixed_amount">Fixed</button>
+        <button class="filter-chip" data-type="flash_sale">Flash Sale</button>
+        <button class="filter-chip" data-type="category">Category</button>
+        <button class="filter-chip" data-type="product">Product</button>
+      </div>
+      <div class="input-wrap">
+        <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+        <input type="text" class="input" id="discount-search" placeholder="Search code, name…" style="width:260px;padding-left:36px;">
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Code / Name</th><th>Type</th><th class="text-right">Value</th><th>Uses</th>
+              <th>Min Purchase</th><th>Schedule</th><th>Status</th><th style="width:100px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="discounts-tbody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -62,3 +65,6 @@
   <script src="js/admin-discounts.js"></script>
 </body>
 </html>
+
+</content>
+

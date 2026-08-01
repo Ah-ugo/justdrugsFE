@@ -3,25 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Orders</title>
+  <title>Orders — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="orders">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
-  <div class="admin-right-drawer-backdrop" id="admin-order-drawer-backdrop" hidden></div>
-  <div class="admin-right-drawer" id="admin-order-drawer" hidden>
-    <div class="admin-drawer-header">
-      <h3 class="admin-modal-title">Order Details</h3>
-      <button class="admin-modal-close" id="admin-order-drawer-close">${Icons.close}</button>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Orders</h1>
+        <p class="page-subtitle" id="orders-total-line">Track and fulfil customer orders.</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-secondary" id="orders-export-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> Export</button>
+        <button class="btn btn-primary" id="orders-refresh-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Refresh</button>
+      </div>
     </div>
-    <div class="admin-drawer-body" id="admin-order-drawer-body"></div>
+
+    <div class="filter-chips mb-16" id="orders-status-chips">
+      <button class="filter-chip active" data-status="">All</button>
+      <button class="filter-chip" data-status="pending_payment">Awaiting Payment</button>
+      <button class="filter-chip" data-status="prescription_review">Rx Review</button>
+      <button class="filter-chip" data-status="preparing">Preparing</button>
+      <button class="filter-chip" data-status="packed">Packed</button>
+      <button class="filter-chip" data-status="out_for_delivery">Out for Delivery</button>
+      <button class="filter-chip" data-status="delivered">Delivered</button>
+      <button class="filter-chip" data-status="cancelled">Cancelled</button>
+    </div>
+
+    <div class="card mb-16">
+      <div class="card-body">
+        <div class="flex items-center justify-between wrap gap-12">
+          <div class="input-wrap">
+            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+            <input type="text" class="input" id="order-search" placeholder="Search order #, customer, email…" style="width:320px;padding-left:36px;">
+          </div>
+          <div class="flex items-center gap-8">
+            <select class="select" id="order-payment-filter" style="width:150px;">
+              <option value="">All payments</option>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+              <option value="refunded">Refunded</option>
+              <option value="failed">Failed</option>
+            </select>
+            <select class="select" id="order-date-filter" style="width:150px;">
+              <option value="">All dates</option>
+              <option value="today">Today</option>
+              <option value="7d">Last 7 days</option>
+              <option value="30d">Last 30 days</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Order</th><th>Customer</th><th>Items</th><th class="text-right">Amount</th>
+              <th>Payment</th><th>Status</th><th>Delivery</th><th>Created</th><th style="width:90px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody"></tbody>
+        </table>
+      </div>
+      <div class="table-foot">
+        <div class="table-foot-info" id="orders-page-info">Loading…</div>
+        <div class="pagination" id="orders-pagination"></div>
+      </div>
+    </div>
   </div>
 
   <script src="js/admin-shared.js"></script>
   <script src="js/admin-orders.js"></script>
 </body>
 </html>
+
+</content>
+

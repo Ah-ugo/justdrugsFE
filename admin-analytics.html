@@ -3,17 +3,185 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Analytics</title>
+  <title>Analytics — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="analytics">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Analytics</h1>
+        <p class="page-subtitle">Deep insights into revenue, orders, customers and performance.</p>
+      </div>
+      <div class="page-actions">
+        <div class="segmented" id="analytics-range">
+          <button class="active" data-range="7d">7D</button>
+          <button data-range="30d">30D</button>
+          <button data-range="90d">90D</button>
+          <button data-range="1y">1Y</button>
+        </div>
+        <button class="btn btn-secondary" id="analytics-export-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> Export</button>
+      </div>
+    </div>
+
+    <div class="kpi-grid mb-24" id="analytics-kpis">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="color:var(--brand-600);background:var(--brand-50)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Revenue (7d)</div>
+          <div class="kpi-value">₦1,450,000</div>
+          <div class="kpi-trend up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg> 12.4% vs last period</div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="color:var(--blue-600);background:var(--blue-50)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.5"/><circle cx="20" cy="21" r="1.5"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Orders (7d)</div>
+          <div class="kpi-value">500</div>
+          <div class="kpi-trend up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg> 8.2% vs last period</div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="color:var(--amber-600);background:var(--amber-50)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Visitors (7d)</div>
+          <div class="kpi-value">12,100</div>
+          <div class="kpi-trend up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg> 5.7% vs last period</div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon" style="color:var(--purple-600);background:var(--purple-50)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="kpi-body">
+          <div class="kpi-label">Conversion Rate</div>
+          <div class="kpi-value">3.4%</div>
+          <div class="kpi-trend up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg> +0.3pp vs last period</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-main-sidebar mb-24">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Revenue & Orders</h3>
+            <p class="card-subtitle">Daily performance</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-box chart-lg"><canvas id="chart-analytics-revenue"></canvas></div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-16">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="card-title">Traffic & Conversion</h3>
+              <p class="card-subtitle">Visitors vs conversion rate</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-box chart-md"><canvas id="chart-analytics-traffic"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-3 mb-24">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Payment Methods</h3>
+            <p class="card-subtitle">Share of transactions</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-box chart-md"><canvas id="chart-analytics-payments"></canvas></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Top Categories</h3>
+            <p class="card-subtitle">By sales share</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-box chart-md"><canvas id="chart-analytics-categories"></canvas></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Inventory Health</h3>
+            <p class="card-subtitle">Stock distribution</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-box chart-md"><canvas id="chart-analytics-inventory"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-2 mb-24">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Top Selling Products</h3>
+            <p class="card-subtitle">By units sold</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-box chart-md"><canvas id="chart-analytics-products"></canvas></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Customer Growth</h3>
+            <p class="card-subtitle">New customers per month</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-box chart-md"><canvas id="chart-analytics-customers"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-2 mb-24">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Prescription Statistics</h3>
+            <p class="card-subtitle">Approval funnel</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-box chart-md"><canvas id="chart-analytics-prescriptions"></canvas></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Delivery Performance</h3>
+            <p class="card-subtitle">On-time rate by zone</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-box chart-md"><canvas id="chart-analytics-delivery"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/admin-shared.js"></script>
   <script src="js/admin-charts.js"></script>
   <script src="js/admin-analytics.js"></script>
 </body>
 </html>
+

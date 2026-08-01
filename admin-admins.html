@@ -3,47 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Admins</title>
+  <title>Admins — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="admins">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
-  <div class="admin-overlay" id="admin-admin-overlay" hidden>
-    <div class="admin-modal" style="max-width:520px">
-      <div class="admin-modal-header">
-        <h2 class="admin-modal-title" id="admin-admin-form-title">Create Admin</h2>
-        <button class="admin-modal-close" id="admin-admin-modal-close">${Icons.close}</button>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Admins</h1>
+        <p class="page-subtitle">Manage administrator accounts and roles.</p>
       </div>
-      <form class="admin-form-panel" id="admin-admin-form" style="border:none;padding:0;margin:0;max-width:none">
-        <input type="hidden" id="admin-admin-id">
-        <div class="form-group">
-          <label for="admin-admin-full-name">Full Name *</label>
-          <input type="text" id="admin-admin-full-name" required>
-        </div>
-        <div class="form-group">
-          <label for="admin-admin-email">Email *</label>
-          <input type="email" id="admin-admin-email" required>
-        </div>
-        <div class="form-group">
-          <label for="admin-admin-role">Role *</label>
-          <select id="admin-admin-role" required>
-            <option value="super_admin">Super Admin</option>
-            <option value="admin">Admin</option>
-            <option value="pharmacist">Pharmacist</option>
-            <option value="inventory_manager">Inventory Manager</option>
-            <option value="customer_support">Customer Support</option>
-            <option value="delivery_manager">Delivery Manager</option>
-          </select>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" id="admin-admin-cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-      </form>
+      <div class="page-actions">
+        <button class="btn btn-primary" id="admin-create-admin-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> New Admin</button>
+      </div>
+    </div>
+
+    <div class="grid grid-4 mb-24">
+      <div class="card summary-card"><div class="summary-card-label">Total Admins</div><div class="summary-card-value">6</div><div class="summary-card-foot">Active accounts</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Active</div><div class="summary-card-value" style="color:var(--success-600)">5</div><div class="summary-card-foot">Currently active</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Inactive</div><div class="summary-card-value" style="color:var(--text-3)">1</div><div class="summary-card-foot">Disabled accounts</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Last Login</div><div class="summary-card-value" style="font-size:18px">12 min ago</div><div class="summary-card-foot">Adebayo O.</div></div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last Login</th><th style="width:110px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admins-tbody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 

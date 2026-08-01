@@ -3,15 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Profile</title>
+  <title>Profile — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="profile">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">My Profile</h1>
+        <p class="page-subtitle">Manage your account settings and preferences.</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-primary" id="profile-save-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Save Changes</button>
+      </div>
+    </div>
+
+    <div class="grid grid-3 mb-24">
+      <div class="card" style="grid-column:span 1">
+        <div class="card-body" style="text-align:center;padding:32px 24px">
+          <div class="avatar xl emerald" style="width:80px;height:80px;font-size:32px;margin:0 auto 16px">AB</div>
+          <div class="font-bold" style="font-size:18px" id="prof-name">Adebayo Ogunlesi</div>
+          <div style="font-size:13px;color:var(--text-3)">Super Admin</div>
+          <div class="flex gap-6 justify-center mt-12">
+            <span class="badge badge-success">Active</span>
+            <span class="badge badge-brand">Verified</span>
+          </div>
+          <hr class="divider" style="margin:20px 0">
+          <div class="text-sm text-2" style="line-height:1.8">Joined March 2024<br>Last active: 12 min ago</div>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column:span 2">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Account Information</h3>
+            <p class="card-subtitle">Update your personal details and email address.</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="grid grid-2">
+            <div class="field"><label>Full name</label><input class="input" id="prof-full-name" value="Adebayo Ogunlesi"></div>
+            <div class="field"><label>Email</label><input class="input" id="prof-email" value="adebayo@justdrugs.com"></div>
+            <div class="field"><label>Phone</label><input class="input" id="prof-phone" value="+234 802 345 6789"></div>
+            <div class="field"><label>Role</label><input class="input" disabled value="Super Admin"></div>
+          </div>
+          <hr class="divider" style="margin:20px 0">
+          <h4 class="font-bold text-sm mb-12" style="color:var(--text)">Change Password</h4>
+          <div class="grid grid-2">
+            <div class="field"><label>Current password</label><input class="input" type="password" placeholder="••••••••"></div>
+            <div class="field"><label>New password</label><input class="input" type="password" placeholder="••••••••"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-2 mb-24">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Notification Preferences</h3>
+            <p class="card-subtitle">Choose what alerts you receive.</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="list-row"><div><div class="list-row-label">New orders</div><div class="list-row-desc">Push and email</div></div><button class="switch on"></button></div>
+          <div class="list-row"><div><div class="list-row-label">Prescription reviews</div><div class="list-row-desc">When a new prescription is submitted</div></div><button class="switch on"></button></div>
+          <div class="list-row"><div><div class="list-row-label">Low stock alerts</div><div class="list-row-desc">When inventory drops below threshold</div></div><button class="switch on"></button></div>
+          <div class="list-row"><div><div class="list-row-label">Payment failures</div><div class="list-row-desc">When a transaction fails</div></div><button class="switch on"></button></div>
+          <div class="list-row"><div><div class="list-row-label">Weekly analytics digest</div><div class="list-row-desc">Every Monday 8 AM</div></div><button class="switch"></button></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3 class="card-title">Recent Activity</h3>
+            <p class="card-subtitle">Your latest actions on the platform.</p>
+          </div>
+        </div>
+        <div class="card-body" id="prof-activity-list">
+          <div class="activity-item">
+            <div class="activity-avatar" style="background:var(--brand-50);color:var(--brand-600)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="activity-body"><div class="activity-text"><b>Approved</b> prescription RX-4F2A9C1B</div><div class="activity-time">12 min ago</div></div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-avatar" style="background:var(--blue-50);color:#3b82f6"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/></svg></div>
+            <div class="activity-body"><div class="activity-text"><b>Assigned</b> delivery rider to order JD-20250115-C4D5E6</div><div class="activity-time">1 hr ago</div></div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-avatar" style="background:var(--warning-50);color:var(--warning-600)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="activity-body"><div class="activity-text"><b>Updated</b> SMTP settings and tested email</div><div class="activity-time">3 hrs ago</div></div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-avatar" style="background:var(--purple-50);color:var(--purple-600)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+            <div class="activity-body"><div class="activity-text"><b>Created</b> new product "Folic Acid 5mg"</div><div class="activity-time">Yesterday</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/admin-shared.js"></script>
   <script src="js/admin-profile.js"></script>
 </body>

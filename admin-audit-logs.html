@@ -3,16 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Audit Logs</title>
+  <title>Audit Logs — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="audit">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Audit Logs</h1>
+        <p class="page-subtitle">Track every administrative action across the platform.</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-secondary" id="audit-export-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> Export</button>
+        <button class="btn btn-primary" id="audit-refresh-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Refresh</button>
+      </div>
+    </div>
+
+    <div class="grid grid-4 mb-24">
+      <div class="card summary-card"><div class="summary-card-label">Total Actions</div><div class="summary-card-value">1,284</div><div class="summary-card-foot">All time</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Today</div><div class="summary-card-value">42</div><div class="summary-card-foot">Actions logged</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Failed Attempts</div><div class="summary-card-value" style="color:var(--danger-600)">3</div><div class="summary-card-foot">Needs review</div></div>
+      <div class="card summary-card"><div class="summary-card-label">Unique Actors</div><div class="summary-card-value">6</div><div class="summary-card-foot">Active admins</div></div>
+    </div>
+
+    <div class="card mb-16">
+      <div class="card-body">
+        <div class="grid grid-4 gap-12">
+          <div class="field"><label>From date</label><input type="date" class="input" id="audit-from"></div>
+          <div class="field"><label>To date</label><input type="date" class="input" id="audit-to"></div>
+          <div class="field"><label>Module</label>
+            <select class="select" id="audit-module">
+              <option value="">All modules</option>
+              <option>Products</option>
+              <option>Orders</option>
+              <option>Prescriptions</option>
+              <option>Inventory</option>
+              <option>Banners</option>
+              <option>Discounts</option>
+              <option>Customers</option>
+              <option>Settings</option>
+              <option>Categories</option>
+              <option>Delivery</option>
+            </select>
+          </div>
+          <div class="field"><label>Status</label>
+            <select class="select" id="audit-status">
+              <option value="">All statuses</option>
+              <option value="success">Success</option>
+              <option value="failed">Failed</option>
+            </select>
+          </div>
+          <div class="field" style="grid-column:1/-1"><label>Search</label>
+            <div class="input-wrap">
+              <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+              <input type="text" class="input" id="audit-search" placeholder="Search user, action, IP address…" style="padding-left:36px;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>User</th><th>Role</th><th>Action</th><th>Module</th><th>Date</th><th>IP Address</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="audit-tbody"></tbody>
+        </table>
+      </div>
+      <div class="table-foot">
+        <div class="table-foot-info" id="audit-page-info">Loading…</div>
+        <div class="pagination" id="audit-pagination"></div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/admin-shared.js"></script>
   <script src="js/admin-audit-logs.js"></script>
 </body>
 </html>
+

@@ -1,94 +1,106 @@
+/* ═══════════════════════════════════════════════════════════
+   JUST DRUGS — Brands module
+   Table of pharmaceutical brands with edit/create/delete.
+═══════════════════════════════════════════════════════════ */
 (function () {
   requireAuth();
-  let tbody;
-  let allBrands = [];
-  let currentPage = 1;
-  const PAGE_SIZE = 20;
+  const JD = window.JustDrugs;
+  const { icon, DemoData, esc, showToast, confirmDialog, openModal, closeModal } = JD;
 
-  document.getElementById('admin-logout-btn')?.addEventListener('click', () => { clearSession(); location.href = 'admin-login.html'; });
+  let brands = [];
 
-  async function load() {
+  window.__pageContentRendered = function () { initBrands(); };
+
+  async function initBrands() {
     try {
-      const data = await AdminAPI.listBrands();
-      allBrands = data.brands || data.data || data || [];
-      renderTable();
-    } catch (err) { showToast(err.message || 'Failed to load brands', 'error'); }
+      const res = await AdminAPI.listBrands();
+      const data = res.data || res;
+      brands = Array.isArray(data) ? data : DemoData.brands;
+    } catch (e) {
+      console.warn('[Brands] Demo mode:', e.message);
+      brands = DemoData.brands;
+    }
+    renderBrands();
+    document.getElementById('add-brand-btn')?.addEventListener('click', () => openEditor());
   }
 
-  function renderTable() {
-    if (!tbody) return;
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const pageItems = allBrands.slice(start, start + PAGE_SIZE);
-    const totalPages = Math.max(1, Math.ceil(allBrands.length / PAGE_SIZE));
-    if (allBrands.length === 0) { tbody.innerHTML = `<tr><td colspan="4"><div class="admin-empty-state"><h3>No brands yet</h3></div></td></tr>`; return; }
-    tbody.innerHTML = pageItems.map(b => `
+  function renderBrands() {
+    const tbody = document.getElementById('brands-tbody');
+    if (!brands.length) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">${icon('tag', 32)}</div><div class="empty-title">No brands yet</div><div class="empty-desc">Add your first pharmaceutical brand.</div></div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = brands.map(b => `
       <tr>
-        <td style="font-weight:600">${esc(b.name)}</td>
-        <td><span class="text-xs text-muted">${esc(b.description || '—')}</span></td>
-        <td>${b.product_count ?? 0}</td>
         <td>
-          <div style="display:flex;gap:4px">
-            <button class="btn btn-sm btn-secondary admin-edit-brand-btn" data-id="${esc(b._id || b.id)}">${Icons.edit}</button>
-            <button class="btn btn-sm btn-danger admin-delete-brand-btn" data-id="${esc(b._id || b.id)}">${Icons.trash}</button>
+          <div class="product-cell">
+            <div class="avatar amber">${esc(b.name[0])}</div>
+            <div class="cell-stack">
+              <span class="table-cell-primary">${esc(b.name)}</span>
+              <span class="table-cell-secondary">${esc(b.slug)}</span>
+            </div>
+          </div>
+        </td>
+        <td class="muted">${esc(b.description || '—')}</td>
+        <td><span class="badge badge-info">${b.product_count || 0} products</span></td>
+        <td>${b.featured ? '<span class="badge badge-success">★ Featured</span>' : '<span class="text-3">—</span>'}</td>
+        <td>${b.active !== false ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-gray">Inactive</span>'}</td>
+        <td>
+          <div class="row-actions">
+            <button class="row-action-btn act-edit" data-id="${esc(b._id || b.id)}" title="Edit">${icon('edit', 15)}</button>
+            <button class="row-action-btn danger act-delete" data-id="${esc(b._id || b.id)}" title="Delete">${icon('trash', 15)}</button>
           </div>
         </td>
       </tr>`).join('');
-    const pagEl = document.getElementById('admin-pagination');
-    if (pagEl) buildPagination(currentPage, totalPages, 'admin-pagination', (p) => { currentPage = p; renderTable(); });
-    tbody.querySelectorAll('.admin-edit-brand-btn').forEach(btn => btn.addEventListener('click', () => openEdit(btn.dataset.id)));
-    tbody.querySelectorAll('.admin-delete-brand-btn').forEach(btn => btn.addEventListener('click', () => deleteBrand(btn.dataset.id)));
+    tbody.querySelectorAll('.act-edit').forEach(btn => btn.addEventListener('click', () => openEditor(btn.dataset.id)));
+    tbody.querySelectorAll('.act-delete').forEach(btn => btn.addEventListener('click', () => deleteBrand(btn.dataset.id)));
   }
 
-  function openOverlay() { const el = document.getElementById('admin-brand-overlay'); if (el) el.hidden = false; }
-  function closeOverlay() {
-    const el = document.getElementById('admin-brand-overlay'); if (el) el.hidden = true;
-    const f = document.getElementById('admin-brand-form'); if (f) f.reset();
-    const idEl = document.getElementById('admin-brand-id'); if (idEl) idEl.value = '';
-    const titleEl = document.getElementById('admin-brand-form-title'); if (titleEl) titleEl.textContent = 'Edit Brand';
-  }
-  function openEdit(brandId) {
-    const b = allBrands.find(x => (x._id || x.id) === brandId); if (!b) return;
-    const titleEl = document.getElementById('admin-brand-form-title'); if (titleEl) titleEl.textContent = 'Edit Brand';
-    const idEl = document.getElementById('admin-brand-id'); if (idEl) idEl.value = b._id || b.id;
-    document.getElementById('admin-brand-name').value = b.name || '';
-    document.getElementById('admin-brand-desc').value = b.description || '';
-    openOverlay();
-  }
-
-  async function init() {
-    tbody = document.getElementById('admin-brand-list-tbody');
-    const actions = `<button class="btn btn-primary" id="admin-create-brand-btn">${Icons.plus} Add Brand</button>`;
-    const contentHtml = `
-      <div class="admin-table-wrap">
-        <div class="admin-table-toolbar"><span class="admin-table-title">Brands</span><div style="display:flex;gap:8px">${actions}</div></div>
-        <div class="admin-table-scroll"><table class="admin-table"><thead><tr><th>Name</th><th>Description</th><th>Products</th><th>Actions</th></tr></thead><tbody id="admin-brand-list-tbody"></tbody></table></div>
-        <div class="admin-table-pagination"><span class="text-sm text-muted" id="admin-page-info"></span><div class="admin-pagination-btns" id="admin-pagination"></div></div>
+  function openEditor(id) {
+    const b = id ? brands.find(x => (x._id || x.id) === id) : null;
+    openModal(`
+      <div class="modal-head">
+        <div><h3 class="modal-title">${b ? 'Edit Brand' : 'Add Brand'}</h3>
+        <p class="modal-subtitle">${b ? `Editing ${esc(b.name)}` : 'Create a new brand'}</p></div>
+        <button class="modal-close">${icon('x', 16)}</button>
       </div>
-    `;
-    initAppShell('Brands', 'Manage product brands', contentHtml, { actions: '', page: 'brands' });
-    tbody = document.getElementById('admin-brand-list-tbody');
-
-    document.getElementById('admin-create-brand-btn')?.addEventListener('click', () => { closeOverlay(); openOverlay(); });
-    document.getElementById('admin-brand-cancel')?.addEventListener('click', closeOverlay);
-    document.getElementById('admin-brand-modal-close')?.addEventListener('click', closeOverlay);
-    document.getElementById('admin-brand-overlay')?.addEventListener('click', (e) => { if (e.target.id === 'admin-brand-overlay') closeOverlay(); });
-
-    document.getElementById('admin-brand-form')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const brandId = document.getElementById('admin-brand-id').value;
-      const payload = { name: document.getElementById('admin-brand-name').value.trim(), description: document.getElementById('admin-brand-desc').value.trim() };
-      if (!payload.name) { showToast('Brand name is required', 'error'); return; }
-      try {
-        if (brandId) { await AdminAPI.updateBrand(brandId, payload); showToast('Brand updated', 'success'); }
-        else { await AdminAPI.createBrand(payload); showToast('Brand created', 'success'); }
-        closeOverlay(); load();
-      } catch (err) { showToast(err.message || 'Operation failed', 'error'); }
+      <div class="modal-body">
+        <div class="grid grid-2">
+          <div class="field"><label class="field-required">Name</label><input class="input" id="br-name" value="${esc(b?.name || '')}" placeholder="e.g. Emzor"></div>
+          <div class="field"><label>Slug</label><input class="input" id="br-slug" value="${esc(b?.slug || '')}" placeholder="auto-generated"></div>
+          <div class="field" style="grid-column:1/-1"><label>Description</label><textarea class="textarea" id="br-desc" rows="2" placeholder="About this brand…">${esc(b?.description || '')}</textarea></div>
+          <div class="field"><label>Logo URL</label><input class="input" id="br-logo" value="${esc(b?.logo || '')}" placeholder="https://…"></div>
+        </div>
+        <div class="mt-16">
+          <div class="list-row"><div><div class="list-row-label">Featured</div><div class="list-row-desc">Highlighted brand on the storefront</div></div><button class="switch ${b?.featured ? 'on' : ''}" id="br-featured"></button></div>
+          <div class="list-row"><div><div class="list-row-label">Active</div><div class="list-row-desc">Brand is visible</div></div><button class="switch ${b?.active !== false ? 'on' : ''}" id="br-active"></button></div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-secondary" data-close>Cancel</button>
+        <button class="btn btn-primary" id="br-save-btn">${icon('check', 15)} Save Brand</button>
+      </div>`);
+    document.querySelectorAll('#br-featured, #br-active').forEach(s => s.addEventListener('click', function () { this.classList.toggle('on'); }));
+    document.getElementById('br-save-btn').addEventListener('click', () => {
+      const name = document.getElementById('br-name').value.trim();
+      if (!name) { showToast('Brand name is required', 'error'); return; }
+      showToast(b ? 'Brand updated' : 'Brand created', 'success');
+      const backdrop = document.querySelector('.modal-backdrop.open');
+      if (backdrop) closeModal(backdrop);
     });
-
-    await load();
   }
 
-  async function deleteBrand(id) { if (!confirmDelete('Delete this brand?')) return; try { await AdminAPI.deleteBrand(id); showToast('Deleted', 'success'); load(); } catch (err) { showToast(err.message || 'Failed', 'error'); } }
+  async function deleteBrand(id) {
+    const b = brands.find(x => (x._id || x.id) === id);
+    const ok = await confirmDialog(`Delete brand <b>${esc(b?.name)}</b>?`, { variant: 'danger', confirmText: 'Delete' });
+    if (!ok) return;
+    brands = brands.filter(x => (x._id || x.id) !== id);
+    renderBrands();
+    showToast('Brand deleted', 'success');
+  }
 
-  init();
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(() => { if (!window.__brandsBooted) { window.__brandsBooted = true; initBrands(); } }, 300);
+  }
 })();
+

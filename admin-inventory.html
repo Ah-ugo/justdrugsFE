@@ -3,41 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Just Drugs — Inventory</title>
+  <title>Inventory — Just Drugs Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/admin.css">
 </head>
-<body>
+<body data-page="inventory">
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div id="app-shell"></div>
-  <div class="admin-overlay" id="admin-inventory-adjust-overlay" hidden>
-    <div class="admin-modal" style="max-width:480px">
-      <div class="admin-modal-header">
-        <h2 class="admin-modal-title">Adjust Stock</h2>
-        <button class="admin-modal-close" id="admin-inv-adj-close">${Icons.close}</button>
+
+  <div id="page-content" hidden>
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Inventory</h1>
+        <p class="page-subtitle">Track stock levels, batches, suppliers and expiry dates.</p>
       </div>
-      <form class="admin-form-panel" id="admin-inv-adj-form" style="border:none;padding:0;margin:0;max-width:none">
-        <input type="hidden" id="admin-inv-adj-id">
-        <div class="form-group">
-          <label for="admin-inv-adj-qty">Quantity Adjustment</label>
-          <input type="number" id="admin-inv-adj-qty" required placeholder="e.g. +50 or -10">
+      <div class="page-actions">
+        <button class="btn btn-secondary" id="inv-history-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> History</button>
+        <button class="btn btn-secondary" id="inv-export-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> Export</button>
+        <button class="btn btn-primary" id="inv-restock-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Bulk Restock</button>
+      </div>
+    </div>
+
+    <div class="grid grid-4 mb-24">
+      <div class="card summary-card">
+        <div class="summary-card-label">Total Stock Units</div>
+        <div class="summary-card-value">24,580</div>
+        <div class="summary-card-foot text-success">↑ 4.2% this week</div>
+      </div>
+      <div class="card summary-card">
+        <div class="summary-card-label">Low Stock</div>
+        <div class="summary-card-value" style="color:var(--warning-600)">8</div>
+        <div class="summary-card-foot text-warning">Need reorder</div>
+      </div>
+      <div class="card summary-card">
+        <div class="summary-card-label">Out of Stock</div>
+        <div class="summary-card-value" style="color:var(--danger-600)">3</div>
+        <div class="summary-card-foot text-danger">Immediate action</div>
+      </div>
+      <div class="card summary-card">
+        <div class="summary-card-label">Expiring Soon</div>
+        <div class="summary-card-value" style="color:var(--rose-600)">12</div>
+        <div class="summary-card-foot text-rose">Within 90 days</div>
+      </div>
+    </div>
+
+    <div class="card mb-16">
+      <div class="card-body">
+        <div class="flex items-center justify-between wrap gap-12">
+          <div class="input-wrap">
+            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+            <input type="text" class="input" id="inv-search" placeholder="Search by product, SKU, batch…" style="width:300px;padding-left:36px;">
+          </div>
+          <div class="flex items-center gap-8 wrap">
+            <select class="select" id="inv-status-filter" style="width:150px;">
+              <option value="">All statuses</option>
+              <option value="IN_STOCK">In stock</option>
+              <option value="LOW_STOCK">Low stock</option>
+              <option value="OUT_OF_STOCK">Out of stock</option>
+              <option value="EXPIRING">Expiring</option>
+              <option value="EXPIRED">Expired</option>
+            </select>
+            <select class="select" id="inv-warehouse-filter" style="width:170px;">
+              <option value="">All warehouses</option>
+              <option>Main Warehouse</option>
+              <option>Lekki Hub</option>
+              <option>Ikeja Depot</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="admin-inv-adj-reason">Reason</label>
-          <select id="admin-inv-adj-reason">
-            <option value="restock">Restock</option>
-            <option value="damaged">Damaged</option>
-            <option value="returned">Customer Return</option>
-            <option value="adjustment">Manual Adjustment</option>
-          </select>
-        </div>
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" id="admin-inv-adj-cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary">Update Stock</button>
-        </div>
-      </form>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Product</th><th>SKU</th><th>Batch</th><th>Supplier</th><th>Warehouse</th>
+              <th class="text-right">Current</th><th class="text-right">Reserved</th><th class="text-right">Available</th>
+              <th>Expiry</th><th>Status</th><th style="width:100px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventory-tbody"></tbody>
+        </table>
+      </div>
+      <div class="table-foot">
+        <div class="table-foot-info" id="inv-page-info">Loading…</div>
+        <div class="pagination" id="inv-pagination"></div>
+      </div>
     </div>
   </div>
 
@@ -45,3 +100,6 @@
   <script src="js/admin-inventory.js"></script>
 </body>
 </html>
+
+</content>
+
