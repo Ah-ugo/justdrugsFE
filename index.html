@@ -1986,23 +1986,46 @@
     }
 
     /* ══════════════════════ PRODUCT GRID ══════════════════════ */
+    /* Default (mobile ≤700px): 2-column grid */
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
 
-    @media(max-width:1366px) and (min-width:701px) {
+    /* Tablet & Desktop (≥701px): each product row is a horizontally scrollable strip */
+    @media(min-width:701px) {
       .products-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 14px;
+        overflow-x: auto;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+        padding: 2px 4px 16px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--c-border-strong) var(--c-bg-alt);
       }
-    }
 
-    @media(max-width:700px) {
-      .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+      .products-grid .product-card {
+        flex: 0 0 auto;
+        width: clamp(250px, 30vw, 330px);
+        scroll-snap-align: start;
+      }
+
+      /* List view on tablet/desktop stays a vertical stack — no horizontal scroll */
+      .products-grid.list-view {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        overflow: visible;
+        padding: 0;
+        scroll-snap-type: none;
+      }
+
+      .products-grid.list-view .product-card {
+        width: auto;
+        scroll-snap-align: none;
       }
     }
 
@@ -3333,6 +3356,19 @@
       background: #fff;
     }
 
+    .form-group label small {
+      font-size: .5625rem;
+      font-weight: 600;
+      color: var(--c-text-4);
+      margin-left: 2px;
+    }
+
+    textarea.form-control {
+      min-height: 60px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
     .upload-zone {
       border: 2px dashed var(--c-border-strong);
       border-radius: var(--r-lg);
@@ -3346,6 +3382,15 @@
     .upload-zone:hover {
       border-color: var(--c-ink);
       background: var(--c-bg-alt);
+    }
+
+    .upload-zone.drag-over {
+      border-color: var(--c-lime);
+      background: rgba(198, 241, 53, .06);
+    }
+
+    .upload-zone.drag-over svg {
+      color: var(--c-ink);
     }
 
     .upload-zone svg {
@@ -3363,6 +3408,124 @@
 
     .upload-zone strong {
       color: var(--c-text-2);
+    }
+
+    /* ── Prescription file preview ── */
+    .rx-file-preview {
+      margin: 12px 0;
+    }
+
+    .rx-files-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .rx-file-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--c-bg);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-md);
+      padding: 8px 10px;
+    }
+
+    .rx-file-item svg {
+      width: 18px;
+      height: 18px;
+      color: var(--c-text-3);
+      flex-shrink: 0;
+    }
+
+    .rx-file-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .rx-file-name {
+      display: block;
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--c-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .rx-file-size {
+      display: block;
+      font-size: .625rem;
+      color: var(--c-text-3);
+      font-weight: 600;
+    }
+
+    .rx-file-remove {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(232, 72, 58, .1);
+      color: var(--c-danger);
+      flex-shrink: 0;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+
+    .rx-file-remove:hover {
+      background: rgba(232, 72, 58, .16);
+      color: var(--c-danger);
+      transform: scale(1.1);
+    }
+
+    .rx-file-remove svg {
+      width: 11px;
+      height: 11px;
+    }
+
+    /* ── Prescription inline error ── */
+    .rx-error {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: rgba(232, 72, 58, .08);
+      border: 1px solid rgba(232, 72, 58, .3);
+      border-radius: var(--r-md);
+      padding: 10px 12px;
+      margin: 12px 0;
+      font-size: .75rem;
+      color: var(--c-danger);
+      animation: error-shake .5s ease-out;
+    }
+
+    .rx-error svg {
+      width: 14px;
+      height: 14px;
+      color: var(--c-danger);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    @keyframes error-shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-2px); }
+      40% { transform: translateX(2px); }
+      60% { transform: translateX(-2px); }
+      80% { transform: translateX(1px); }
+    }
+
+    /* ── Small spinner for buttons ── */
+    .spinner-xs {
+      width: 12px;
+      height: 12px;
+      border: 2px solid transparent;
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin .6s linear infinite;
+      flex-shrink: 0;
     }
 
     @media(prefers-reduced-motion:reduce) {
@@ -4256,12 +4419,21 @@
     <div class="cm-icon"><i data-feather="file-text"></i></div>
     <h2>Upload Your Prescription</h2>
     <p>Our licensed pharmacists will review it and prepare your order within 30 minutes.</p>
-    <div class="form-group"><label for="rx-phone">Phone Number (optional, for guest orders)</label><input type="tel" id="rx-phone" class="form-control" placeholder="08012345678"></div>
-    <div class="upload-zone" id="rx-upload-zone">
+    <div class="form-group"><label for="rx-phone">Phone Number <small>(for guest orders)</small></label><input type="tel" id="rx-phone" class="form-control" placeholder="08012345678"></div>
+    <div class="form-group"><label for="rx-notes">Notes for the pharmacist <small>(optional)</small></label><textarea id="rx-notes" class="form-control" rows="2" placeholder="e.g. dosage, special instructions..."></textarea></div>
+    <div class="upload-zone" id="rx-upload-zone" tabindex="0">
       <i data-feather="upload-cloud"></i>
       <p><strong>Click to upload</strong> or drag &amp; drop</p>
-      <p>JPG, PNG or PDF · Max 10MB</p>
-      <input type="file" id="rx-file-input" accept="image/*,.pdf" hidden>
+      <p>JPG, PNG or PDF · Max 10MB per file · Up to 5 files</p>
+      <input type="file" id="rx-file-input" accept="image/*,.pdf" multiple hidden>
+    </div>
+    <div class="rx-file-preview" id="rx-file-preview" hidden>
+      <div class="rx-files-list" id="rx-files-list"></div>
+      <button type="button" class="btn btn-ghost btn-sm" id="rx-add-more-btn" style="margin-top:8px;"><i data-feather="plus"></i> Add More Files</button>
+    </div>
+    <div class="rx-error" id="rx-error" role="alert" hidden>
+      <i data-feather="alert-circle"></i>
+      <span id="rx-error-msg"></span>
     </div>
     <button class="btn btn-primary btn-full" id="rx-submit-btn"><i data-feather="send"></i> Submit Prescription</button>
   </div>
@@ -5781,7 +5953,92 @@
         document.body.style.overflow = '';
       }
 
-      function openRxModal() { openModal('rx-modal', 'rx-overlay'); }
+      /* ── Prescription upload ─────────────────────────────────── */
+      let rxSelectedFiles = [];
+
+      function fmtFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / 1048576).toFixed(1) + ' MB';
+      }
+
+      function renderRxFilePreview() {
+        const preview = document.getElementById('rx-file-preview');
+        const uploadZone = document.getElementById('rx-upload-zone');
+        if (!preview) return;
+        if (!rxSelectedFiles.length) {
+          preview.hidden = true;
+          if (uploadZone) uploadZone.style.display = '';
+          return;
+        }
+        preview.innerHTML =
+          '<div class="rx-files-list" id="rx-files-list">' +
+          rxSelectedFiles.map((f, i) => {
+            const icon = f.type.includes('pdf') ? 'file-text' : 'image';
+            return '<div class="rx-file-item">' +
+              '<i data-feather="' + icon + '"></i>' +
+              '<div class="rx-file-info">' +
+               '<span class="rx-file-name">' + esc(f.name) + '</span>' +
+              '<span class="rx-file-size">' + fmtFileSize(f.size) + '</span>' +
+              '</div>' +
+              '<button type="button" class="rx-file-remove" data-rx-remove="' + i + '" aria-label="Remove file">' +
+              '<i data-feather="x"></i></button>' +
+              '</div>';
+          }).join('') +
+          '</div>' +
+          '<button type="button" class="btn btn-ghost btn-sm" id="rx-add-more-btn" style="margin-top:8px;">' +
+          '<i data-feather="plus"></i> Add More Files</button>';
+        preview.hidden = false;
+        if (uploadZone) uploadZone.style.display = 'none';
+        if (window.feather) feather.replace();
+
+        preview.querySelectorAll('[data-rx-remove]').forEach(btn => {
+          btn.addEventListener('click', function () {
+            const idx = parseInt(this.dataset.rxRemove);
+            rxSelectedFiles.splice(idx, 1);
+            renderRxFilePreview();
+          });
+        });
+        document.getElementById('rx-add-more-btn')?.addEventListener('click', () => {
+          document.getElementById('rx-file-input')?.click();
+        });
+      }
+
+      function handleRxFileSelect(file) {
+        if (!file) return;
+        const maxMB = 10;
+        if (file.size > maxMB * 1024 * 1024) {
+          showToast('File too large: ' + file.name + '. Max ' + maxMB + 'MB.', 'error');
+          return;
+        }
+        if (!file.type.match(/image|pdf/i)) {
+          showToast('Unsupported format: ' + file.name + '. Use JPG, PNG, or PDF.', 'error');
+          return;
+        }
+        rxSelectedFiles.push(file);
+        renderRxFilePreview();
+      }
+
+      function resetRxModal() {
+        rxSelectedFiles = [];
+        renderRxFilePreview();
+        const errorEl = document.getElementById('rx-error');
+        if (errorEl) {
+          errorEl.hidden = true;
+          errorEl.classList.remove('error-shake');
+        }
+        const phone = document.getElementById('rx-phone');
+        if (phone) phone.value = '';
+        const notes = document.getElementById('rx-notes');
+        if (notes) notes.value = '';
+        const fileInput = document.getElementById('rx-file-input');
+        if (fileInput) fileInput.value = '';
+      }
+
+      function openRxModal() {
+        resetRxModal();
+        openModal('rx-modal', 'rx-overlay');
+      }
 
       /* ── Invoice ───────────────────────────────────────────── */
       async function openInvoiceModal(orderNumber) {
@@ -6257,28 +6514,72 @@
         document.getElementById('rx-header-btn').addEventListener('click', openRxModal);
         document.getElementById('sidebar-rx-btn').addEventListener('click', openRxModal);
         document.getElementById('ad-rx-btn').addEventListener('click', openRxModal);
-        document.getElementById('rx-close').addEventListener('click', () => closeModal('rx-modal', 'rx-overlay'));
-        document.getElementById('rx-overlay').addEventListener('click', () => closeModal('rx-modal', 'rx-overlay'));
+        document.getElementById('rx-close').addEventListener('click', () => {
+          resetRxModal();
+          closeModal('rx-modal', 'rx-overlay');
+        });
+        document.getElementById('rx-overlay').addEventListener('click', () => {
+          resetRxModal();
+          closeModal('rx-modal', 'rx-overlay');
+        });
 
-        document.getElementById('rx-upload-zone').addEventListener('click', () => document.getElementById('rx-file-input')
-          .click());
-        document.getElementById('rx-file-input').addEventListener('change', function () {
-          if (this.files && this.files[0]) {
-            showToast(`${this.files[0].name} ready to submit`, 'success');
+        const uploadZone = document.getElementById('rx-upload-zone');
+        const fileInput = document.getElementById('rx-file-input');
+
+        uploadZone?.addEventListener('click', () => fileInput?.click());
+        uploadZone?.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput?.click(); }
+        });
+
+        uploadZone?.addEventListener('dragover', e => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'copy';
+          uploadZone.classList.add('drag-over');
+        });
+        uploadZone?.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+        uploadZone?.addEventListener('drop', e => {
+          e.preventDefault();
+          uploadZone.classList.remove('drag-over');
+          const dt = e.dataTransfer;
+          if (dt && dt.files && dt.files.length) {
+            Array.from(dt.files).slice(0, 5).forEach(handleRxFileSelect);
           }
         });
+
+        fileInput?.addEventListener('change', function () {
+          if (this.files && this.files.length) {
+            Array.from(this.files).slice(0, 5).forEach(handleRxFileSelect);
+            this.value = '';
+          }
+        });
+
         document.getElementById('rx-submit-btn').addEventListener('click', async () => {
-          const fileInput = document.getElementById('rx-file-input');
-          if (!fileInput.files || !fileInput.files[0]) {
+          if (!rxSelectedFiles.length) {
             showToast('Please select a prescription file first.', 'warning');
             return;
           }
+
+          const submitBtn = document.getElementById('rx-submit-btn');
+          const errorEl = document.getElementById('rx-error');
+          const errorMsg = document.getElementById('rx-error-msg');
+
+          errorEl.hidden = true;
+          errorEl.classList.remove('error-shake');
+
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span class="spinner-xs"></span> Uploading…';
+
           const formData = new FormData();
-          formData.append('files', fileInput.files[0]);
+          rxSelectedFiles.forEach(f => formData.append('files', f));
           const phoneInput = document.getElementById('rx-phone');
           if (phoneInput && phoneInput.value.trim()) {
             formData.append('guest_phone', phoneInput.value.trim());
           }
+          const notesInput = document.getElementById('rx-notes');
+          if (notesInput && notesInput.value.trim()) {
+            formData.append('notes', notesInput.value.trim());
+          }
+
           try {
             const res = await fetch(`${API_BASE}/api/v1/prescriptions/upload`, {
               method: 'POST',
@@ -6286,18 +6587,50 @@
               body: formData,
             });
             const data = await res.json().catch(() => ({}));
+
             if (res.ok && data.success) {
               if (data.data && data.data._id) {
                 uploadedPrescriptionId = data.data._id;
               }
-              showToast('Prescription submitted! A pharmacist will contact you shortly.', 'success', 5000);
+              let msg = 'Prescription submitted! Our pharmacist will review it shortly.';
+              const matched = data.data && data.data.matched_products;
+              if (matched && matched.length) {
+                showToast('Prescription submitted! Matched ' + matched.length + ' product(s): ' + matched.join(', ') + '. A pharmacist will review shortly.', 'success', 7000);
+              } else {
+                showToast(msg, 'success', 6000);
+              }
+              resetRxModal();
               closeModal('rx-modal', 'rx-overlay');
-              if (phoneInput) phoneInput.value = '';
             } else {
-              showToast((data && data.detail) || 'Upload failed. Please try again.', 'error');
+              let errMsg = 'Upload failed. Please try again.';
+              if (data.detail) {
+                if (Array.isArray(data.detail) && data.detail[0]) {
+                  errMsg = data.detail[0].msg || 'Upload failed. Please try again.';
+                } else if (typeof data.detail === 'string') {
+                  errMsg = data.detail;
+                } else {
+                  errMsg = JSON.stringify(data.detail);
+                }
+              } else if (data.message) {
+                errMsg = data.message;
+              }
+              errorMsg.textContent = errMsg;
+              errorEl.hidden = false;
+              errorEl.classList.add('error-shake');
+              showToast(errMsg, 'error');
             }
           } catch (e) {
-            showToast('Upload failed. Please try again.', 'error');
+            const errMsg = e.message
+              ? 'Upload failed: ' + e.message + '. Please check your connection and try again.'
+              : 'Network error. Please check your connection and try again.';
+            errorMsg.textContent = errMsg;
+            errorEl.hidden = false;
+            errorEl.classList.add('error-shake');
+            showToast(errMsg, 'error');
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i data-feather="send"></i> Submit Prescription';
+            if (window.feather) feather.replace();
           }
         });
 
@@ -6389,6 +6722,7 @@
         document.addEventListener('keydown', e => {
           if (e.key !== 'Escape') return;
           closeModal('quickview-modal', 'qv-overlay');
+          resetRxModal();
           closeModal('rx-modal', 'rx-overlay');
           closeModal('track-modal', 'track-overlay');
           closeModal('login-modal', 'login-overlay');
