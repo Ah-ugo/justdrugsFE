@@ -6364,8 +6364,9 @@
         }
       }
 
-      /* ── Init ───────────────────────────────────────────────── */
+/* ── Init ───────────────────────────────────────────────── */
       document.addEventListener('DOMContentLoaded', async () => {
+        els.loadingOverlay.classList.add('visible');
         await getGuestSession();
         await fetchCategories();
         await fetchBrands();
