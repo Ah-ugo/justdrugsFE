@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shop — Just Drugs | Nigeria's Premier Online Pharmacy</title>
+  <title>Shop — Just Drugs | Licensed Online Pharmacy, Nigeria</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@600;700;800&display=swap"
@@ -12,32 +12,33 @@
   <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
   <style>
     /* ══════════════════════ DESIGN TOKENS ══════════════════════
-       Storefront direction: fast-delivery-app energy applied to a
-       pharmacy. Dark near-black "market bar" header, one loud lime
-       accent for CTAs/prices, warm off-white canvas, big rounded
-       photo cards with a floating circular add-button (the Glovo /
-       Chowdeck signature), and a sticky bottom cart rail.
+       Storefront direction: calm, clinical, trustworthy — a
+       licensed pharmacy, not a fast-food app. Deep teal "clinic"
+       header, one restrained mint accent for CTAs/prices, quiet
+       neutral canvas, plain product cards, a single trust strip
+       instead of stacked promo carousels, and a sticky bottom
+       cart rail for mobile checkout.
     ═════════════════════════════════════════════════════════════ */
     :root {
-      --c-ink: #0E1512;
-      --c-ink-2: #17211C;
-      --c-lime: #C6F135;
-      --c-lime-dark: #a8d61e;
-      --c-coral: #FF5A36;
-      --c-coral-dark: #e04620;
-      --c-blue: #3B82F6;
-      --c-bg: #F6F4EC;
-      --c-bg-alt: #EFEDE3;
+      --c-ink: #0F2E2A;
+      --c-ink-2: #163B35;
+      --c-lime: #8FD6C1;
+      --c-lime-dark: #6BC0A8;
+      --c-coral: #C1502E;
+      --c-coral-dark: #A43F22;
+      --c-blue: #2E6DA4;
+      --c-bg: #F6F7F4;
+      --c-bg-alt: #ECEFEA;
       --c-surface: #ffffff;
-      --c-border: #E7E3D4;
-      --c-border-strong: #dbd6c2;
-      --c-text: #14201A;
-      --c-text-2: #4A554C;
-      --c-text-3: #7C8579;
-      --c-text-4: #A7AE9F;
-      --c-danger: #E8483A;
-      --c-warning: #C9820B;
-      --c-success: #1E9E5A;
+      --c-border: #E2E6DF;
+      --c-border-strong: #CDD4C8;
+      --c-text: #16231E;
+      --c-text-2: #4B584F;
+      --c-text-3: #7C877E;
+      --c-text-4: #A6AEA1;
+      --c-danger: #C0392B;
+      --c-warning: #B8860B;
+      --c-success: #1E8449;
       --font-display: 'Sora', 'Manrope', sans-serif;
       --font: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
       --r-sm: 10px;
@@ -49,7 +50,7 @@
       --shadow-md: 0 6px 16px -4px rgba(14, 21, 18, .12), 0 2px 6px -2px rgba(14, 21, 18, .06);
       --shadow-lg: 0 20px 40px -10px rgba(14, 21, 18, .18), 0 6px 14px -6px rgba(14, 21, 18, .08);
       --shadow-card: 0 1px 0 rgba(14, 21, 18, .05), 0 8px 20px -12px rgba(14, 21, 18, .16);
-      --shadow-card-hover: 0 22px 34px -14px rgba(14, 21, 18, .28);
+      --shadow-card-hover: 0 22px 34px -14px rgba(14, 21, 18, .22);
       --header-h: 64px;
       --transition: .18s cubic-bezier(.4, 0, .2, 1);
     }
@@ -74,7 +75,6 @@
       line-height: 1.5;
       min-height: 100vh;
       padding-bottom: 74px;
-      /* room for sticky cart rail on mobile */
       overflow-x: hidden;
     }
 
@@ -238,7 +238,7 @@
     }
 
     .toast-success {
-      background: #0f3d24;
+      background: #0f3d2f;
       color: var(--c-lime);
     }
 
@@ -256,7 +256,7 @@
       flex-shrink: 0;
     }
 
-    /* ══════════════════════ HEADER (dark market bar) ══════════════════════ */
+    /* ══════════════════════ HEADER ══════════════════════ */
     .site-header {
       position: sticky;
       top: 0;
@@ -329,7 +329,7 @@
     .search-bar:focus-within {
       background: #fff;
       border-color: var(--c-lime);
-      box-shadow: 0 0 0 4px rgba(198, 241, 53, .18);
+      box-shadow: 0 0 0 4px rgba(143, 214, 193, .22);
     }
 
     .search-bar:focus-within .search-input {
@@ -389,7 +389,7 @@
       background: #fff;
       border: 1px solid var(--c-border);
       border-radius: var(--r-xl);
-      box-shadow: var(--shadow-xl);
+      box-shadow: var(--shadow-lg);
       z-index: 200;
       overflow: hidden;
       animation: fadeInDown .15s ease;
@@ -399,7 +399,7 @@
 
     .suggestions-section {
       padding: 10px 0;
-      border-bottom: 1px solid var(--c-border-light);
+      border-bottom: 1px solid var(--c-border);
     }
 
     .suggestions-section:last-child {
@@ -523,7 +523,6 @@
       color: var(--c-ink);
     }
 
-    /* Mobile search dropdown polish — no wrap / no overlap, comfortable rows */
     @media(max-width:640px) {
       .search-suggestions {
         border-radius: var(--r-lg);
@@ -535,15 +534,8 @@
         gap: 8px;
       }
 
-      .suggestion-item .sugg-name {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-      }
-
+      .suggestion-item .sugg-name,
       .suggestion-item .sugg-meta {
-        font-size: 0.625rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -560,39 +552,12 @@
       }
     }
 
-    .trending-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 5px 10px;
-      background: var(--c-bg);
-      border: 1px solid var(--c-border);
-      border-radius: var(--r-full);
-      font-size: 0.6875rem;
-      font-weight: 600;
-      color: var(--c-text-2);
-      cursor: pointer;
-      transition: all var(--transition);
-      white-space: nowrap;
-    }
-
-    .trending-chip:hover {
-      border-color: var(--c-ink);
-      color: var(--c-ink);
-      background: #fff;
-    }
-
-    .trending-chip svg {
-      width: 10px;
-      height: 10px;
-      color: var(--c-coral);
-    }
-
     @keyframes fadeInDown {
       from {
         opacity: 0;
         transform: translateY(-6px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -604,7 +569,6 @@
       align-items: center;
       gap: 4px;
       flex-shrink: 0;
-      /* Push nav to the right end of the flex container */
       margin-left: auto;
     }
 
@@ -795,7 +759,6 @@
       border-radius: var(--r-full);
     }
 
-    /* Prevent horizontal overflow on medium screens (full nav + search) */
     @media(max-width:1200px) {
       .header-inner {
         gap: 8px;
@@ -816,10 +779,6 @@
     }
 
     @media(max-width:860px) {
-      .logo-tagline {
-        display: none;
-      }
-
       .header-inner {
         gap: 8px;
         padding: 0 12px;
@@ -924,7 +883,7 @@
       }
     }
 
-    /* ══════════════════════ DELIVERY STRIP + BREADCRUMB ══════════════════════ */
+    /* ══════════════════════ DELIVERY / TRUST STRIP ══════════════════════ */
     .delivery-strip {
       background: var(--c-ink-2);
       color: rgba(255, 255, 255, .82);
@@ -936,6 +895,7 @@
       padding: 7px 16px;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       font-size: .6875rem;
       font-weight: 700;
@@ -949,35 +909,30 @@
       flex-shrink: 0;
     }
 
-.delivery-strip-inner .ds-sep {
-  color: rgba(255, 255, 255, .3);
-  margin: 0 2px;
-}
+    .delivery-strip-inner .ds-sep {
+      color: rgba(255, 255, 255, .3);
+      margin: 0 2px;
+    }
 
-@media(max-width:480px) {
-  .delivery-strip {
-    overflow-x: hidden;
-  }
+    @media(max-width:480px) {
+      .delivery-strip {
+        overflow-x: hidden;
+      }
 
-  .delivery-strip-inner {
-    padding: 10px 12px;
-    gap: 6px;
-    font-size: .75rem;
-    justify-content: center;
-  }
+      .delivery-strip-inner {
+        padding: 10px 12px;
+        gap: 6px;
+        font-size: .75rem;
+      }
 
-  .delivery-strip-inner svg {
-    width: 14px;
-    height: 14px;
-  }
+      .delivery-strip-inner svg {
+        width: 14px;
+        height: 14px;
+      }
 
-  .delivery-strip-inner .ds-sep {
-    display: none;
-  }
-}
-
-    .breadcrumb-bar {
-      display: none;
+      .delivery-strip-inner .ds-sep {
+        display: none;
+      }
     }
 
     /* ══════════════════════ CATEGORY CHIP RAIL ══════════════════════ */
@@ -1046,7 +1001,7 @@
     .loading-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(246, 244, 236, .82);
+      background: rgba(246, 247, 244, .85);
       backdrop-filter: blur(4px);
       z-index: 9999;
       display: flex;
@@ -1317,7 +1272,7 @@
     .filter-sidebar-header h3 svg {
       width: 16px;
       height: 16px;
-      color: var(--c-coral);
+      color: var(--c-ink);
     }
 
     .filter-sidebar-close {
@@ -1419,7 +1374,7 @@
     }
 
     .f-check:hover .f-label {
-      color: var(--c-coral);
+      color: var(--c-text);
     }
 
     .f-check .f-count {
@@ -1561,7 +1516,7 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: .08em;
-      background: rgba(198, 241, 53, .18);
+      background: rgba(143, 214, 193, .18);
       color: var(--c-lime);
       padding: 2px 8px;
       border-radius: var(--r-full);
@@ -1618,11 +1573,11 @@
       border-radius: var(--r-xl);
       overflow: hidden;
       position: relative;
-      min-height: 130px;
+      min-height: 150px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 22px 26px;
+      padding: 24px 26px;
       background: var(--c-ink);
       color: #fff;
       box-shadow: var(--shadow-md);
@@ -1632,14 +1587,14 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at 85% 30%, rgba(198, 241, 53, .22), transparent 55%);
+      background: radial-gradient(circle at 85% 30%, rgba(143, 214, 193, .22), transparent 55%);
       pointer-events: none;
     }
 
     .shop-banner .sb-content {
       position: relative;
       z-index: 1;
-      max-width: 60%;
+      max-width: 62%;
     }
 
     .shop-banner .sb-eyebrow {
@@ -1660,28 +1615,35 @@
       font-size: 1.375rem;
       font-weight: 800;
       letter-spacing: -.02em;
-      line-height: 1.15;
-      margin-bottom: 6px;
+      line-height: 1.2;
+      margin-bottom: 8px;
     }
 
     .shop-banner p {
-      font-size: .75rem;
-      opacity: .7;
-      margin-bottom: 12px;
-      max-width: 400px;
+      font-size: .8125rem;
+      opacity: .72;
+      margin-bottom: 16px;
+      max-width: 420px;
+      line-height: 1.5;
+    }
+
+    .shop-banner .sb-cta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .shop-banner .sb-icon {
       position: absolute;
-      right: 20px;
+      right: 24px;
       top: 50%;
       transform: translateY(-50%);
       opacity: .1;
     }
 
     .shop-banner .sb-icon svg {
-      width: 120px;
-      height: 120px;
+      width: 110px;
+      height: 110px;
       color: var(--c-lime);
     }
 
@@ -1700,257 +1662,76 @@
 
       .shop-banner {
         padding: 18px;
-        min-height: 100px;
+        min-height: auto;
       }
     }
 
-    /* ── Ad banner carousel ── */
-    .ad-banner-row {
-      position: relative;
-      border-radius: var(--r-lg);
-      overflow: hidden;
-    }
-
-    .ad-banner-track {
+    /* ── Trust strip (replaces stacked promo ad carousels) ── */
+    .trust-strip {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-
-    .ad-banner {
-      border-radius: var(--r-lg);
-      padding: 16px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      min-height: 84px;
-      color: #fff;
-      cursor: pointer;
-      transition: transform var(--transition), box-shadow var(--transition);
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-      flex: 1;
     }
 
-    .ad-banner:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: var(--r-lg);
+      padding: 14px 16px;
     }
 
-    .ad-banner .ab-tag {
-      font-size: .5rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      opacity: .8;
-      margin-bottom: 2px;
-      display: block;
-    }
-
-    .ad-banner h4 {
-      font-family: var(--font-display);
-      font-size: .8125rem;
-      font-weight: 800;
-      line-height: 1.25;
-    }
-
-    .ad-banner .ab-arrow {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--c-lime);
-      color: var(--c-ink);
+    .trust-item .ti-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--r-md);
+      background: var(--c-bg-alt);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
 
-    .ad-banner .ab-arrow svg {
-      width: 13px;
-      height: 13px;
-      stroke-width: 3;
+    .trust-item .ti-icon svg {
+      width: 17px;
+      height: 17px;
+      color: var(--c-ink);
     }
 
-    .ad-banner.ab-vitamins {
-      background: var(--c-coral);
+    .trust-item .ti-title {
+      font-size: .75rem;
+      font-weight: 800;
+      color: var(--c-text);
+      line-height: 1.3;
     }
 
-    .ad-banner.ab-rx {
-      background: var(--c-blue);
+    .trust-item .ti-desc {
+      font-size: .625rem;
+      color: var(--c-text-3);
+      font-weight: 600;
     }
 
-    .ad-banner.ab-delivery {
-      background: #0f766e;
-    }
-
-    .ad-banner.ab-diabetes {
-      background: #7c3aed;
-    }
-
-    .ad-banner.ab-malaria {
-      background: #c9820b;
-    }
-
-    .ad-banner.ab-newarrivals {
-      background: var(--c-ink-2);
-    }
-
-    .carousel-dots {
-      display: none;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 0 4px;
-    }
-
-    .carousel-dots .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      flex-shrink: 0;
-    }
-
-    .carousel-dots .dot.active {
-      background: var(--c-lime);
-      border-color: var(--c-lime);
-      transform: scale(1.15);
-    }
-
-    .carousel-arrow {
-      display: none;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff;
-      cursor: pointer;
-      z-index: 3;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-      font-size: 0;
-      padding: 0;
-    }
-
-    .carousel-arrow:hover {
-      background: rgba(255, 255, 255, 0.35);
-    }
-
-    .carousel-arrow svg {
-      width: 14px;
-      height: 14px;
-    }
-
-    .carousel-arrow.prev {
-      left: 6px;
-    }
-
-    .carousel-arrow.next {
-      right: 6px;
-    }
-
-    @media (max-width: 860px) {
-      .ad-banner-row {
-        border-radius: var(--r-lg);
-        overflow: hidden;
-      }
-
-      .ad-banner-track {
-        display: flex;
-        gap: 0;
-        grid-template-columns: none;
-        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        will-change: transform;
-      }
-
-      .ad-banner {
-        flex: 0 0 100%;
-        min-height: 100px;
-        border-radius: 0;
-        padding: 16px 20px;
-        margin: 0;
-      }
-
-      .ad-banner:hover {
-        transform: none;
-        box-shadow: none;
-      }
-
-      .carousel-dots {
-        display: flex;
-        position: absolute;
-        bottom: 6px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2;
-        padding: 0;
-        gap: 6px;
-        background: transparent;
-      }
-
-      .carousel-dots .dot {
-        width: 7px;
-        height: 7px;
-        background: rgba(255, 255, 255, 0.35);
-        border-color: rgba(255, 255, 255, 0.15);
-      }
-
-      .carousel-dots .dot.active {
-        background: var(--c-lime);
-        border-color: var(--c-lime);
-        transform: scale(1.1);
-      }
-
-      .carousel-arrow {
-        display: flex;
+    @media(max-width:860px) {
+      .trust-strip {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 480px) {
-      .ad-banner {
-        min-height: 80px;
-        padding: 12px 14px;
+    @media(max-width:480px) {
+      .trust-item {
+        padding: 12px;
+        gap: 8px;
       }
 
-      .ad-banner h4 {
-        font-size: .75rem;
-      }
-
-      .ad-banner .ab-tag {
-        font-size: .4375rem;
-      }
-
-      .carousel-arrow {
-        width: 22px;
-        height: 22px;
-      }
-
-      .carousel-arrow svg {
-        width: 11px;
-        height: 11px;
-      }
-
-      .carousel-arrow.prev {
-        left: 4px;
-      }
-
-      .carousel-arrow.next {
-        right: 4px;
+      .trust-item .ti-icon {
+        width: 30px;
+        height: 30px;
       }
     }
 
+    /* Single, quiet inline promo (one only — replaces the old promo tile stack) */
     .inline-ad-single {
       border-radius: var(--r-xl);
       padding: 20px 24px;
@@ -1960,7 +1741,7 @@
       justify-content: space-between;
       gap: 12px;
       color: #fff;
-      background: #0f766e;
+      background: var(--c-ink-2);
       box-shadow: var(--shadow-sm);
     }
 
@@ -1986,14 +1767,12 @@
     }
 
     /* ══════════════════════ PRODUCT GRID ══════════════════════ */
-    /* Default (mobile ≤700px): 2-column grid */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
 
-    /* Tablet & Desktop (≥701px): each product row is a horizontally scrollable strip */
     @media(min-width:701px) {
       .products-grid {
         display: flex;
@@ -2013,7 +1792,6 @@
         scroll-snap-align: start;
       }
 
-      /* List view on tablet/desktop stays a vertical stack — no horizontal scroll */
       .products-grid.list-view {
         display: grid;
         grid-template-columns: 1fr;
@@ -2089,7 +1867,6 @@
       }
     }
 
-    /* ── Product card: Chowdeck/Glovo style ── */
     .product-card {
       background: var(--c-surface);
       border-radius: var(--r-lg);
@@ -2200,7 +1977,7 @@
     }
 
     .badge-best {
-      background: #7c3aed;
+      background: #5B6EC9;
     }
 
     .badge-rx {
@@ -2248,41 +2025,6 @@
     .card-wishlist-btn.active svg {
       color: var(--c-coral);
       fill: var(--c-coral);
-    }
-
-    /* floating circular add button overlapping the image — signature element */
-    .card-fab-add {
-      position: absolute;
-      bottom: -18px;
-      right: 10px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--c-lime);
-      color: var(--c-ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: var(--shadow-md);
-      border: 3px solid var(--c-surface);
-      z-index: 3;
-      transition: all var(--transition);
-    }
-
-    .card-fab-add:hover {
-      background: var(--c-lime-dark);
-      transform: scale(1.08);
-    }
-
-    .card-fab-add svg {
-      width: 16px;
-      height: 16px;
-      stroke-width: 3;
-    }
-
-    .card-fab-add.is-out {
-      background: var(--c-bg-alt);
-      color: var(--c-text-4);
     }
 
     .card-hover-actions {
@@ -2468,7 +2210,7 @@
       font-size: .5625rem;
       font-weight: 700;
       color: var(--c-blue);
-      background: rgba(59, 130, 246, .1);
+      background: rgba(46, 109, 164, .1);
       padding: 4px 7px;
       border-radius: var(--r-sm);
       margin-bottom: 8px;
@@ -2563,15 +2305,13 @@
       color: #fff;
     }
 
-    .card-add-btn.is-loading,
-    .card-fab-add.is-loading {
+    .card-add-btn.is-loading {
       pointer-events: none;
       opacity: 0.6;
       position: relative;
     }
 
-    .card-add-btn.is-loading::after,
-    .card-fab-add.is-loading::after {
+    .card-add-btn.is-loading::after {
       content: '';
       position: absolute;
       width: 14px;
@@ -2610,10 +2350,6 @@
     }
 
     /* Skeleton */
-    .skeleton-card {
-      pointer-events: none;
-    }
-
     .skeleton-img,
     .skeleton-line {
       background: linear-gradient(90deg, var(--c-bg-alt) 25%, var(--c-border) 37%, var(--c-bg-alt) 63%);
@@ -2630,19 +2366,6 @@
       100% {
         background-position: 0 0;
       }
-    }
-
-    .skeleton-img {
-      aspect-ratio: 1/1;
-    }
-
-    .skeleton-line {
-      height: 10px;
-      margin: 8px 11px 0;
-    }
-
-    .skeleton-line.short {
-      width: 50%;
     }
 
     .empty-state {
@@ -2742,7 +2465,7 @@
       padding: 0 4px;
     }
 
-    /* ══════════════════════ STICKY CART RAIL (mobile, Chowdeck/Glovo checkout bar) ══════════════════════ */
+    /* ══════════════════════ STICKY CART RAIL ══════════════════════ */
     .cart-rail {
       position: fixed;
       left: 12px;
@@ -2785,11 +2508,6 @@
       font-weight: 800;
       font-size: .6875rem;
       flex-shrink: 0;
-    }
-
-    .cart-rail-total {
-      font-family: var(--font-display);
-      font-weight: 800;
     }
 
     .cart-rail-cta {
@@ -3142,7 +2860,7 @@
       font-size: .6875rem;
       font-weight: 700;
       color: var(--c-blue);
-      background: rgba(59, 130, 246, .1);
+      background: rgba(46, 109, 164, .1);
       padding: 6px 10px;
       border-radius: var(--r-md);
       margin: 10px 0;
@@ -3323,6 +3041,7 @@
       .checkout-form {
         gap: 10px;
       }
+
       .checkout-section h4 {
         font-size: .75rem;
       }
@@ -3386,7 +3105,7 @@
 
     .upload-zone.drag-over {
       border-color: var(--c-lime);
-      background: rgba(198, 241, 53, .06);
+      background: rgba(143, 214, 193, .08);
     }
 
     .upload-zone.drag-over svg {
@@ -3410,7 +3129,6 @@
       color: var(--c-text-2);
     }
 
-    /* ── Prescription file preview ── */
     .rx-file-preview {
       margin: 12px 0;
     }
@@ -3464,7 +3182,7 @@
       width: 22px;
       height: 22px;
       border-radius: 50%;
-      background: rgba(232, 72, 58, .1);
+      background: rgba(192, 57, 43, .1);
       color: var(--c-danger);
       flex-shrink: 0;
       border: none;
@@ -3476,8 +3194,7 @@
     }
 
     .rx-file-remove:hover {
-      background: rgba(232, 72, 58, .16);
-      color: var(--c-danger);
+      background: rgba(192, 57, 43, .16);
       transform: scale(1.1);
     }
 
@@ -3486,13 +3203,12 @@
       height: 11px;
     }
 
-    /* ── Prescription inline error ── */
     .rx-error {
       display: flex;
       align-items: flex-start;
       gap: 8px;
-      background: rgba(232, 72, 58, .08);
-      border: 1px solid rgba(232, 72, 58, .3);
+      background: rgba(192, 57, 43, .08);
+      border: 1px solid rgba(192, 57, 43, .3);
       border-radius: var(--r-md);
       padding: 10px 12px;
       margin: 12px 0;
@@ -3510,14 +3226,29 @@
     }
 
     @keyframes error-shake {
-      0%, 100% { transform: translateX(0); }
-      20% { transform: translateX(-2px); }
-      40% { transform: translateX(2px); }
-      60% { transform: translateX(-2px); }
-      80% { transform: translateX(1px); }
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-2px);
+      }
+
+      40% {
+        transform: translateX(2px);
+      }
+
+      60% {
+        transform: translateX(-2px);
+      }
+
+      80% {
+        transform: translateX(1px);
+      }
     }
 
-    /* ── Small spinner for buttons ── */
     .spinner-xs {
       width: 12px;
       height: 12px;
@@ -3671,7 +3402,7 @@
       padding: 10px 12px;
       font-size: 0.75rem;
       color: var(--c-text-2);
-      border-bottom: 1px solid var(--c-border-light);
+      border-bottom: 1px solid var(--c-border);
       align-items: center;
     }
 
@@ -4022,7 +3753,7 @@
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
   <div class="loading-overlay" id="loading-overlay">
     <div class="spinner"></div>
-    <span style="font-weight:700;color:var(--c-text-2);">Loading products…</span>
+    <span style="font-weight:700;color:var(--c-text-2);">Loading medicines…</span>
   </div>
 
   <!-- ══════════════ HEADER ══════════════ -->
@@ -4030,11 +3761,11 @@
     <div class="header-inner">
       <a href="#" class="logo" aria-label="Just Drugs — Home">
         <div class="logo-icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="9" fill="#C6F135" />
-            <path d="M8 16h16M16 8v16" stroke="#0E1512" stroke-width="3.5" stroke-linecap="round" />
+            <rect width="32" height="32" rx="9" fill="#8FD6C1" />
+            <path d="M8 16h16M16 8v16" stroke="#0F2E2A" stroke-width="3.5" stroke-linecap="round" />
           </svg></div>
-        <div><span class="logo-name">Just<span class="logo-accent">Drugs</span></span><span class="logo-tagline">Your
-            Health, Delivered</span></div>
+        <div><span class="logo-name">Just<span class="logo-accent">Drugs</span></span><span class="logo-tagline">Licensed
+            Online Pharmacy</span></div>
       </a>
 
       <div class="search-container">
@@ -4047,14 +3778,13 @@
       </div>
 
       <nav class="header-nav" aria-label="Main navigation">
-        <button class="nav-btn" id="rx-header-btn"><i data-feather="file-text"></i><span class="nav-label">Upload
-            Rx</span></button>
+        <button class="nav-btn" id="rx-header-btn"><i data-feather="file-text"></i><span class="nav-label">Prescriptions</span></button>
         <button class="nav-btn" id="track-header-btn"><i data-feather="map-pin"></i><span
-            class="nav-label">Track</span></button>
+            class="nav-label">Track order</span></button>
         <button class="nav-btn" id="wishlist-header-btn" aria-label="Wishlist"><i data-feather="heart"></i><span
             class="nav-label">Wishlist</span><span class="nav-badge" id="wishlist-count" hidden>0</span></button>
         <button class="nav-btn" id="login-header-btn"><i data-feather="user"></i><span class="nav-label">Sign
-            In</span></button>
+            in</span></button>
         <button class="nav-btn nav-btn-cart" id="cart-header-btn"><i
             data-feather="shopping-bag"></i><span>Cart</span><span class="cart-count" id="cart-count">0</span></button>
         <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Menu"><i
@@ -4063,17 +3793,17 @@
     </div>
   </header>
 
-  <!-- Delivery strip — Chowdeck/Glovo style location + ETA bar -->
+  <!-- Delivery / trust strip -->
   <div class="delivery-strip">
     <div class="delivery-strip-inner">
       <i data-feather="map-pin"></i>
       <span>Delivering to Lagos</span>
       <span class="ds-sep">·</span>
-      <i data-feather="clock"></i>
-      <span>Meds at your door in 30–45 min</span>
-      <span class="ds-sep">·</span>
       <i data-feather="shield"></i>
-      <span>NAFDAC-verified pharmacy</span>
+      <span>Licensed pharmacy, NAFDAC-verified</span>
+      <span class="ds-sep">·</span>
+      <i data-feather="clock"></i>
+      <span>Orders arrive in 30–45 minutes</span>
     </div>
   </div>
 
@@ -4089,26 +3819,15 @@
       <a href="#"><i data-feather="home"></i> Home</a>
       <a href="#" class="active" style="background:var(--c-lime);color:var(--c-ink);"><i
           data-feather="grid"></i> Shop</a>
-      <button id="nav-rx-btn"><i data-feather="file-text"></i> Upload Prescription</button>
-      <button id="nav-track-btn"><i data-feather="map-pin"></i> Track Order</button>
+      <button id="nav-rx-btn"><i data-feather="file-text"></i> Prescriptions</button>
+      <button id="nav-track-btn"><i data-feather="map-pin"></i> Track order</button>
       <button id="nav-wishlist-btn"><i data-feather="heart"></i> Wishlist <span class="cart-badge"
           id="nav-wishlist-badge" hidden>0</span></button>
-      <button id="nav-login-btn"><i data-feather="user"></i> Sign In</button>
+      <button id="nav-login-btn"><i data-feather="user"></i> Sign in</button>
       <button id="nav-cart-btn" style="border-top:1px solid var(--c-border);margin-top:8px;padding-top:12px;">
         <i data-feather="shopping-bag"></i> Cart <span class="cart-badge" id="nav-cart-badge">0</span>
       </button>
     </nav>
-  </div>
-
-  <!-- ══════════════ BREADCRUMB (hidden in this direction) ══════════════ -->
-  <div class="breadcrumb-bar">
-    <div class="breadcrumb-inner">
-      <ul class="breadcrumb-list">
-        <li><a href="#">Home</a></li>
-        <li class="sep">/</li>
-        <li class="current" id="breadcrumb-current">Shop All Products</li>
-      </ul>
-    </div>
   </div>
 
   <!-- Category chip rail -->
@@ -4123,11 +3842,11 @@
     <div class="wishlist-screen-header">
       <div class="wishlist-screen-title">
         <i data-feather="heart"></i>
-        My Wishlist
+        My wishlist
         <span class="wl-count" id="wl-screen-count">0 items</span>
       </div>
       <button class="wishlist-continue-btn" id="wl-continue-shopping">
-        <i data-feather="arrow-left"></i> Continue Shopping
+        <i data-feather="arrow-left"></i> Continue shopping
       </button>
     </div>
     <div class="wishlist-grid" id="wishlist-grid"></div>
@@ -4140,18 +3859,18 @@
     <div class="shop-controls">
       <div class="controls-left">
         <button class="filter-toggle-btn" id="filter-toggle-btn"><i data-feather="sliders"></i> Filters</button>
-        <span class="product-count" id="product-count" aria-live="polite">Loading products…</span>
+        <span class="product-count" id="product-count" aria-live="polite">Loading medicines…</span>
       </div>
       <div class="controls-right">
         <label for="sort-select" class="sr-only">Sort products</label>
         <select class="sort-select" id="sort-select">
           <option value="newest">Sort: Newest</option>
-          <option value="popular">Most Popular</option>
-          <option value="best_seller">Best Selling</option>
-          <option value="price_low">Price: Low to High</option>
-          <option value="price_high">Price: High to Low</option>
-          <option value="rating">Highest Rated</option>
-          <option value="discount">Biggest Discount</option>
+          <option value="popular">Most popular</option>
+          <option value="best_seller">Bestselling</option>
+          <option value="price_low">Price: Low to high</option>
+          <option value="price_high">Price: High to low</option>
+          <option value="rating">Highest rated</option>
+          <option value="discount">Biggest discount</option>
         </select>
         <div class="view-toggle" role="group" aria-label="View mode">
           <button class="view-btn active" id="grid-view-btn" aria-label="Grid view" aria-pressed="true"><i
@@ -4182,7 +3901,7 @@
       </div>
 
       <div class="filter-group">
-        <button class="filter-group-toggle" aria-expanded="true"><span>Price Range (₦)</span><i
+        <button class="filter-group-toggle" aria-expanded="true"><span>Price range (₦)</span><i
             data-feather="chevron-down"></i></button>
         <div class="filter-group-body">
           <div class="price-range-vals"><span id="price-min-label">₦0</span><span id="price-max-label">₦500,000</span>
@@ -4215,13 +3934,13 @@
             data-feather="chevron-down"></i></button>
         <div class="filter-group-body">
           <label class="f-check"><span class="f-label"><input type="radio" name="avail" value=""> All
-              Products</span></label>
+              products</span></label>
           <label class="f-check"><span class="f-label"><input type="radio" name="avail" value="IN_STOCK"> In
-              Stock</span></label>
+              stock</span></label>
           <label class="f-check"><span class="f-label"><input type="radio" name="avail" value="LOW_STOCK"> Low
-              Stock</span></label>
+              stock</span></label>
           <label class="f-check"><span class="f-label"><input type="radio" name="avail" value="OUT_OF_STOCK"> Out of
-              Stock</span></label>
+              stock</span></label>
         </div>
       </div>
 
@@ -4230,16 +3949,16 @@
             data-feather="chevron-down"></i></button>
         <div class="filter-group-body">
           <label class="f-check"><span class="f-label"><input type="radio" name="rx" value=""> All
-              Products</span></label>
+              products</span></label>
           <label class="f-check"><span class="f-label"><input type="radio" name="rx" value="true"> Prescription
-              Required</span></label>
-          <label class="f-check"><span class="f-label"><input type="radio" name="rx" value="false"> OTC (No
-              Rx)</span></label>
+              required</span></label>
+          <label class="f-check"><span class="f-label"><input type="radio" name="rx" value="false"> Over the
+              counter</span></label>
         </div>
       </div>
 
       <div class="filter-group">
-        <button class="filter-group-toggle" aria-expanded="false"><span>Dosage Form</span><i
+        <button class="filter-group-toggle" aria-expanded="false"><span>Dosage form</span><i
             data-feather="chevron-down"></i></button>
         <div class="filter-group-body scroll" id="filter-dosage-list" hidden></div>
       </div>
@@ -4254,116 +3973,79 @@
         <button class="filter-group-toggle" aria-expanded="true"><span>Discounts</span><i
             data-feather="chevron-down"></i></button>
         <div class="filter-group-body">
-          <label class="f-check"><span class="f-label"><input type="checkbox" id="discount-only"> On Sale
-              Only</span></label>
+          <label class="f-check"><span class="f-label"><input type="checkbox" id="discount-only"> On sale
+              only</span></label>
         </div>
       </div>
 
       <div class="sidebar-promo-card">
-        <span class="sp-tag">Pharmacist Service</span>
+        <span class="sp-tag">Pharmacist support</span>
         <h4>Have a prescription?</h4>
-        <p>Upload it and we'll fill it within 30 minutes.</p>
-        <button id="sidebar-rx-btn">Upload Now</button>
+        <p>Upload it and we'll prepare your order within 30 minutes.</p>
+        <button id="sidebar-rx-btn">Upload prescription</button>
       </div>
     </aside>
 
     <!-- Products Area -->
     <div class="products-area">
 
-      <!-- Shop banner -->
+      <!-- Hero -->
       <div class="shop-banner">
         <div class="sb-content">
-          <span class="sb-eyebrow">Today's Flash Deals</span>
-          <h2>Up to 40% off Antimalarials &amp; Vitamins</h2>
-          <p>NAFDAC-approved medicines, same-day delivery across Lagos &amp; Abuja. Stock is limited on flash items.</p>
-          <button class="btn btn-primary" id="banner-shop-btn">Shop
-            Deals <i data-feather="arrow-right"></i></button>
+          <span class="sb-eyebrow">Online pharmacy</span>
+          <h2>Order medicines from a licensed pharmacy</h2>
+          <p>Prescription and over-the-counter medicines, dispensed by registered pharmacists and delivered to your door across Lagos and Abuja.</p>
+          <div class="sb-cta">
+            <button class="btn btn-primary" id="banner-shop-btn">Browse medicines <i data-feather="arrow-right"></i></button>
+            <button class="btn btn-outline" id="banner-rx-btn"><i data-feather="file-text"></i> Upload prescription</button>
+          </div>
         </div>
         <div class="sb-icon" aria-hidden="true"><i data-feather="activity"></i></div>
+      </div>
+
+      <!-- Trust strip — replaces stacked promo banners with plain, checkable facts -->
+      <div class="trust-strip">
+        <div class="trust-item">
+          <div class="ti-icon"><i data-feather="shield"></i></div>
+          <div><div class="ti-title">NAFDAC-verified</div><div class="ti-desc">Every medicine is checked</div></div>
+        </div>
+        <div class="trust-item">
+          <div class="ti-icon"><i data-feather="user-check"></i></div>
+          <div><div class="ti-title">Licensed pharmacists</div><div class="ti-desc">Orders reviewed before dispatch</div></div>
+        </div>
+        <div class="trust-item">
+          <div class="ti-icon"><i data-feather="truck"></i></div>
+          <div><div class="ti-title">Same-day delivery</div><div class="ti-desc">Lagos &amp; Abuja</div></div>
+        </div>
+        <div class="trust-item">
+          <div class="ti-icon"><i data-feather="lock"></i></div>
+          <div><div class="ti-title">Secure checkout</div><div class="ti-desc">Payments via Paystack</div></div>
+        </div>
       </div>
 
       <!-- Product Grid -->
       <div class="products-grid" id="products-grid" role="list" aria-label="Products"></div>
 
-      <!-- ── Ad banner row 1 (carousel on mobile) ── -->
-      <div class="ad-banner-row" id="ad-row-1">
-        <div class="ad-banner-track" id="ad-track-1">
-          <div class="ad-banner ab-vitamins" data-filter-cat="vitamins">
-            <div><span class="ab-tag">Limited Time</span>
-              <h4>20% OFF<br>Vitamins</h4>
-            </div>
-            <span class="ab-arrow"><i data-feather="arrow-up-right"></i></span>
-          </div>
-          <div class="ad-banner ab-rx" id="ad-rx-btn">
-            <div><span class="ab-tag">Pharmacist Verified</span>
-              <h4>Upload Your<br>Prescription</h4>
-            </div>
-            <span class="ab-arrow"><i data-feather="file-text"></i></span>
-          </div>
-          <div class="ad-banner ab-delivery">
-            <div><span class="ab-tag">On Orders ₦5,000+</span>
-              <h4>Free Same-Day<br>Delivery</h4>
-            </div>
-            <span class="ab-arrow"><i data-feather="truck"></i></span>
-          </div>
-        </div>
-        <div class="carousel-dots" id="dots-1"></div>
-        <button class="carousel-arrow prev" id="carousel-prev-1" aria-label="Previous"><i
-            data-feather="chevron-left"></i></button>
-        <button class="carousel-arrow next" id="carousel-next-1" aria-label="Next"><i
-            data-feather="chevron-right"></i></button>
-      </div>
-
       <div class="products-grid" id="products-grid-2" role="list" aria-label="More products"></div>
 
-      <!-- Inline single ad -->
+      <!-- Single, quiet inline promo -->
       <div class="inline-ad-single">
         <div>
-          <h4>World Malaria Day Campaign</h4>
-          <p>Free antimalarial screening with every Coartem purchase this week.</p>
+          <h4>Free antimalarial screening</h4>
+          <p>Included with every Coartem purchase this week.</p>
         </div>
-        <button class="btn btn-primary" data-filter-cat="antimalarial">Shop
-          Antimalarials</button>
+        <button class="btn btn-primary" data-filter-cat="antimalarial">Shop antimalarials</button>
       </div>
 
       <div class="products-grid" id="products-grid-3" role="list" aria-label="More products"></div>
-
-      <!-- ── Ad banner row 2 (carousel on mobile) ── -->
-      <div class="ad-banner-row" id="ad-row-2">
-        <div class="ad-banner-track" id="ad-track-2">
-          <div class="ad-banner ab-diabetes" data-filter-cat="diabetes">
-            <div><span class="ab-tag">Health Awareness</span>
-              <h4>Diabetes Care<br>Essentials</h4>
-            </div>
-            <span class="ab-arrow"><i data-feather="droplet"></i></span>
-          </div>
-          <div class="ad-banner ab-malaria" data-filter-cat="antimalarial">
-            <div><span class="ab-tag">Rainy Season</span>
-              <h4>Malaria<br>Protection Kit</h4>
-            </div>
-            <span class="ab-arrow"><i data-feather="shield"></i></span>
-          </div>
-          <div class="ad-banner ab-newarrivals" data-filter="new">
-            <div><span class="ab-tag">Just Landed</span>
-              <h4>New Arrivals<br>This Week</h4>
-            </div>
-            <span class="ab-arrow"><i data-feather="package"></i></span>
-          </div>
-        </div>
-        <div class="carousel-dots" id="dots-2"></div>
-        <button class="carousel-arrow prev" id="carousel-prev-2" aria-label="Previous"><i
-            data-feather="chevron-left"></i></button>
-        <button class="carousel-arrow next" id="carousel-next-2" aria-label="Next"><i
-            data-feather="chevron-right"></i></button>
-      </div>
 
       <div class="products-grid" id="products-grid-4" role="list" aria-label="More products"></div>
 
       <div class="empty-state" id="empty-state" hidden>
         <div class="ei"><i data-feather="search"></i></div>
-        <h3>No products match your filters</h3>
+        <h3>No medicines match your filters</h3>
         <p>Try adjusting or clearing filters — we're always adding new stock to the pharmacy.</p>
-        <button class="btn btn-primary" id="empty-clear-btn">Clear All Filters</button>
+        <button class="btn btn-primary" id="empty-clear-btn">Clear all filters</button>
       </div>
 
       <!-- Pagination -->
@@ -4372,7 +4054,7 @@
     </div>
   </div>
 
-  <!-- Sticky mobile cart rail (Chowdeck/Glovo-style checkout bar) -->
+  <!-- Sticky mobile cart rail -->
   <div class="cart-rail" id="cart-rail">
     <div class="cart-rail-info">
       <span class="cart-rail-count" id="cart-rail-count">0</span>
@@ -4385,21 +4067,21 @@
   <div class="drawer-overlay" id="cart-overlay"></div>
   <div class="cart-drawer" id="cart-drawer" role="dialog" aria-label="Shopping cart" aria-modal="true">
     <div class="cart-drawer-header">
-      <h2>Your Cart <span class="cart-item-badge" id="cart-drawer-count">0</span></h2>
+      <h2>Your cart <span class="cart-item-badge" id="cart-drawer-count">0</span></h2>
       <button class="drawer-close-btn" id="cart-close-btn" aria-label="Close cart"><i data-feather="x"></i></button>
     </div>
     <div class="cart-drawer-body" id="cart-body">
       <div class="cart-empty" id="cart-empty">
         <div class="ei"><i data-feather="shopping-bag"></i></div>
         <h3>Your cart is empty</h3>
-        <p>Add products and they'll show up here.</p>
-        <button class="btn btn-primary" id="cart-browse-btn">Browse Products</button>
+        <p>Add medicines and they'll appear here.</p>
+        <button class="btn btn-primary" id="cart-browse-btn">Browse medicines</button>
       </div>
     </div>
     <div class="cart-drawer-footer" id="cart-footer" hidden>
       <div class="cart-summary-row"><span>Subtotal</span><span id="cart-subtotal">₦0.00</span></div>
-      <div class="cart-summary-row total"><span>Estimated Total</span><span id="cart-total">₦0.00</span></div>
-      <button class="btn btn-primary btn-full" id="checkout-btn">Proceed to Checkout <i
+      <div class="cart-summary-row total"><span>Estimated total</span><span id="cart-total">₦0.00</span></div>
+      <button class="btn btn-primary btn-full" id="checkout-btn">Proceed to checkout <i
           data-feather="arrow-right"></i></button>
     </div>
   </div>
@@ -4417,9 +4099,9 @@
   <div class="modal compact-modal" id="rx-modal" role="dialog" aria-label="Upload prescription" aria-modal="true">
     <button class="modal-close" id="rx-close" aria-label="Close"><i data-feather="x"></i></button>
     <div class="cm-icon"><i data-feather="file-text"></i></div>
-    <h2>Upload Your Prescription</h2>
-     <p>We'll automatically find matching medicines from your prescription and add them to your cart.</p>
-     <div class="form-group"><label for="rx-phone">Phone Number <small>(for guest orders)</small></label><input type="tel" id="rx-phone" class="form-control" placeholder="08012345678"></div>
+    <h2>Upload your prescription</h2>
+     <p>A pharmacist will match it to medicines in stock and add them to your cart.</p>
+     <div class="form-group"><label for="rx-phone">Phone number <small>(for guest orders)</small></label><input type="tel" id="rx-phone" class="form-control" placeholder="08012345678"></div>
      <div class="form-group"><label for="rx-notes">Notes <small>(optional)</small></label><textarea id="rx-notes" class="form-control" rows="2" placeholder="e.g. dosage, special instructions..."></textarea></div>
     <div class="upload-zone" id="rx-upload-zone" tabindex="0">
       <i data-feather="upload-cloud"></i>
@@ -4429,13 +4111,13 @@
     </div>
     <div class="rx-file-preview" id="rx-file-preview" hidden>
       <div class="rx-files-list" id="rx-files-list"></div>
-      <button type="button" class="btn btn-ghost btn-sm" id="rx-add-more-btn" style="margin-top:8px;"><i data-feather="plus"></i> Add More Files</button>
+      <button type="button" class="btn btn-ghost btn-sm" id="rx-add-more-btn" style="margin-top:8px;"><i data-feather="plus"></i> Add more files</button>
     </div>
     <div class="rx-error" id="rx-error" role="alert" hidden>
       <i data-feather="alert-circle"></i>
       <span id="rx-error-msg"></span>
     </div>
-    <button class="btn btn-primary btn-full" id="rx-submit-btn"><i data-feather="send"></i> Submit Prescription</button>
+    <button class="btn btn-primary btn-full" id="rx-submit-btn"><i data-feather="send"></i> Submit prescription</button>
   </div>
 
   <!-- ══════════════ TRACK ORDER MODAL ══════════════ -->
@@ -4443,12 +4125,12 @@
   <div class="modal compact-modal" id="track-modal" role="dialog" aria-label="Track order" aria-modal="true">
     <button class="modal-close" id="track-close" aria-label="Close"><i data-feather="x"></i></button>
     <div class="cm-icon"><i data-feather="map-pin"></i></div>
-    <h2>Track Your Order</h2>
+    <h2>Track your order</h2>
     <p>Enter your order number and phone to check delivery status, or your email to find guest orders.</p>
-    <div class="form-group"><label for="track-order-input">Order Number</label><input type="text" id="track-order-input" class="form-control" placeholder="e.g. JD-2026-004821"></div>
-    <div class="form-group"><label for="track-phone-input">Phone Number (optional)</label><input type="tel" id="track-phone-input" class="form-control" placeholder="08012345678"></div>
+    <div class="form-group"><label for="track-order-input">Order number</label><input type="text" id="track-order-input" class="form-control" placeholder="e.g. JD-2026-004821"></div>
+    <div class="form-group"><label for="track-phone-input">Phone number (optional)</label><input type="tel" id="track-phone-input" class="form-control" placeholder="08012345678"></div>
     <div class="form-group"><label for="track-email-input">Email (for guest orders)</label><input type="email" id="track-email-input" class="form-control" placeholder="you@example.com"></div>
-    <button class="btn btn-primary btn-full" id="track-submit-btn"><i data-feather="search"></i> Track Order</button>
+    <button class="btn btn-primary btn-full" id="track-submit-btn"><i data-feather="search"></i> Track order</button>
     <div id="track-result" hidden style="margin-top:12px;"></div>
   </div>
 
@@ -4458,12 +4140,12 @@
     <button class="modal-close" id="login-close" aria-label="Close"><i data-feather="x"></i></button>
     <div class="cm-icon"><i data-feather="user"></i></div>
     <h2>Welcome back</h2>
-    <p>Sign in to track orders, manage prescriptions and checkout faster.</p>
-    <div class="form-group"><label for="login-email">Email Address</label><input type="email" id="login-email"
+    <p>Sign in to track orders, manage prescriptions and check out faster.</p>
+    <div class="form-group"><label for="login-email">Email address</label><input type="email" id="login-email"
         class="form-control" placeholder="you@example.com"></div>
     <div class="form-group"><label for="login-password">Password</label><input type="password" id="login-password"
         class="form-control" placeholder="Your password"></div>
-    <button class="btn btn-primary btn-full" id="login-submit-btn">Sign In</button>
+    <button class="btn btn-primary btn-full" id="login-submit-btn">Sign in</button>
   </div>
 
   <div class="modal-overlay" id="checkout-overlay"></div>
@@ -4475,22 +4157,22 @@
     <div id="checkout-loading" hidden><div class="spinner" style="margin:0 auto 12px;"></div><p style="text-align:center;font-size:.75rem;color:var(--c-text-3);">Processing order...</p></div>
     <form id="checkout-form" class="checkout-form">
       <div class="checkout-section">
-        <h4>Contact Information</h4>
-        <div class="form-group"><label for="co-name">Full Name *</label><input type="text" id="co-name" class="form-control" placeholder="John Doe" required></div>
-        <div class="form-group"><label for="co-email">Email Address *</label><input type="email" id="co-email" class="form-control" placeholder="you@example.com" required></div>
-        <div class="form-group"><label for="co-phone">Phone Number *</label><input type="tel" id="co-phone" class="form-control" placeholder="08012345678" required></div>
+        <h4>Contact information</h4>
+        <div class="form-group"><label for="co-name">Full name *</label><input type="text" id="co-name" class="form-control" placeholder="John Doe" required></div>
+        <div class="form-group"><label for="co-email">Email address *</label><input type="email" id="co-email" class="form-control" placeholder="you@example.com" required></div>
+        <div class="form-group"><label for="co-phone">Phone number *</label><input type="tel" id="co-phone" class="form-control" placeholder="08012345678" required></div>
       </div>
       <div class="checkout-section">
-        <h4>Delivery Address</h4>
-        <div class="form-group"><label for="co-address">Street Address *</label><input type="text" id="co-address" class="form-control" placeholder="12 Main Street" required></div>
+        <h4>Delivery address</h4>
+        <div class="form-group"><label for="co-address">Street address *</label><input type="text" id="co-address" class="form-control" placeholder="12 Main Street" required></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <div class="form-group"><label for="co-city">City *</label><input type="text" id="co-city" class="form-control" placeholder="Lagos" required></div>
           <div class="form-group"><label for="co-state">State *</label><input type="text" id="co-state" class="form-control" placeholder="Lagos" required></div>
         </div>
-        <div class="form-group"><label for="co-notes">Delivery Notes (optional)</label><input type="text" id="co-notes" class="form-control" placeholder="Gate code, landmarks..."></div>
+        <div class="form-group"><label for="co-notes">Delivery notes (optional)</label><input type="text" id="co-notes" class="form-control" placeholder="Gate code, landmarks..."></div>
       </div>
       <div class="checkout-section">
-        <h4>Order Summary</h4>
+        <h4>Order summary</h4>
         <div id="checkout-items"></div>
         <div class="checkout-summary">
           <div class="summary-row"><span>Subtotal</span><span id="co-subtotal">₦0.00</span></div>
@@ -4499,8 +4181,8 @@
           <div class="summary-row total"><span>Total</span><span id="co-total">₦0.00</span></div>
         </div>
       </div>
-      <div class="form-group"><label for="co-coupon">Coupon Code (optional)</label><input type="text" id="co-coupon" class="form-control" placeholder="Enter coupon"></div>
-      <button type="submit" class="btn btn-primary btn-full" id="co-submit-btn"><i data-feather="lock"></i> Place Order & Pay</button>
+      <div class="form-group"><label for="co-coupon">Coupon code (optional)</label><input type="text" id="co-coupon" class="form-control" placeholder="Enter coupon"></div>
+      <button type="submit" class="btn btn-primary btn-full" id="co-submit-btn"><i data-feather="lock"></i> Place order &amp; pay</button>
       <p style="font-size:.625rem;color:var(--c-text-4);text-align:center;margin-top:8px;">Secured by Paystack. Your data is encrypted.</p>
     </form>
   </div>
@@ -4557,7 +4239,6 @@
             }
           }
         } catch (e) {
-          // Guest-refresh is best-effort — silently ignore failures.
           console.warn('Guest refresh skipped:', e.message);
         }
       }
@@ -4630,7 +4311,6 @@
         cartTotal: $('cart-total'),
         wishlistCount: $('wishlist-count'),
         loadingOverlay: $('loading-overlay'),
-        breadcrumb: $('breadcrumb-current'),
         navCartBadge: $('nav-cart-badge'),
         navWishlistBadge: $('nav-wishlist-badge'),
         categoryRail: $('category-rail'),
@@ -4764,10 +4444,8 @@
         if (res.success) {
           const data = res.data;
           let products = data.products || [];
-          // Inject some stock variety for demo if all are out of stock
           const allOut = products.every(p => getStockStatus(p) === 'OUT_OF_STOCK');
           if (allOut && products.length > 0) {
-            // Set first 2 to IN_STOCK, next 2 to LOW_STOCK
             products = products.map((p, i) => {
               const copy = { ...p };
               if (i === 0 || i === 1) {
@@ -4777,7 +4455,6 @@
                 copy.stock_status = 'LOW_STOCK';
                 copy.current_stock = 2 + i;
               } else {
-                // keep as is, but maybe set some more to IN_STOCK for variety
                 if (i % 3 === 0) {
                   copy.stock_status = 'IN_STOCK';
                   copy.current_stock = 20 + i;
@@ -4961,23 +4638,23 @@
         }
         if (p.new_arrival) out += `<span class="badge badge-new">New</span>`;
         if (p.popular) out += `<span class="badge badge-popular">Popular</span>`;
-        if (p.best_seller) out += `<span class="badge badge-best">Best Seller</span>`;
+        if (p.best_seller) out += `<span class="badge badge-best">Bestseller</span>`;
         if (p.requires_prescription) out += `<span class="badge badge-rx">Rx</span>`;
         const stock = getStockStatus(p);
-        if (stock === 'LOW_STOCK') out += `<span class="badge badge-low">Low Stock</span>`;
-        if (stock === 'OUT_OF_STOCK') out += `<span class="badge badge-out">Out of Stock</span>`;
+        if (stock === 'LOW_STOCK') out += `<span class="badge badge-low">Low stock</span>`;
+        if (stock === 'OUT_OF_STOCK') out += `<span class="badge badge-out">Out of stock</span>`;
         return out;
       }
 
       /* ── Stock line ──────────────────────────────────────────── */
       function stockLine(p) {
         const stock = getStockStatus(p);
-        if (stock === 'OUT_OF_STOCK') return `<div class="stock-line stock-out"><span class="stock-dot"></span> Out of Stock</div>`;
-        if (stock === 'LOW_STOCK') return `<div class="stock-line stock-low"><span class="stock-dot"></span> Low Stock</div>`;
-        return `<div class="stock-line stock-in"><span class="stock-dot"></span> In Stock</div>`;
+        if (stock === 'OUT_OF_STOCK') return `<div class="stock-line stock-out"><span class="stock-dot"></span> Out of stock</div>`;
+        if (stock === 'LOW_STOCK') return `<div class="stock-line stock-low"><span class="stock-dot"></span> Low stock</div>`;
+        return `<div class="stock-line stock-in"><span class="stock-dot"></span> In stock</div>`;
       }
 
-      /* ── Product card (Chowdeck/Glovo style: image, floating add-fab, tight body) ── */
+      /* ── Product card ── */
       function cardHtml(p) {
         const id = p._id || p.slug;
         const inWish = wishlist.has(id);
@@ -5005,13 +4682,8 @@
       ${imgHtml}
       <div class="dosage-chip">${esc(p.dosage_form || 'Tablet')}</div>
       <div class="card-hover-actions">
-        <button class="chov-btn" data-qv="${esc(id)}"><i data-feather="eye"></i> Quick View</button>
-        <button class="chov-btn" data-compare="${esc(id)}"><i data-feather="repeat"></i> Compare</button>
+        <button class="chov-btn" data-qv="${esc(id)}"><i data-feather="eye"></i> Quick view</button>
       </div>
-      ${!isOut ?
-            `<button class="card-fab-add" data-add="${esc(id)}" aria-label="Add to cart"><i data-feather="plus"></i></button>` :
-            `<button class="card-fab-add is-out" data-notify="${esc(id)}" aria-label="Notify me"><i data-feather="bell"></i></button>`
-          }
     </div>
     <div class="card-body">
       <div class="card-desc-col">
@@ -5036,8 +4708,8 @@
             <span id="qty-${esc(id)}">${qty}</span>
             <button data-qinc="${esc(id)}" aria-label="Increase quantity">+</button>
           </div>
-          <button class="card-add-btn" data-add="${esc(id)}"><i data-feather="shopping-bag"></i> Add</button>
-          ` : `<button class="card-add-btn notify" data-notify="${esc(id)}"><i data-feather="bell"></i> Notify Me</button>`}
+          <button class="card-add-btn" data-add="${esc(id)}"><i data-feather="shopping-bag"></i> Add to cart</button>
+          ` : `<button class="card-add-btn notify" data-notify="${esc(id)}"><i data-feather="bell"></i> Notify me</button>`}
         </div>
       </div>
     </div>
@@ -5072,7 +4744,7 @@
         });
 
         els.empty.style.display = total === 0 ? 'flex' : 'none';
-        document.querySelectorAll('.ad-banner-row, .inline-ad-single').forEach(el => {
+        document.querySelectorAll('.inline-ad-single').forEach(el => {
           el.style.display = total ? '' : 'none';
         });
 
@@ -5108,10 +4780,6 @@
           btn.removeEventListener('click', handleQV);
           btn.addEventListener('click', handleQV);
         });
-        container.querySelectorAll('[data-compare]').forEach(btn => {
-          btn.removeEventListener('click', handleCompare);
-          btn.addEventListener('click', handleCompare);
-        });
         container.querySelectorAll('[data-qinc]').forEach(btn => {
           btn.removeEventListener('click', handleQInc);
           btn.addEventListener('click', handleQInc);
@@ -5141,10 +4809,6 @@
         openQuickView(id);
       }
 
-      function handleCompare(e) {
-        showToast('Added to comparison list.', 'success');
-      }
-
       function handleQInc(e) {
         const id = e.currentTarget.dataset.qinc;
         qtyPending[id] = (qtyPending[id] || 1) + 1;
@@ -5169,9 +4833,7 @@
           return;
         }
         const qty = qtyPending[id] || 1;
-        const fabBtns = document.querySelectorAll(`.card-fab-add[data-add]`);
         const addBtns = document.querySelectorAll(`.card-add-btn[data-add]`);
-        fabBtns.forEach(b => { if (b.dataset.add === id) b.classList.add('is-loading'); });
         addBtns.forEach(b => { if (b.dataset.add === id) b.classList.add('is-loading'); });
         isUpdatingCart = true;
         try {
@@ -5183,14 +4845,12 @@
             const name = product ? product.name : 'Item';
             showToast(`${name} added to cart`, 'success');
             renderProducts(allProducts);
-            // Refresh guest token to keep the session alive
             await refreshGuestTokenIfNeeded();
           } else {
             showToast('Failed to add item to cart. Please try again.', 'error');
           }
         } finally {
           isUpdatingCart = false;
-          fabBtns.forEach(b => { if (b.dataset.add === id) b.classList.remove('is-loading'); });
           addBtns.forEach(b => { if (b.dataset.add === id) b.classList.remove('is-loading'); });
         }
       }
@@ -5255,7 +4915,7 @@
           showToast('Removed from wishlist', 'info');
         } else {
           wishlist.add(id);
-          showToast('Added to wishlist ❤', 'success');
+          showToast('Added to wishlist', 'success');
         }
         const count = wishlist.size;
         els.wishlistCount.textContent = count;
@@ -5412,8 +5072,8 @@
       ${p.requires_prescription ? `<div class="rx-warning"><i data-feather="alert-circle"></i> Requires a valid prescription — upload it at checkout.</div>` : ''}
       <p class="qv-desc">${esc(p.description || 'A NAFDAC-approved product from Just Drugs, dispensed by licensed pharmacists.')}</p>
       <div class="qv-cta">
-        ${!isOut ? `<button class="btn btn-primary" id="qv-add-btn"><i data-feather="shopping-bag"></i> Add to Cart</button>` : `<button class="btn btn-outline" disabled>Out of Stock</button>`}
-        <button class="btn btn-ghost" id="qv-wish-btn"><i data-feather="heart"></i> ${wishlist.has(id) ? 'Remove Wishlist' : 'Add to Wishlist'}</button>
+        ${!isOut ? `<button class="btn btn-primary" id="qv-add-btn"><i data-feather="shopping-bag"></i> Add to cart</button>` : `<button class="btn btn-outline" disabled>Out of stock</button>`}
+        <button class="btn btn-ghost" id="qv-wish-btn"><i data-feather="heart"></i> ${wishlist.has(id) ? 'Remove from wishlist' : 'Add to wishlist'}</button>
       </div>
     </div>`;
         if (window.feather) feather.replace();
@@ -5503,8 +5163,8 @@
           grid.innerHTML = `          <div class="wishlist-empty">
             <div class="ei"><i data-feather="heart"></i></div>
             <h3>Your wishlist is empty</h3>
-            <p>Save items you love by clicking the heart icon on any product.</p>
-            <button class="btn btn-primary" id="wl-browse-btn">Browse Products</button>
+            <p>Save items you're interested in by tapping the heart icon on any product.</p>
+            <button class="btn btn-primary" id="wl-browse-btn">Browse medicines</button>
           </div>`;
           if (window.feather) feather.replace();
           document.getElementById('wl-browse-btn')?.addEventListener('click', closeWishlistScreen);
@@ -5517,7 +5177,7 @@
             <div class="ei"><i data-feather="package"></i></div>
             <h3>Wishlist items unavailable</h3>
             <p>These products may no longer be in stock. Browse our current catalog.</p>
-            <button class="btn btn-primary" id="wl-continue-btn">Continue Shopping</button>
+            <button class="btn btn-primary" id="wl-continue-btn">Continue shopping</button>
           </div>`;
           if (window.feather) feather.replace();
           document.getElementById('wl-continue-btn')?.addEventListener('click', closeWishlistScreen);
@@ -5545,7 +5205,7 @@
               <h3 class="wishlist-card-name">${esc(p.name)}</h3>
               <div class="wishlist-card-price">${fmtN(price)} ${original ? `<span style="text-decoration:line-through;color:var(--c-text-4);font-size:.75rem;font-weight:600;">${fmtN(original)}</span>` : ''}</div>
               <div class="wishlist-card-cta">
-                ${!isOut ? `<button class="btn btn-primary" data-wl-add="${esc(id)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add to Cart</button>` : `<button class="btn btn-outline" disabled>Out of Stock</button>`}
+                ${!isOut ? `<button class="btn btn-primary" data-wl-add="${esc(id)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add to cart</button>` : `<button class="btn btn-outline" disabled>Out of stock</button>`}
                 <button class="btn btn-ghost" data-wl-remove2="${esc(id)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Remove</button>
               </div>
             </div>
@@ -5596,9 +5256,9 @@
         state.manufacturer.forEach(m => chips.push({ key: 'manufacturer', val: m, label: `Manufacturer: ${m}` }));
         state.dosage.forEach(d => chips.push({ key: 'dosage', val: d, label: `Form: ${d}` }));
         if (state.availability) chips.push({ key: 'availability', val: state.availability, label: `Availability: ${state.availability.replace('_', ' ')}` });
-        if (state.rx) chips.push({ key: 'rx', val: state.rx, label: state.rx === 'true' ? 'Prescription Required' : 'OTC Only' });
+        if (state.rx) chips.push({ key: 'rx', val: state.rx, label: state.rx === 'true' ? 'Prescription required' : 'Over the counter' });
         if (state.minRating) chips.push({ key: 'minRating', val: state.minRating, label: `Rating: ${state.minRating}+` });
-        if (state.discountOnly) chips.push({ key: 'discountOnly', val: true, label: 'On Sale' });
+        if (state.discountOnly) chips.push({ key: 'discountOnly', val: true, label: 'On sale' });
         if (state.minPrice > 0 || state.maxPrice < priceMax) chips.push({ key: 'price', val: '', label: `Price: ${fmtN(state.minPrice)}–${fmtN(state.maxPrice)}` });
         if (state.q) chips.push({ key: 'q', val: '', label: `Search: "${state.q}"` });
 
@@ -5668,7 +5328,7 @@
         document.querySelectorAll('input[name=ratingf]').forEach(r => r.checked = (+r.value === state.minRating));
       }
 
-      /* ── Category chip rail (top, horizontal — Chowdeck/Glovo cuisine-row equivalent) ── */
+      /* ── Category chip rail ── */
       function buildCategoryRail() {
         const el = els.categoryRail;
         if (!el) return;
@@ -5746,7 +5406,7 @@
       function buildRatingFilter() {
         const el = els.filterRating;
         el.innerHTML = [4, 3, 2].map(r =>
-          `<label class="rating-row"><input type="radio" name="ratingf" value="${r}">${starsSVG(r)}<span class="rlabel">& above</span></label>`
+          `<label class="rating-row"><input type="radio" name="ratingf" value="${r}">${starsSVG(r)}<span class="rlabel">&amp; above</span></label>`
         ).join('') + `<label class="rating-row"><input type="radio" name="ratingf" value="0" checked>${starsSVG(0)}<span class="rlabel">All ratings</span></label>`;
         el.querySelectorAll('input[name=ratingf]').forEach(r => {
           r.addEventListener('change', () => {
@@ -5987,7 +5647,7 @@
           }).join('') +
           '</div>' +
           '<button type="button" class="btn btn-ghost btn-sm" id="rx-add-more-btn" style="margin-top:8px;">' +
-          '<i data-feather="plus"></i> Add More Files</button>';
+          '<i data-feather="plus"></i> Add more files</button>';
         preview.hidden = false;
         if (uploadZone) uploadZone.style.display = 'none';
         if (window.feather) feather.replace();
@@ -6043,10 +5703,8 @@
       /* ── Invoice ───────────────────────────────────────────── */
       async function openInvoiceModal(orderNumber) {
         const body = document.getElementById('invoice-body');
-        const modal = document.getElementById('invoice-modal');
-        const overlay = document.getElementById('invoice-overlay');
-        body.innerHTML = '<div class="spinner" style="margin:24px auto;"></div>';
         openModal('invoice-modal', 'invoice-overlay');
+        body.innerHTML = '<div class="spinner" style="margin:24px auto;"></div>';
         try {
           const res = await apiFetch(`/api/v1/orders/${esc(orderNumber)}/invoice`);
           if (res.success && res.data) {
@@ -6070,7 +5728,7 @@
         let itemsHtml = '';
         if (items.length) {
           itemsHtml = `<div class="invoice-items">
-            <div class="invoice-item-header"><span>Item</span><span style="text-align:right">Qty</span><span style="text-align:right">Unit Price</span><span style="text-align:right">Total</span></div>
+            <div class="invoice-item-header"><span>Item</span><span style="text-align:right">Qty</span><span style="text-align:right">Unit price</span><span style="text-align:right">Total</span></div>
             ${items.map(it => `<div class="invoice-item-row">
               <span><div class="invoice-item-name">${esc(it.product_name)}</div><div class="invoice-item-sku">${esc(it.sku || '')}</div></span>
               <span>${it.quantity}</span>
@@ -6096,22 +5754,22 @@
             </div>
           </div>
           <div class="invoice-meta-row">
-            <div class="invoice-meta-block"><strong>Invoice Number</strong>${esc(order.order_number || '')}</div>
+            <div class="invoice-meta-block"><strong>Invoice number</strong>${esc(order.order_number || '')}</div>
             <div class="invoice-meta-block"><strong>Date</strong>${created}</div>
             <div class="invoice-meta-block"><strong>Payment</strong>${esc(order.payment_status || '')}</div>
             <div class="invoice-meta-block"><strong>Status</strong>${esc(order.status || '')}</div>
           </div>
-          ${order.delivery_address ? `<div class="invoice-meta-block" style="margin-bottom:14px;"><strong>Deliver To</strong>${esc(order.delivery_address.recipient_name || '')}, ${esc(order.delivery_address.street_address || '')}, ${esc(order.delivery_address.city || '')}, ${esc(order.delivery_address.state || '')}</div>` : ''}
+          ${order.delivery_address ? `<div class="invoice-meta-block" style="margin-bottom:14px;"><strong>Deliver to</strong>${esc(order.delivery_address.recipient_name || '')}, ${esc(order.delivery_address.street_address || '')}, ${esc(order.delivery_address.city || '')}, ${esc(order.delivery_address.state || '')}</div>` : ''}
           ${itemsHtml}
           <div class="invoice-totals">
             <div class="invoice-total-row"><span>Subtotal</span><span>${sym}${subtotal.toLocaleString('en-NG', {minimumFractionDigits: 2})}</span></div>
             ${discount ? `<div class="invoice-total-row"><span>Discount</span><span style="color:var(--c-success)">-${sym}${discount.toLocaleString('en-NG', {minimumFractionDigits: 2})}</span></div>` : ''}
-            <div class="invoice-total-row"><span>Delivery</span><span>${delivery === 0 ? 'FREE' : sym + delivery.toLocaleString('en-NG', {minimumFractionDigits: 2})}</span></div>
+            <div class="invoice-total-row"><span>Delivery</span><span>${delivery === 0 ? 'Free' : sym + delivery.toLocaleString('en-NG', {minimumFractionDigits: 2})}</span></div>
             <div class="invoice-total-row"><span>${esc(taxLabel)} (${settings.tax_rate_percent || 7.5}%)</span><span>${sym}${tax.toLocaleString('en-NG', {minimumFractionDigits: 2})}</span></div>
             <div class="invoice-total-row grand"><span>Total</span><span>${sym}${total.toLocaleString('en-NG', {minimumFractionDigits: 2})}</span></div>
           </div>
           <div class="invoice-footer">
-            <p>Thank you for shopping with <strong>${esc(settings.company_name || 'Just Drugs')}</strong>!</p>
+            <p>Thank you for shopping with <strong>${esc(settings.company_name || 'Just Drugs')}</strong>.</p>
             <p>For support, contact ${esc(settings.company_email || '')} or ${esc(settings.company_phone || '')}</p>
           </div>
         `;
@@ -6124,7 +5782,7 @@
         const content = document.getElementById('invoice-body').innerHTML;
         const win = window.open('', '_blank', 'width=600,height=800');
         if (win) {
-          win.document.write(`<!DOCTYPE html><html><head><title>Invoice</title><style>body{font-family:Manrope,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#14201A;} .invoice-company{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:2px solid #0E1512;} .invoice-company-name{font-size:1.25rem;font-weight:800;} .invoice-meta-row{display:flex;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;} .invoice-meta-block{font-size:0.75rem;} .invoice-meta-block strong{display:block;font-size:0.6875rem;color:#7C8579;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px;} .invoice-items{border:1px solid #E7E3D4;border-radius:10px;overflow:hidden;margin-bottom:14px;} .invoice-item-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:8px;padding:8px 12px;background:#F6F4EC;font-size:0.625rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:#7C8579;border-bottom:1px solid #E7E3D4;} .invoice-item-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:8px;padding:10px 12px;font-size:0.75rem;border-bottom:1px solid #EFEDE3;align-items:center;} .invoice-item-name{font-weight:700;} .invoice-item-sku{font-size:0.625rem;color:#A7AE9F;} .invoice-item-row span{text-align:right;} .invoice-item-row span:first-child{text-align:left;} .invoice-totals{display:flex;flex-direction:column;gap:6px;align-items:flex-end;margin-bottom:14px;} .invoice-total-row{display:flex;justify-content:space-between;width:100%;max-width:280px;font-size:0.75rem;} .invoice-total-row.grand{font-size:1.125rem;font-weight:800;border-top:2px solid #0E1512;padding-top:8px;margin-top:4px;} .invoice-footer{text-align:center;font-size:0.6875rem;color:#A7AE9F;padding-top:12px;border-top:1px dashed #E7E3D4;}</style></head><body>${content}</body></html>`);
+          win.document.write(`<!DOCTYPE html><html><head><title>Invoice</title><style>body{font-family:Manrope,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#16231E;} .invoice-company{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:2px solid #0F2E2A;} .invoice-company-name{font-size:1.25rem;font-weight:800;} .invoice-meta-row{display:flex;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;} .invoice-meta-block{font-size:0.75rem;} .invoice-meta-block strong{display:block;font-size:0.6875rem;color:#7C877E;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:2px;} .invoice-items{border:1px solid #E2E6DF;border-radius:10px;overflow:hidden;margin-bottom:14px;} .invoice-item-header{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:8px;padding:8px 12px;background:#F6F7F4;font-size:0.625rem;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:#7C877E;border-bottom:1px solid #E2E6DF;} .invoice-item-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:8px;padding:10px 12px;font-size:0.75rem;border-bottom:1px solid #ECEFEA;align-items:center;} .invoice-item-name{font-weight:700;} .invoice-item-sku{font-size:0.625rem;color:#A6AEA1;} .invoice-item-row span{text-align:right;} .invoice-item-row span:first-child{text-align:left;} .invoice-totals{display:flex;flex-direction:column;gap:6px;align-items:flex-end;margin-bottom:14px;} .invoice-total-row{display:flex;justify-content:space-between;width:100%;max-width:280px;font-size:0.75rem;} .invoice-total-row.grand{font-size:1.125rem;font-weight:800;border-top:2px solid #0F2E2A;padding-top:8px;margin-top:4px;} .invoice-footer{text-align:center;font-size:0.6875rem;color:#A6AEA1;padding-top:12px;border-top:1px dashed #E2E6DF;}</style></head><body>${content}</body></html>`);
           win.document.close();
           win.print();
         }
@@ -6189,141 +5847,9 @@
             }
           });
         });
-        document.querySelectorAll('[data-filter="new"]').forEach(el => {
-          el.addEventListener('click', () => {
-            state.sort = 'newest';
-            els.sortSelect.value = 'newest';
-            state.page = 1;
-            loadProducts();
-            scrollToTop();
-          });
-        });
-        document.getElementById('banner-shop-btn')?.addEventListener('click', () => {
-          state.discountOnly = true;
-          document.getElementById('discount-only').checked = true;
-          state.page = 1;
-          loadProducts();
-          scrollToTop();
-        });
-      }
 
-      /* ── Carousel ───────────────────────────────────────────── */
-      function initCarousel(rowId, trackId, dotsId, prevId, nextId) {
-        const track = document.getElementById(trackId);
-        const dotsContainer = document.getElementById(dotsId);
-        const prevBtn = document.getElementById(prevId);
-        const nextBtn = document.getElementById(nextId);
-        if (!track || !dotsContainer) return;
-
-        const slides = track.querySelectorAll('.ad-banner');
-        const total = slides.length;
-        if (total <= 1) return;
-
-        let current = 0;
-        let isMobile = window.innerWidth <= 860;
-        let autoSlideTimer = null;
-        let isTransitioning = false;
-
-        function buildDots() {
-          dotsContainer.innerHTML = '';
-          for (let i = 0; i < total; i++) {
-            const dot = document.createElement('span');
-            dot.className = `dot ${i === current ? 'active' : ''}`;
-            dot.dataset.index = i;
-            dot.addEventListener('click', () => goTo(i));
-            dotsContainer.appendChild(dot);
-          }
-        }
-
-        function goTo(index) {
-          if (isTransitioning || index === current) return;
-          isTransitioning = true;
-          current = index;
-          updateCarousel();
-          setTimeout(() => { isTransitioning = false; }, 400);
-          resetAutoSlide();
-        }
-
-        function updateCarousel() {
-          const offset = -current * 100;
-          track.style.transform = `translateX(${offset}%)`;
-          dotsContainer.querySelectorAll('.dot').forEach((dot, i) => {
-            dot.classList.toggle('active', i === current);
-          });
-          if (prevBtn) prevBtn.style.opacity = current === 0 ? '0.3' : '1';
-          if (nextBtn) nextBtn.style.opacity = current === total - 1 ? '0.3' : '1';
-        }
-
-        function next() {
-          if (current < total - 1) goTo(current + 1);
-          else goTo(0);
-        }
-
-        function prev() {
-          if (current > 0) goTo(current - 1);
-          else goTo(total - 1);
-        }
-
-        function resetAutoSlide() {
-          if (autoSlideTimer) {
-            clearInterval(autoSlideTimer);
-            autoSlideTimer = null;
-          }
-          if (isMobile) {
-            autoSlideTimer = setInterval(next, 4500);
-          }
-        }
-
-        function handleResize() {
-          const wasMobile = isMobile;
-          isMobile = window.innerWidth <= 860;
-          if (isMobile && !wasMobile) {
-            current = 0;
-            updateCarousel();
-            resetAutoSlide();
-            if (prevBtn) prevBtn.style.display = 'flex';
-            if (nextBtn) nextBtn.style.display = 'flex';
-          } else if (!isMobile && wasMobile) {
-            track.style.transform = 'translateX(0)';
-            if (prevBtn) prevBtn.style.display = 'none';
-            if (nextBtn) nextBtn.style.display = 'none';
-            if (autoSlideTimer) {
-              clearInterval(autoSlideTimer);
-              autoSlideTimer = null;
-            }
-          }
-          dotsContainer.style.display = isMobile ? 'flex' : 'none';
-        }
-
-        if (prevBtn) prevBtn.addEventListener('click', prev);
-        if (nextBtn) nextBtn.addEventListener('click', next);
-
-        let touchStartX = 0;
-        track.addEventListener('touchstart', (e) => {
-          touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-        track.addEventListener('touchend', (e) => {
-          const diff = touchStartX - e.changedTouches[0].screenX;
-          if (Math.abs(diff) > 40) {
-            if (diff > 0) next();
-            else prev();
-          }
-        }, { passive: true });
-
-        buildDots();
-        handleResize();
-        window.addEventListener('resize', handleResize);
-
-        [prevBtn, nextBtn, dotsContainer].forEach(el => {
-          if (el) {
-            el.addEventListener('click', resetAutoSlide);
-          }
-        });
-
-        return () => {
-          if (autoSlideTimer) clearInterval(autoSlideTimer);
-          window.removeEventListener('resize', handleResize);
-        };
+        document.getElementById('banner-shop-btn')?.addEventListener('click', scrollToTop);
+        document.getElementById('banner-rx-btn')?.addEventListener('click', openRxModal);
       }
 
       /* ── Mobile Nav Drawer ──────────────────────────────────── */
@@ -6349,7 +5875,6 @@
         close?.addEventListener('click', closeDrawer);
         overlay?.addEventListener('click', closeDrawer);
 
-        // Wire drawer nav buttons
         document.getElementById('nav-rx-btn')?.addEventListener('click', () => {
           closeDrawer();
           openRxModal();
@@ -6371,7 +5896,6 @@
           document.getElementById('cart-header-btn').click();
         });
 
-        // Close on escape
         document.addEventListener('keydown', e => {
           if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
         });
@@ -6408,7 +5932,7 @@
         const total = subtotal + deliveryFee + tax;
 
         document.getElementById('co-subtotal').textContent = fmtN(subtotal);
-        document.getElementById('co-delivery').textContent = deliveryFee === 0 ? 'FREE' : fmtN(deliveryFee);
+        document.getElementById('co-delivery').textContent = deliveryFee === 0 ? 'Free' : fmtN(deliveryFee);
         document.getElementById('co-tax').textContent = fmtN(tax);
         document.getElementById('co-total').textContent = fmtN(total);
       }
@@ -6466,12 +5990,12 @@
             apiFetch('/api/v1/cart', { method: 'DELETE' }).catch(() => {});
             closeModal('checkout-modal', 'checkout-overlay');
             const orderNum = res.data.order_number || '';
-            showToast(`Order ${orderNum} created! Redirecting to payment...`, 'success');
+            showToast(`Order ${orderNum} created. Redirecting to payment...`, 'success');
             setTimeout(() => {
               window.location.href = res.data.payment_url;
             }, 1500);
           } else {
-            showToast('Order created but payment URL missing. Please contact support.', 'error');
+            showToast('Order created but payment link is missing. Please contact support.', 'error');
           }
         } catch (err) {
           showToast(err.message || 'Checkout failed. Please try again.', 'error');
@@ -6513,7 +6037,6 @@
 
         document.getElementById('rx-header-btn').addEventListener('click', openRxModal);
         document.getElementById('sidebar-rx-btn').addEventListener('click', openRxModal);
-        document.getElementById('ad-rx-btn').addEventListener('click', openRxModal);
         document.getElementById('rx-close').addEventListener('click', () => {
           resetRxModal();
           closeModal('rx-modal', 'rx-overlay');
@@ -6594,9 +6117,9 @@
               }
               const matched = data.data && data.data.matched_products;
               if (matched && matched.length) {
-                showToast('Prescription submitted! ' + matched.length + ' matching product(s) added to your cart: ' + matched.join(', ') + '.', 'success', 7000);
+                showToast('Prescription submitted. ' + matched.length + ' matching product(s) added to your cart: ' + matched.join(', ') + '.', 'success', 7000);
               } else {
-                showToast('Prescription submitted successfully! No matching products found in your prescription.', 'success', 6000);
+                showToast('Prescription submitted. A pharmacist will review it and follow up.', 'success', 6000);
               }
               await fetchCart();
               renderCart();
@@ -6630,7 +6153,7 @@
             showToast(errMsg, 'error');
           } finally {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i data-feather="send"></i> Submit Prescription';
+            submitBtn.innerHTML = '<i data-feather="send"></i> Submit prescription';
             if (window.feather) feather.replace();
           }
         });
@@ -6660,7 +6183,7 @@
                 const status = res.data?.order_status || res.data?.delivery_details?.status || 'In transit';
                 result.innerHTML = `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;">
                   <span style="font-weight:700;color:var(--c-success);">${esc(orderNumber)}: ${esc(status)}</span>
-                  <button class="btn btn-primary btn-sm" id="track-invoice-btn" data-order="${esc(orderNumber)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> View Invoice</button>
+                  <button class="btn btn-primary btn-sm" id="track-invoice-btn" data-order="${esc(orderNumber)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> View invoice</button>
                 </div>`;
                 document.getElementById('track-invoice-btn')?.addEventListener('click', () => {
                   closeModal('track-modal', 'track-overlay');
@@ -6679,7 +6202,7 @@
               }
             }
           } catch (e) {
-            result.innerHTML = `<div style="text-align:center;color:var(--c-danger);">Tracking unavailable at the moment.</div>`;
+            result.innerHTML = `<div style="text-align:center;color:var(--c-danger);">Tracking is unavailable right now.</div>`;
           }
         });
 
@@ -6699,7 +6222,7 @@
               body: JSON.stringify({ email, password }),
             });
             if (res.success) {
-              showToast('Welcome back! 👋', 'success');
+              showToast('Welcome back.', 'success');
               closeModal('login-modal', 'login-overlay');
               if (res.data && res.data.access_token) {
                 localStorage.setItem('jd_auth_token', res.data.access_token);
@@ -6735,11 +6258,6 @@
         document.getElementById('wishlist-header-btn').addEventListener('click', () => {
           openWishlistScreen();
         });
-
-        document.getElementById('nav-wishlist-btn')?.addEventListener('click', () => {
-          closeDrawer();
-          openWishlistScreen();
-        });
       }
 
       /* ── Scroll shadow ──────────────────────────────────────── */
@@ -6768,7 +6286,7 @@
           renderProducts(products);
         } catch (err) {
           console.error('Load products error:', err);
-          showToast('Failed to load products. Please refresh.', 'error');
+          showToast('Failed to load medicines. Please refresh.', 'error');
           els.productCount.textContent = 'Error loading products';
           els.grid.innerHTML =
             `<div class="empty-state"><div class="ei"><i data-feather="alert-circle"></i></div><h3>Something went wrong</h3><p>${esc(err.message || 'Unknown error')}</p><button class="btn btn-primary" onclick="location.reload()">Retry</button></div>`;
@@ -6777,7 +6295,7 @@
         }
       }
 
-/* ── Init ───────────────────────────────────────────────── */
+      /* ── Init ───────────────────────────────────────────────── */
       document.addEventListener('DOMContentLoaded', async () => {
         els.loadingOverlay.classList.add('visible');
         await getGuestSession();
@@ -6785,8 +6303,6 @@
         await fetchBrands();
         await fetchCart();
 
-        // If there are pending cart/wishlist items, refresh the guest token
-        // so the session doesn't go stale.
         const hasCartItems = cartItems.length > 0;
         const hasWishlistItems = wishlist.size > 0;
         if (hasCartItems || hasWishlistItems) {
@@ -6803,13 +6319,6 @@
         initMobileNav();
 
         await loadProducts();
-
-        initCarousel('ad-row-1', 'ad-track-1', 'dots-1', 'carousel-prev-1', 'carousel-next-1');
-        initCarousel('ad-row-2', 'ad-track-2', 'dots-2', 'carousel-prev-2', 'carousel-next-2');
-
-        if (totalProducts) {
-          els.breadcrumb.textContent = `Shop All Products (${totalProducts})`;
-        }
 
         renderCart();
         if (localStorage.getItem('jd_auth_token')) {
